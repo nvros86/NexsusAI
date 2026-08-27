@@ -45,4 +45,5 @@ dependencies {
     implementation(libs.coroutines.core)
     implementation(libs.coroutines.android)
     implementation(libs.datastore.preferences)
+    implementation("javax.inject:javax.inject:1")
 }
