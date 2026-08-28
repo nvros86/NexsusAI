@@ -3,11 +3,13 @@ package com.nexusai.di
 import android.content.Context
 import androidx.room.Room
 import com.nexusai.core.common.constants.AppConstants
+import com.nexusai.data.ai.AIProviderManager
 import com.nexusai.data.local.AIProviderDao
 import com.nexusai.data.local.AppDatabase
 import com.nexusai.data.local.TabDao
 import com.nexusai.data.repository.AIProviderRepositoryImpl
 import com.nexusai.data.repository.TabRepositoryImpl
+import com.nexusai.data.security.ApiKeyEncryption
 import com.nexusai.domain.repository.AIProviderRepository
 import com.nexusai.domain.repository.TabRepository
 import dagger.Module
@@ -52,5 +54,22 @@ object RepositoryModule {
     @Singleton
     fun provideAIProviderRepository(dao: AIProviderDao): AIProviderRepository {
         return AIProviderRepositoryImpl(dao)
+    }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object AIModule {
+
+    @Provides
+    @Singleton
+    fun provideApiKeyEncryption(@ApplicationContext context: Context): ApiKeyEncryption {
+        return ApiKeyEncryption(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAIProviderManager(encryption: ApiKeyEncryption): AIProviderManager {
+        return AIProviderManager(encryption)
     }
 }

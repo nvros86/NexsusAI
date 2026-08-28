@@ -2,9 +2,11 @@ package com.nexusai.feature.tabs.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nexusai.data.ai.AIProviderManager
+import com.nexusai.domain.ai.ChatMessage
+import com.nexusai.domain.ai.MessageRole
 import com.nexusai.domain.model.AIProviderConfig
 import com.nexusai.domain.model.Message
-import com.nexusai.domain.model.MessageRole
 import com.nexusai.domain.model.Tab
 import com.nexusai.domain.repository.AIProviderRepository
 import com.nexusai.domain.repository.TabRepository
@@ -12,7 +14,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.UUID
 import javax.inject.Inject
@@ -34,7 +35,8 @@ data class ChatUiState(
 @HiltViewModel
 class TabsViewModel @Inject constructor(
     private val tabRepository: TabRepository,
-    private val aiProviderRepository: AIProviderRepository
+    private val aiProviderRepository: AIProviderRepository,
+    private val aiProviderManager: AIProviderManager
 ) : ViewModel() {
 
     private val _tabsState = MutableStateFlow(TabsUiState())
@@ -107,8 +109,8 @@ class TabsViewModel @Inject constructor(
 
     fun setTabProvider(tabId: String, providerId: String) {
         viewModelScope.launch {
+            val provider = _providers.value.firstOrNull { it.id == providerId } ?: return@launch
             val tab = tabRepository.getTabById(tabId) ?: return@launch
-            val provider = _providers.value.firstOrNull { it.id == providerId }
             tabRepository.updateTab(tab.copy(aiProviderId = providerId))
             updateChatState(tabId) { it.copy(currentProvider = provider) }
         }
@@ -138,8 +140,8 @@ class TabsViewModel @Inject constructor(
                 )
             }
 
-            val provider = chatState.currentProvider
-            if (provider == null) {
+            val providerConfig = chatState.currentProvider
+            if (providerConfig == null) {
                 val errorMessage = Message(
                     id = UUID.randomUUID().toString(),
                     content = "No AI provider selected. Please select a provider first.",
@@ -155,14 +157,34 @@ class TabsViewModel @Inject constructor(
             }
 
             try {
-                val response = Message(
+                val provider = aiProviderManager.getProvider(providerConfig)
+                val chatMessages = chatState.messages.map {
+                    ChatMessage(
+                        role = when (it.role) {
+                            MessageRole.USER -> MessageRole.USER
+                            MessageRole.ASSISTANT -> MessageRole.ASSISTANT
+                            MessageRole.SYSTEM -> MessageRole.SYSTEM
+                        },
+                        content = it.content
+                    )
+                } + ChatMessage(role = MessageRole.USER, content = text)
+
+                val response = provider.sendMessage(
+                    messages = chatMessages,
+                    model = providerConfig.defaultModel,
+                    maxTokens = providerConfig.maxTokens,
+                    temperature = providerConfig.temperature
+                )
+
+                val assistantMessage = Message(
                     id = UUID.randomUUID().toString(),
-                    content = "[${provider.name}] Response will be implemented in Phase 3 with API integration",
+                    content = response.content,
                     role = MessageRole.ASSISTANT
                 )
+
                 updateChatState(tabId) {
                     it.copy(
-                        messages = it.messages + response,
+                        messages = it.messages + assistantMessage,
                         isGenerating = false
                     )
                 }
