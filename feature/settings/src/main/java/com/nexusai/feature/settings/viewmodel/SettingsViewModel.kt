@@ -3,6 +3,7 @@ package com.nexusai.feature.settings.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexusai.domain.model.AIProviderConfig
+import com.nexusai.domain.model.ProviderType
 import com.nexusai.domain.repository.AIProviderRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -59,7 +60,7 @@ class SettingsViewModel @Inject constructor(
 
     fun saveProvider(
         name: String,
-        type: String,
+        type: ProviderType,
         apiKey: String,
         baseUrl: String,
         defaultModel: String,
@@ -81,7 +82,7 @@ class SettingsViewModel @Inject constructor(
                     )
                 )
             } else {
-                aiProviderRepository.createProvider(
+                aiProviderRepository.addProvider(
                     AIProviderConfig(
                         id = UUID.randomUUID().toString(),
                         name = name,
@@ -90,8 +91,7 @@ class SettingsViewModel @Inject constructor(
                         baseUrl = baseUrl,
                         defaultModel = defaultModel,
                         maxTokens = maxTokens,
-                        temperature = temperature,
-                        isActive = true
+                        temperature = temperature
                     )
                 )
             }
@@ -105,10 +105,10 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun toggleProviderActive(id: String, isActive: Boolean) {
+    fun toggleFavorite(id: String) {
         viewModelScope.launch {
             val provider = _state.value.providers.firstOrNull { it.id == id } ?: return@launch
-            aiProviderRepository.updateProvider(provider.copy(isActive = isActive))
+            aiProviderRepository.updateProvider(provider.copy(isFavorite = !provider.isFavorite))
         }
     }
 }

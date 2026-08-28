@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -26,7 +27,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nexusai.core.ui.components.AIProviderIcon
 import com.nexusai.domain.model.AIProviderConfig
+import com.nexusai.domain.model.ProviderType
 import com.nexusai.feature.settings.viewmodel.SettingsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -87,7 +88,7 @@ fun SettingsScreen(
                     provider = provider,
                     onEdit = { viewModel.showEditDialog(provider) },
                     onDelete = { viewModel.deleteProvider(provider.id) },
-                    onToggleActive = { viewModel.toggleProviderActive(provider.id, it) }
+                    onToggleFavorite = { viewModel.toggleFavorite(provider.id) }
                 )
             }
 
@@ -125,7 +126,7 @@ private fun ProviderCard(
     provider: AIProviderConfig,
     onEdit: () -> Unit,
     onDelete: () -> Unit,
-    onToggleActive: (Boolean) -> Unit
+    onToggleFavorite: () -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -139,7 +140,7 @@ private fun ProviderCard(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AIProviderIcon(providerId = provider.type)
+            AIProviderIcon(providerId = provider.type.name)
 
             Spacer(modifier = Modifier.width(12.dp))
 
@@ -149,7 +150,7 @@ private fun ProviderCard(
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
-                    text = provider.type,
+                    text = provider.type.name,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -160,10 +161,14 @@ private fun ProviderCard(
                 )
             }
 
-            Switch(
-                checked = provider.isActive,
-                onCheckedChange = onToggleActive
-            )
+            IconButton(onClick = onToggleFavorite) {
+                Icon(
+                    imageVector = Icons.Default.Star,
+                    contentDescription = "Favorite",
+                    tint = if (provider.isFavorite) MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
 
             IconButton(onClick = onEdit) {
                 Icon(
@@ -187,15 +192,19 @@ private fun ProviderCard(
 private fun AddEditProviderDialog(
     provider: AIProviderConfig?,
     onDismiss: () -> Unit,
-    onSave: (String, String, String, String, String, Int, Float) -> Unit
+    onSave: (String, ProviderType, String, String, String, Int, Float) -> Unit
 ) {
     var name by remember { mutableStateOf(provider?.name ?: "") }
-    var type by remember { mutableStateOf(provider?.type ?: "OPENAI") }
+    var typeIndex by remember { mutableFloatStateOf(
+        ProviderType.entries.indexOf(provider?.type ?: ProviderType.OPENAI).toFloat()
+    ) }
     var apiKey by remember { mutableStateOf(provider?.apiKey ?: "") }
     var baseUrl by remember { mutableStateOf(provider?.baseUrl ?: "https://api.openai.com/v1") }
     var model by remember { mutableStateOf(provider?.defaultModel ?: "gpt-4o") }
     var maxTokens by remember { mutableFloatStateOf((provider?.maxTokens ?: 4096).toFloat()) }
     var temperature by remember { mutableFloatStateOf(provider?.temperature ?: 0.7f) }
+
+    val selectedType = ProviderType.entries.getOrElse(typeIndex.toInt()) { ProviderType.OPENAI }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -211,11 +220,16 @@ private fun AddEditProviderDialog(
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                OutlinedTextField(
-                    value = type,
-                    onValueChange = { type = it },
-                    label = { Text("Type (OPENAI, ANTHROPIC)") },
-                    modifier = Modifier.fillMaxWidth()
+                Text(
+                    text = "Type: ${selectedType.name}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+                Slider(
+                    value = typeIndex,
+                    onValueChange = { typeIndex = it },
+                    valueRange = 0f..(ProviderType.entries.size - 1).toFloat(),
+                    steps = ProviderType.entries.size - 2
                 )
 
                 OutlinedTextField(
@@ -260,7 +274,7 @@ private fun AddEditProviderDialog(
         confirmButton = {
             TextButton(
                 onClick = {
-                    onSave(name, type, apiKey, baseUrl, model, maxTokens.toInt(), temperature)
+                    onSave(name, selectedType, apiKey, baseUrl, model, maxTokens.toInt(), temperature)
                 },
                 enabled = name.isNotBlank() && apiKey.isNotBlank()
             ) {
