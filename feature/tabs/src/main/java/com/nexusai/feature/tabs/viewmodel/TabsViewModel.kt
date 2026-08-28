@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexusai.data.ai.AIProviderManager
 import com.nexusai.domain.model.AIProviderConfig
+import com.nexusai.domain.model.AttachedFile
 import com.nexusai.domain.model.Message
 import com.nexusai.domain.model.MessageRole
 import com.nexusai.domain.model.Tab
@@ -28,7 +29,8 @@ data class ChatUiState(
     val messages: List<Message> = emptyList(),
     val isGenerating: Boolean = false,
     val currentProvider: AIProviderConfig? = null,
-    val inputText: String = ""
+    val inputText: String = "",
+    val pendingAttachments: List<AttachedFile> = emptyList()
 )
 
 @HiltViewModel
@@ -119,22 +121,37 @@ class TabsViewModel @Inject constructor(
         updateChatState(tabId) { it.copy(inputText = text) }
     }
 
+    fun addAttachment(tabId: String, file: AttachedFile) {
+        updateChatState(tabId) {
+            it.copy(pendingAttachments = it.pendingAttachments + file)
+        }
+    }
+
+    fun removeAttachment(tabId: String, fileId: String) {
+        updateChatState(tabId) {
+            it.copy(pendingAttachments = it.pendingAttachments.filter { f -> f.id != fileId })
+        }
+    }
+
     fun sendMessage(tabId: String) {
         val chatState = _chatStates.value[tabId] ?: return
         val text = chatState.inputText.trim()
-        if (text.isEmpty()) return
+        val attachments = chatState.pendingAttachments
+        if (text.isEmpty() && attachments.isEmpty()) return
 
         viewModelScope.launch {
             val userMessage = Message(
                 id = UUID.randomUUID().toString(),
-                content = text,
-                role = MessageRole.USER
+                content = text.ifEmpty { "Attached file(s)" },
+                role = MessageRole.USER,
+                attachments = attachments
             )
 
             updateChatState(tabId) {
                 it.copy(
                     messages = it.messages + userMessage,
                     inputText = "",
+                    pendingAttachments = emptyList(),
                     isGenerating = true
                 )
             }
@@ -168,7 +185,7 @@ class TabsViewModel @Inject constructor(
                     )
                 } + com.nexusai.domain.ai.ChatMessage(
                     role = com.nexusai.domain.ai.MessageRole.USER,
-                    content = text
+                    content = text.ifEmpty { "Attached file(s)" }
                 )
 
                 val response = provider.sendMessage(

@@ -15,6 +15,7 @@ coroutines = "1.9.0"
 datastore = "1.1.1"
 coil = "2.7.0"
 activity-compose = "1.9.3"
+documentfile = "1.0.1"
 core-ktx = "1.15.0"
 junit = "4.13.2"
 junit-ext = "1.2.1"
@@ -74,6 +75,7 @@ datastore-preferences = { group = "androidx.datastore", name = "datastore-prefer
 
 # Image loading
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+documentfile = { group = "androidx.documentfile", name = "documentfile", version.ref = "documentfile" }
 
 # Testing
 junit = { group = "junit", name = "junit", version.ref = "junit" }
