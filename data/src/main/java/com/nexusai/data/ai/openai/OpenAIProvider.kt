@@ -13,9 +13,15 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
 
 class OpenAIProvider(
     private val httpClient: HttpClient,
@@ -66,7 +72,7 @@ class OpenAIProvider(
 
         return AIResponse(
             content = choice.message?.content ?: "",
-            model = openAIResponse.model,
+            model = openAIResponse.id,
             usage = openAIResponse.usage?.let {
                 TokenUsage(
                     promptTokens = it.promptTokens,
@@ -91,40 +97,50 @@ class OpenAIProvider(
             stream = true
         )
 
-        val response = httpClient.post("$baseUrl/chat/completions") {
-            contentType(ContentType.Application.Json)
-            header("Authorization", "Bearer $apiKey")
-            header("Accept", "text/event-stream")
-            setBody(json.encodeToString(OpenAIRequest.serializer(), request))
-        }
+        val requestJson = json.encodeToString(OpenAIRequest.serializer(), request)
 
-        if (!response.status.isSuccess()) {
-            val errorBody = response.bodyAsText()
-            throw Exception("OpenAI API error: ${response.status} - $errorBody")
-        }
+        withContext(Dispatchers.IO) {
+            val url = URL("$baseUrl/chat/completions")
+            val connection = url.openConnection() as HttpURLConnection
+            connection.requestMethod = "POST"
+            connection.setRequestProperty("Content-Type", "application/json")
+            connection.setRequestProperty("Authorization", "Bearer $apiKey")
+            connection.setRequestProperty("Accept", "text/event-stream")
+            connection.doOutput = true
+            connection.connectTimeout = 30_000
+            connection.readTimeout = 60_000
 
-        val channel = response.bodyAsChannel()
-        val buffer = StringBuilder()
+            connection.outputStream.use { os ->
+                os.write(requestJson.toByteArray())
+            }
 
-        while (!channel.isClosedForRead) {
-            val chunk = channel.readUTF8Line() ?: continue
-            buffer.clear()
-            buffer.append(chunk)
+            if (connection.responseCode != 200) {
+                val error = connection.errorStream?.bufferedReader()?.readText() ?: "Unknown error"
+                throw Exception("OpenAI API error: ${connection.responseCode} - $error")
+            }
 
-            if (chunk.startsWith("data: ")) {
-                val data = chunk.removePrefix("data: ").trim()
-                if (data == "[DONE]") break
+            BufferedReader(InputStreamReader(connection.inputStream)).use { reader ->
+                var line: String?
+                while (reader.readLine().also { line = it } != null) {
+                    val currentLine = line ?: continue
+                    if (currentLine.startsWith("data: ")) {
+                        val data = currentLine.removePrefix("data: ").trim()
+                        if (data == "[DONE]") break
 
-                try {
-                    val streamResponse = json.decodeFromString(OpenAIResponse.serializer(), data)
-                    val delta = streamResponse.choices.firstOrNull()?.delta?.content
-                    if (delta != null) {
-                        emit(delta)
+                        try {
+                            val streamResponse = json.decodeFromString(OpenAIResponse.serializer(), data)
+                            val delta = streamResponse.choices.firstOrNull()?.delta?.content
+                            if (delta != null) {
+                                emit(delta)
+                            }
+                        } catch (e: Exception) {
+                            // Skip malformed chunks
+                        }
                     }
-                } catch (e: Exception) {
-                    // Skip malformed chunks
                 }
             }
+
+            connection.disconnect()
         }
     }
 

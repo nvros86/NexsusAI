@@ -3,20 +3,15 @@ package com.nexusai.data.security
 import android.content.Context
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
-import dagger.hilt.android.qualifiers.ApplicationContext
+import android.util.Base64
 import java.security.KeyStore
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
-import android.util.Base64
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class ApiKeyEncryption @Inject constructor(
-    @ApplicationContext private val context: Context
-) {
+class ApiKeyEncryption(private val context: Context) {
+
     private val keyStore = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
     private val keyAlias = "nexsus_ai_api_key"
     private val transformation = "AES/GCM/NoPadding"

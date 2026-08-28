@@ -3,10 +3,9 @@ package com.nexusai.feature.tabs.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexusai.data.ai.AIProviderManager
-import com.nexusai.domain.ai.ChatMessage
-import com.nexusai.domain.ai.MessageRole
 import com.nexusai.domain.model.AIProviderConfig
 import com.nexusai.domain.model.Message
+import com.nexusai.domain.model.MessageRole
 import com.nexusai.domain.model.Tab
 import com.nexusai.domain.repository.AIProviderRepository
 import com.nexusai.domain.repository.TabRepository
@@ -159,15 +158,18 @@ class TabsViewModel @Inject constructor(
             try {
                 val provider = aiProviderManager.getProvider(providerConfig)
                 val chatMessages = chatState.messages.map {
-                    ChatMessage(
+                    com.nexusai.domain.ai.ChatMessage(
                         role = when (it.role) {
-                            MessageRole.USER -> MessageRole.USER
-                            MessageRole.ASSISTANT -> MessageRole.ASSISTANT
-                            MessageRole.SYSTEM -> MessageRole.SYSTEM
+                            MessageRole.USER -> com.nexusai.domain.ai.MessageRole.USER
+                            MessageRole.ASSISTANT -> com.nexusai.domain.ai.MessageRole.ASSISTANT
+                            MessageRole.SYSTEM -> com.nexusai.domain.ai.MessageRole.SYSTEM
                         },
                         content = it.content
                     )
-                } + ChatMessage(role = MessageRole.USER, content = text)
+                } + com.nexusai.domain.ai.ChatMessage(
+                    role = com.nexusai.domain.ai.MessageRole.USER,
+                    content = text
+                )
 
                 val response = provider.sendMessage(
                     messages = chatMessages,

@@ -13,9 +13,15 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
 
 class AnthropicProvider(
     private val httpClient: HttpClient,
@@ -100,37 +106,50 @@ class AnthropicProvider(
             stream = true
         )
 
-        val response = httpClient.post("$baseUrl/messages") {
-            contentType(ContentType.Application.Json)
-            header("x-api-key", apiKey)
-            header("anthropic-version", "2023-06-01")
-            header("Accept", "text/event-stream")
-            setBody(json.encodeToString(AnthropicRequest.serializer(), request))
-        }
+        val requestJson = json.encodeToString(AnthropicRequest.serializer(), request)
 
-        if (!response.status.isSuccess()) {
-            val errorBody = response.bodyAsText()
-            throw Exception("Anthropic API error: ${response.status} - $errorBody")
-        }
+        withContext(Dispatchers.IO) {
+            val url = URL("$baseUrl/messages")
+            val connection = url.openConnection() as HttpURLConnection
+            connection.requestMethod = "POST"
+            connection.setRequestProperty("Content-Type", "application/json")
+            connection.setRequestProperty("x-api-key", apiKey)
+            connection.setRequestProperty("anthropic-version", "2023-06-01")
+            connection.setRequestProperty("Accept", "text/event-stream")
+            connection.doOutput = true
+            connection.connectTimeout = 30_000
+            connection.readTimeout = 60_000
 
-        val channel = response.bodyAsChannel()
+            connection.outputStream.use { os ->
+                os.write(requestJson.toByteArray())
+            }
 
-        while (!channel.isClosedForRead) {
-            val line = channel.readUTF8Line() ?: continue
+            if (connection.responseCode != 200) {
+                val error = connection.errorStream?.bufferedReader()?.readText() ?: "Unknown error"
+                throw Exception("Anthropic API error: ${connection.responseCode} - $error")
+            }
 
-            if (line.startsWith("data: ")) {
-                val data = line.removePrefix("data: ").trim()
-                if (data.isEmpty()) continue
+            BufferedReader(InputStreamReader(connection.inputStream)).use { reader ->
+                var line: String?
+                while (reader.readLine().also { line = it } != null) {
+                    val currentLine = line ?: continue
+                    if (currentLine.startsWith("data: ")) {
+                        val data = currentLine.removePrefix("data: ").trim()
+                        if (data.isEmpty()) continue
 
-                try {
-                    val event = json.decodeFromString(AnthropicStreamEvent.serializer(), data)
-                    if (event.type == "content_block_delta" && event.delta?.type == "text_delta") {
-                        event.delta.text?.let { emit(it) }
+                        try {
+                            val event = json.decodeFromString(AnthropicStreamEvent.serializer(), data)
+                            if (event.type == "content_block_delta" && event.delta?.type == "text_delta") {
+                                event.delta.text?.let { emit(it) }
+                            }
+                        } catch (e: Exception) {
+                            // Skip malformed chunks
+                        }
                     }
-                } catch (e: Exception) {
-                    // Skip malformed chunks
                 }
             }
+
+            connection.disconnect()
         }
     }
 
