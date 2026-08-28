@@ -13,7 +13,6 @@ import androidx.compose.material.icons.filled.BrokenImage
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,7 +20,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import coil.compose.AsyncImagePainter
 import coil.request.ImageRequest
 import com.nexusai.core.ui.theme.AIBlue
 import com.nexusai.core.ui.theme.SurfaceDark
@@ -50,37 +48,7 @@ fun ImageAttachment(
             contentScale = ContentScale.Fit,
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(12.dp)),
-            error = {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = 150.dp)
-                        .background(SurfaceDark),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.BrokenImage,
-                        contentDescription = "Failed to load image",
-                        tint = AIBlue,
-                        modifier = Modifier.size(48.dp)
-                    )
-                }
-            },
-            loading = {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = 150.dp)
-                        .background(SurfaceDark),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator(
-                        color = AIBlue,
-                        modifier = Modifier.size(32.dp)
-                    )
-                }
-            }
+                .clip(RoundedCornerShape(12.dp))
         )
     }
 }

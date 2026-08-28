@@ -6,10 +6,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -26,12 +24,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.nexusai.domain.model.AttachedFile
 import com.nexusai.core.ui.theme.AIBlue
 
 @Composable
 fun FileAttachment(
-    file: AttachedFile,
+    name: String,
+    uri: String,
+    mimeType: String,
+    size: Long,
     onRemove: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
@@ -43,7 +43,7 @@ fun FileAttachment(
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        FileIcon(mimeType = file.mimeType)
+        FileIcon(mimeType = mimeType)
 
         Column(
             modifier = Modifier
@@ -52,14 +52,14 @@ fun FileAttachment(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = file.name,
+                text = name,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
             Text(
-                text = formatFileSize(file.size),
+                text = FileHelper.formatFileSize(size),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -84,8 +84,8 @@ fun FileAttachment(
 @Composable
 private fun FileIcon(mimeType: String) {
     val icon = when {
-        mimeType.startsWith("image/") -> Icons.Default.Image
-        mimeType.startsWith("text/") -> Icons.Default.Description
+        FileHelper.isImage(mimeType) -> Icons.Default.Image
+        FileHelper.isText(mimeType) -> Icons.Default.Description
         else -> Icons.Default.InsertDriveFile
     }
 
@@ -102,14 +102,5 @@ private fun FileIcon(mimeType: String) {
             modifier = Modifier.size(20.dp),
             tint = AIBlue
         )
-    }
-}
-
-private fun formatFileSize(bytes: Long): String {
-    return when {
-        bytes < 1024 -> "$bytes B"
-        bytes < 1024 * 1024 -> "${bytes / 1024} KB"
-        bytes < 1024 * 1024 * 1024 -> "${bytes / (1024 * 1024)} MB"
-        else -> "${bytes / (1024 * 1024 * 1024)} GB"
     }
 }
