@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -202,6 +203,7 @@ fun PreviewTypography() {
 // 3. CHAT SCREEN
 // ============================================================
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(name = "03 - Chat Screen", showBackground = true, widthDp = 400, heightDp = 800)
 @Composable
 fun PreviewChatScreen() {
@@ -370,6 +372,7 @@ private fun ProviderCardPreview(provider: AIProviderConfig) {
 @Preview(name = "07 - Editor Screen", showBackground = true, widthDp = 400, heightDp = 800)
 @Composable
 fun PreviewEditorScreen() {
+    var count = 0
     val sampleCode = """package com.example
 
 import androidx.compose.foundation.layout.*
