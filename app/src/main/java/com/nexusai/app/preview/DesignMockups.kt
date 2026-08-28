@@ -210,7 +210,7 @@ fun PreviewChatScreen() {
         Message(id = "2", content = "Can you explain how Jetpack Compose works?", role = MessageRole.USER),
         Message(id = "3", content = "Jetpack Compose is Android's modern toolkit for building native UI. It uses a declarative approach where you describe your UI in composable functions.\n\nKey concepts:\n• Composables: Functions annotated with @Composable\n• State: Reactive data that triggers recomposition\n• Recomposition: When state changes, only affected composables are redrawn\n\nThis makes UI code more concise and easier to maintain.", role = MessageRole.ASSISTANT),
         Message(id = "4", content = "That's great! Can you show me a simple example?", role = MessageRole.USER),
-        Message(id = "5", content = "Sure! Here's a simple counter example:\n\n@Composable\nfun Counter() {\n    var count by remember { mutableStateOf(0) }\n    Button(onClick = { count++ }) {\n        Text(\"Count: $count\")\n    }\n}", role = MessageRole.ASSISTANT)
+        Message(id = "5", content = "Sure! Here's a simple counter example:\n\n@Composable\nfun Counter() {\n    var count by remember { mutableStateOf(0) }\n    Button(onClick = { count++ }) {\n        Text(\"Count: \$count\")\n    }\n}", role = MessageRole.ASSISTANT)
     )
 
     NexsusAITheme {
@@ -246,7 +246,7 @@ private fun MessageBubblePreview(message: Message) {
                 tint = MaterialTheme.colorScheme.onPrimaryContainer)
         }
         Surface(
-            modifier = Modifier.padding(horizontal = 8.dp).width(max = 300.dp),
+            modifier = Modifier.padding(horizontal = 8.dp).widthIn(max = 300.dp),
             shape = RoundedCornerShape(topStart = if (isUser) 16.dp else 4.dp, topEnd = if (isUser) 4.dp else 16.dp, bottomStart = 16.dp, bottomEnd = 16.dp),
             color = if (isUser) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant
         ) {
@@ -265,6 +265,7 @@ private fun MessageBubblePreview(message: Message) {
 // 4. TAB BAR
 // ============================================================
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(name = "04 - Tab Bar", showBackground = true, widthDp = 400)
 @Composable
 fun TabBarPreview() {
@@ -400,7 +401,7 @@ fun HelloWorld() {
         Button(
             onClick = { count++ }
         ) {
-            Text("Clicks: $count")
+            Text("Clicks: \$count")
         }
     }
 }"""
