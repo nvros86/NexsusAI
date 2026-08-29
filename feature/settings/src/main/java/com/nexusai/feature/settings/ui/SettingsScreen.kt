@@ -39,6 +39,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -125,6 +127,47 @@ fun SettingsScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             item {
+                Text(
+                    text = "Приватность и безопасность",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = NexusTextPrimary,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+            }
+
+            item {
+                PrivacyToggle(
+                    title = "Режим инкогнито",
+                    subtitle = "Не сохранять историю чатов",
+                    icon = "🕶️",
+                    checked = false,
+                    onCheckedChange = { }
+                )
+            }
+
+            item {
+                PrivacyToggle(
+                    title = "Тактильная отдача",
+                    subtitle = "Вибрация при отправке и нажатиях",
+                    icon = "📳",
+                    checked = true,
+                    onCheckedChange = { }
+                )
+            }
+
+            item {
+                PrivacyToggle(
+                    title = "Блокировка приложения",
+                    subtitle = "Требовать PIN или биометрию",
+                    icon = "🔒",
+                    checked = false,
+                    onCheckedChange = { }
+                )
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = "AI Провайдеры",
                     style = MaterialTheme.typography.titleMedium,
@@ -507,4 +550,55 @@ private fun AddEditProviderDialog(
             }
         }
     )
+}
+
+@Composable
+private fun PrivacyToggle(
+    title: String,
+    subtitle: String,
+    icon: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = NexusCard),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = icon,
+                style = MaterialTheme.typography.headlineSmall
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = NexusTextPrimary,
+                    fontWeight = FontWeight.Medium
+                )
+                Text(
+                    text = subtitle,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = NexusTextTertiary
+                )
+            }
+            Switch(
+                checked = checked,
+                onCheckedChange = onCheckedChange,
+                colors = SwitchDefaults.colors(
+                    checkedThumbColor = NexusTextPrimary,
+                    checkedTrackColor = NexusPurple,
+                    uncheckedThumbColor = NexusTextTertiary,
+                    uncheckedTrackColor = NexusSurfaceVariant
+                )
+            )
+        }
+    }
 }
