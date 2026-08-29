@@ -1,6 +1,5 @@
 package com.nexusai.app.ui
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material.icons.filled.OpenInBrowser
@@ -168,7 +168,7 @@ fun ExportScreen(
                         val icon = when (format) {
                             ExportFormat.MARKDOWN -> Icons.Default.Description
                             ExportFormat.TXT -> Icons.Default.Description
-                            ExportFormat.JSON -> Icons.Default.DataObject
+                            ExportFormat.JSON -> Icons.Default.Code
                             ExportFormat.HTML -> Icons.Default.OpenInBrowser
                         }
 
