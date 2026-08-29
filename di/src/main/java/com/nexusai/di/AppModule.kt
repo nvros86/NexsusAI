@@ -9,9 +9,11 @@ import com.nexusai.data.local.AppDatabase
 import com.nexusai.data.local.TabDao
 import com.nexusai.data.repository.AIProviderRepositoryImpl
 import com.nexusai.data.repository.TabRepositoryImpl
+import com.nexusai.data.repository.TaskTemplateRepositoryImpl
 import com.nexusai.data.security.ApiKeyEncryption
 import com.nexusai.domain.repository.AIProviderRepository
 import com.nexusai.domain.repository.TabRepository
+import com.nexusai.domain.repository.TaskTemplateRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -54,6 +56,12 @@ object RepositoryModule {
     @Singleton
     fun provideAIProviderRepository(dao: AIProviderDao): AIProviderRepository {
         return AIProviderRepositoryImpl(dao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTaskTemplateRepository(): TaskTemplateRepository {
+        return TaskTemplateRepositoryImpl()
     }
 }
 

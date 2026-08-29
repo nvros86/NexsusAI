@@ -5,6 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.nexusai.app.ui.TemplatesScreen
+import com.nexusai.domain.repository.TaskTemplateRepository
 import com.nexusai.feature.aiprovider.ui.AIProviderScreen
 import com.nexusai.feature.editor.ui.EditorScreen
 import com.nexusai.feature.settings.ui.SettingsScreen
@@ -13,11 +15,13 @@ import com.nexusai.feature.tabs.ui.TabsScreen
 @Composable
 fun NavGraph(
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    taskTemplateRepository: TaskTemplateRepository? = null
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Home.route
+        startDestination = Screen.Home.route,
+        modifier = modifier
     ) {
         composable(Screen.Home.route) {
             TabsScreen()
@@ -43,8 +47,13 @@ fun NavGraph(
         composable(Screen.Memory.route) {
             TabsScreen()
         }
-        composable(Screen.Marketplace.route) {
-            TabsScreen()
+        composable(Screen.Templates.route) {
+            if (taskTemplateRepository != null) {
+                TemplatesScreen(
+                    repository = taskTemplateRepository,
+                    onBack = { navController.popBackStack() }
+                )
+            }
         }
         composable(Screen.Settings.route) {
             SettingsScreen()
