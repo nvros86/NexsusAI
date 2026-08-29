@@ -20,6 +20,7 @@ core-ktx = "1.15.0"
 junit = "4.13.2"
 junit-ext = "1.2.1"
 espresso = "3.6.1"
+mockk = "1.13.10"
 
 [libraries]
 # Core
@@ -81,6 +82,8 @@ documentfile = { group = "androidx.documentfile", name = "documentfile", version
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 junit-ext = { group = "androidx.test.ext", name = "junit", version.ref = "junit-ext" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
