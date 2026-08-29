@@ -20,10 +20,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.FileDownload
-import androidx.compose.material.icons.filled.Json
 import androidx.compose.material.icons.filled.OpenInBrowser
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.AlertDialog
@@ -31,7 +29,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -46,7 +43,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -58,7 +54,6 @@ import com.nexusai.core.ui.theme.NexusSurface
 import com.nexusai.core.ui.theme.NexusTextPrimary
 import com.nexusai.core.ui.theme.NexusTextSecondary
 import com.nexusai.core.ui.theme.NexusTextTertiary
-import com.nexusai.core.ui.theme.NexusSuccess
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -173,7 +168,7 @@ fun ExportScreen(
                         val icon = when (format) {
                             ExportFormat.MARKDOWN -> Icons.Default.Description
                             ExportFormat.TXT -> Icons.Default.Description
-                            ExportFormat.JSON -> Icons.Default.Json
+                            ExportFormat.JSON -> Icons.Default.DataObject
                             ExportFormat.HTML -> Icons.Default.OpenInBrowser
                         }
 
