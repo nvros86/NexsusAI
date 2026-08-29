@@ -262,6 +262,7 @@ private fun CategoryChip(label: String, selected: Boolean, onClick: () -> Unit) 
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun MarketplaceCard(
     provider: MarketplaceProvider,
