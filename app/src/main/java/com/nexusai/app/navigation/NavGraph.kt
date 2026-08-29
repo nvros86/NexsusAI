@@ -11,6 +11,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.nexusai.app.ui.ExportScreen
 import com.nexusai.app.ui.FilesScreen
+import com.nexusai.app.ui.MarketplaceScreen
 import com.nexusai.app.ui.TemplatesScreen
 import com.nexusai.domain.repository.TaskTemplateRepository
 import com.nexusai.feature.aiprovider.ui.AIProviderScreen
@@ -71,6 +72,11 @@ fun NavGraph(
         }
         composable(Screen.Export.route) {
             ExportScreen(
+                onBack = { navController.popBackStack() }
+            )
+        }
+        composable(Screen.Marketplace.route) {
+            MarketplaceScreen(
                 onBack = { navController.popBackStack() }
             )
         }

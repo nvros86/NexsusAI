@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.IosShare
 import androidx.compose.material.icons.filled.PlayCircle
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.filled.TextSnippet
@@ -24,6 +25,7 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector)
     data object Memory : Screen("memory", "Память", Icons.Default.Storage)
     data object Templates : Screen("templates", "Шаблоны", Icons.Default.TextSnippet)
     data object Export : Screen("export", "Экспорт", Icons.Default.IosShare)
+    data object Marketplace : Screen("marketplace", "Маркетплейс", Icons.Default.ShoppingCart)
     data object Settings : Screen("settings", "Настройки", Icons.Default.Settings)
 }
 
@@ -45,6 +47,7 @@ val drawerNavItems = listOf(
     Screen.Files,
     Screen.Memory,
     Screen.Templates,
+    Screen.Marketplace,
     Screen.Export,
     Screen.Settings
 )
