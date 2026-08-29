@@ -105,7 +105,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         true -> {
-                            MainScreen()
+                            MainScreen(taskTemplateRepository = taskTemplateRepository)
                         }
                     }
                 }
@@ -116,7 +116,7 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(taskTemplateRepository: TaskTemplateRepository) {
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
