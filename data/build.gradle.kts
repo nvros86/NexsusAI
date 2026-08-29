@@ -22,6 +22,10 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -50,4 +54,8 @@ dependencies {
     implementation(libs.coroutines.android)
     implementation(libs.datastore.preferences)
     implementation("javax.inject:javax.inject:1")
+
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.coroutines.test)
 }
