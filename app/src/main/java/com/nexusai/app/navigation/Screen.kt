@@ -9,7 +9,7 @@ import androidx.compose.material.icons.filled.PlayCircle
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material.icons.filled.Storage
-import androidx.compose.material.icons.filled.ViewTemplate
+import androidx.compose.material.icons.filled.TextSnippet
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class Screen(val route: String, val title: String, val icon: ImageVector) {
@@ -21,7 +21,7 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector)
     data object Agents : Screen("agents", "Агенты", Icons.Default.SmartToy)
     data object Files : Screen("files", "Файлы", Icons.Default.Folder)
     data object Memory : Screen("memory", "Память", Icons.Default.Storage)
-    data object Templates : Screen("templates", "Шаблоны", Icons.Default.ViewTemplate)
+    data object Templates : Screen("templates", "Шаблоны", Icons.Default.TextSnippet)
     data object Settings : Screen("settings", "Настройки", Icons.Default.Settings)
 }
 
