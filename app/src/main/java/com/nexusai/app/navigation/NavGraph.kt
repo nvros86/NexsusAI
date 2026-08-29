@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.nexusai.app.ui.FilesScreen
 import com.nexusai.app.ui.TemplatesScreen
 import com.nexusai.domain.repository.TaskTemplateRepository
 import com.nexusai.feature.aiprovider.ui.AIProviderScreen
@@ -42,7 +43,9 @@ fun NavGraph(
             TabsScreen()
         }
         composable(Screen.Files.route) {
-            TabsScreen()
+            FilesScreen(
+                onBack = { navController.popBackStack() }
+            )
         }
         composable(Screen.Memory.route) {
             TabsScreen()
