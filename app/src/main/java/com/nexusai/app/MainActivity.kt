@@ -60,6 +60,12 @@ import com.nexusai.app.navigation.drawerNavItems
 import com.nexusai.app.ui.OnboardingScreen
 import com.nexusai.core.ui.theme.NexsusAITheme
 import com.nexusai.core.ui.theme.NexusBackground
+import com.nexusai.core.ui.theme.NexusCard
+import com.nexusai.core.ui.theme.NexusPurple
+import com.nexusai.core.ui.theme.NexusSurface
+import com.nexusai.core.ui.theme.NexusTextPrimary
+import com.nexusai.core.ui.theme.NexusTextSecondary
+import com.nexusai.core.ui.theme.NexusTextTertiary
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.lifecycleScope
