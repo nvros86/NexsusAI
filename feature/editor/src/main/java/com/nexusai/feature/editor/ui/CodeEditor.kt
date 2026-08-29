@@ -13,14 +13,16 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nexusai.core.ui.theme.NexusPurple
+import com.nexusai.core.ui.theme.NexusSurface
+import com.nexusai.core.ui.theme.NexusTextPrimary
+import com.nexusai.core.ui.theme.NexusTextTertiary
 
 @Composable
 fun CodeEditor(
@@ -37,9 +39,8 @@ fun CodeEditor(
     Row(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
+            .background(NexusSurface)
     ) {
-        // Line numbers
         Box(
             modifier = Modifier
                 .width(48.dp)
@@ -51,14 +52,13 @@ fun CodeEditor(
                 style = TextStyle(
                     fontFamily = FontFamily.Monospace,
                     fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                    color = NexusTextTertiary.copy(alpha = 0.5f),
                     lineHeight = 20.sp
                 ),
                 modifier = Modifier.padding(end = 8.dp)
             )
         }
 
-        // Code editor
         BasicTextField(
             value = content,
             onValueChange = { newValue ->
@@ -74,10 +74,10 @@ fun CodeEditor(
             textStyle = TextStyle(
                 fontFamily = FontFamily.Monospace,
                 fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = NexusTextPrimary,
                 lineHeight = 20.sp
             ),
-            cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+            cursorBrush = SolidColor(NexusPurple),
             decorationBox = { innerTextField ->
                 Box(modifier = Modifier.fillMaxWidth()) {
                     innerTextField()

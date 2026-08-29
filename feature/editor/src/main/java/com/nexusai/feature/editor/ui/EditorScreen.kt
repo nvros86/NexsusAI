@@ -3,6 +3,7 @@ package com.nexusai.feature.editor.ui
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,6 +25,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.nexusai.core.ui.theme.NexusBackground
+import com.nexusai.core.ui.theme.NexusTextPrimary
+import com.nexusai.core.ui.theme.NexusTextTertiary
 import com.nexusai.feature.editor.viewmodel.EditorViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,20 +45,24 @@ fun EditorScreen(
     }
 
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
+            .background(NexusBackground)
     ) {
         TopAppBar(
             title = {
                 Text(
                     text = state.fileName.ifEmpty { "Editor" },
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
+                    color = NexusTextPrimary
                 )
             },
             navigationIcon = {
-                IconButton(onClick = { /* Close editor */ }) {
+                IconButton(onClick = { }) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = "Close"
+                        contentDescription = "Close",
+                        tint = NexusTextPrimary
                     )
                 }
             },
@@ -66,7 +74,8 @@ fun EditorScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.FolderOpen,
-                        contentDescription = "Open file"
+                        contentDescription = "Open file",
+                        tint = NexusTextTertiary
                     )
                 }
                 IconButton(
@@ -75,12 +84,13 @@ fun EditorScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Save,
-                        contentDescription = "Save"
+                        contentDescription = "Save",
+                        tint = if (state.isModified) MaterialTheme.colorScheme.primary else NexusTextTertiary
                     )
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.surface
+                containerColor = NexusBackground
             )
         )
 
@@ -94,11 +104,10 @@ fun EditorScreen(
                 .fillMaxWidth()
         )
 
-        // Status bar
         Text(
             text = "Ln ${state.cursorLine}, Col ${state.cursorColumn} | ${state.language.uppercase()} | ${state.lineCount} lines",
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = NexusTextTertiary,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp)

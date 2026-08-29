@@ -20,13 +20,31 @@ fun NavGraph(
         startDestination = Screen.Home.route
     ) {
         composable(Screen.Home.route) {
-            EditorScreen()
-        }
-        composable(Screen.Tabs.route) {
             TabsScreen()
         }
-        composable(Screen.AIProvider.route) {
-            AIProviderScreen()
+        composable(Screen.Chat.route) {
+            TabsScreen()
+        }
+        composable(Screen.Code.route) {
+            EditorScreen()
+        }
+        composable(Screen.Image.route) {
+            TabsScreen()
+        }
+        composable(Screen.Video.route) {
+            TabsScreen()
+        }
+        composable(Screen.Agents.route) {
+            TabsScreen()
+        }
+        composable(Screen.Files.route) {
+            TabsScreen()
+        }
+        composable(Screen.Memory.route) {
+            TabsScreen()
+        }
+        composable(Screen.Marketplace.route) {
+            TabsScreen()
         }
         composable(Screen.Settings.route) {
             SettingsScreen()

@@ -37,7 +37,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
@@ -175,23 +175,23 @@ fun PreviewTypography() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text("Typography Scale", style = MaterialTheme.typography.headlineMedium)
-            Divider()
+            HorizontalDivider()
             Text("Display Large", style = MaterialTheme.typography.displayLarge)
             Text("Display Medium", style = MaterialTheme.typography.displayMedium)
             Text("Display Small", style = MaterialTheme.typography.displaySmall)
-            Divider()
+            HorizontalDivider()
             Text("Headline Large", style = MaterialTheme.typography.headlineLarge)
             Text("Headline Medium", style = MaterialTheme.typography.headlineMedium)
             Text("Headline Small", style = MaterialTheme.typography.headlineSmall)
-            Divider()
+            HorizontalDivider()
             Text("Title Large", style = MaterialTheme.typography.titleLarge)
             Text("Title Medium", style = MaterialTheme.typography.titleMedium)
             Text("Title Small", style = MaterialTheme.typography.titleSmall)
-            Divider()
+            HorizontalDivider()
             Text("Body Large", style = MaterialTheme.typography.bodyLarge)
             Text("Body Medium", style = MaterialTheme.typography.bodyMedium)
             Text("Body Small", style = MaterialTheme.typography.bodySmall)
-            Divider()
+            HorizontalDivider()
             Text("Label Large", style = MaterialTheme.typography.labelLarge)
             Text("Label Medium", style = MaterialTheme.typography.labelMedium)
             Text("Label Small", style = MaterialTheme.typography.labelSmall)

@@ -20,7 +20,6 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,8 +29,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.nexusai.core.ui.theme.NexusBackground
+import com.nexusai.core.ui.theme.NexusCard
+import com.nexusai.core.ui.theme.NexusPurple
+import com.nexusai.core.ui.theme.NexusSurface
+import com.nexusai.core.ui.theme.NexusSurfaceVariant
+import com.nexusai.core.ui.theme.NexusTextPrimary
+import com.nexusai.core.ui.theme.NexusTextTertiary
 import com.nexusai.domain.model.Tab
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -54,7 +61,7 @@ fun TabBar(
         modifier = modifier
             .fillMaxWidth()
             .height(48.dp)
-            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .background(NexusSurface)
             .horizontalScroll(rememberScrollState())
             .padding(horizontal = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -65,12 +72,12 @@ fun TabBar(
                 Row(
                     modifier = Modifier
                         .height(36.dp)
-                        .clip(RoundedCornerShape(8.dp))
+                        .clip(RoundedCornerShape(12.dp))
                         .background(
                             if (tab.id == activeTabId)
-                                MaterialTheme.colorScheme.primaryContainer
+                                NexusPurple.copy(alpha = 0.2f)
                             else
-                                MaterialTheme.colorScheme.surface
+                                NexusCard
                         )
                         .combinedClickable(
                             onClick = { onTabClick(tab.id) },
@@ -84,11 +91,12 @@ fun TabBar(
                 ) {
                     Text(
                         text = tab.title,
-                        style = MaterialTheme.typography.labelMedium,
+                        style = androidx.compose.material3.MaterialTheme.typography.labelMedium,
                         color = if (tab.id == activeTabId)
-                            MaterialTheme.colorScheme.onPrimaryContainer
+                            NexusPurple
                         else
-                            MaterialTheme.colorScheme.onSurface,
+                            NexusTextPrimary,
+                        fontWeight = if (tab.id == activeTabId) FontWeight.Medium else FontWeight.Normal,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.weight(1f, fill = false)
@@ -100,17 +108,19 @@ fun TabBar(
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = "Close tab",
-                            modifier = Modifier.size(12.dp)
+                            modifier = Modifier.size(12.dp),
+                            tint = NexusTextTertiary
                         )
                     }
                 }
 
                 DropdownMenu(
                     expanded = contextMenuTabId == tab.id,
-                    onDismissRequest = { contextMenuTabId = null }
+                    onDismissRequest = { contextMenuTabId = null },
+                    containerColor = NexusSurface
                 ) {
                     DropdownMenuItem(
-                        text = { Text("Rename") },
+                        text = { Text("Переименовать", color = NexusTextPrimary) },
                         onClick = {
                             renameText = tab.title
                             showRenameDialog = true
@@ -118,14 +128,14 @@ fun TabBar(
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text("Duplicate") },
+                        text = { Text("Дублировать", color = NexusTextPrimary) },
                         onClick = {
                             onDuplicate(tab.id)
                             contextMenuTabId = null
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text("Close") },
+                        text = { Text("Закрыть", color = NexusTextPrimary) },
                         onClick = {
                             onTabClose(tab.id)
                             contextMenuTabId = null
@@ -139,13 +149,13 @@ fun TabBar(
             onClick = onNewTab,
             modifier = Modifier
                 .size(36.dp)
-                .clip(RoundedCornerShape(8.dp))
-                .background(MaterialTheme.colorScheme.primaryContainer)
+                .clip(RoundedCornerShape(12.dp))
+                .background(NexusPurple.copy(alpha = 0.2f))
         ) {
             Icon(
                 imageVector = Icons.Default.Add,
                 contentDescription = "New tab",
-                tint = MaterialTheme.colorScheme.onPrimaryContainer
+                tint = NexusPurple
             )
         }
     }

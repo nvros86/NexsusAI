@@ -9,12 +9,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -22,6 +22,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.nexusai.core.ui.theme.NexusCard
+import com.nexusai.core.ui.theme.NexusPurple
+import com.nexusai.core.ui.theme.NexusSurface
+import com.nexusai.core.ui.theme.NexusSurfaceVariant
+import com.nexusai.core.ui.theme.NexusTextPrimary
+import com.nexusai.core.ui.theme.NexusTextSecondary
+import com.nexusai.core.ui.theme.NexusTextTertiary
 import com.nexusai.domain.model.AIProviderConfig
 import com.nexusai.domain.model.ProviderType
 
@@ -34,13 +41,18 @@ fun AIProviderSelector(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Select AI Provider") },
+        containerColor = NexusSurface,
+        title = {
+            Text(
+                "Выберите AI провайдер",
+                color = NexusTextPrimary
+            )
+        },
         text = {
             if (providers.isEmpty()) {
                 Text(
-                    text = "No providers configured. Add one in Settings.",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    text = "Нет настроенных провайдеров. Добавьте в Настройках.",
+                    color = NexusTextTertiary
                 )
             } else {
                 LazyColumn(
@@ -58,7 +70,7 @@ fun AIProviderSelector(
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("Close")
+                Text("Закрыть", color = NexusTextTertiary)
             }
         }
     )
@@ -74,11 +86,11 @@ private fun ProviderItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick),
-        shape = MaterialTheme.shapes.small,
+        shape = RoundedCornerShape(12.dp),
         color = if (isSelected)
-            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
+            NexusPurple.copy(alpha = 0.2f)
         else
-            MaterialTheme.colorScheme.surface
+            NexusCard
     ) {
         Row(
             modifier = Modifier
@@ -97,12 +109,11 @@ private fun ProviderItem(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = provider.name,
-                    style = MaterialTheme.typography.bodyLarge
+                    color = NexusTextPrimary
                 )
                 Text(
                     text = provider.type.name,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = NexusTextTertiary
                 )
             }
 
@@ -110,7 +121,7 @@ private fun ProviderItem(
                 Icon(
                     imageVector = Icons.Default.Check,
                     contentDescription = "Selected",
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = NexusPurple
                 )
             }
         }
@@ -119,12 +130,12 @@ private fun ProviderItem(
 
 @Composable
 private fun providerTypeColor(type: ProviderType) = when (type) {
-    ProviderType.OPENAI -> MaterialTheme.colorScheme.primary
-    ProviderType.ANTHROPIC -> MaterialTheme.colorScheme.tertiary
-    ProviderType.GEMINI -> MaterialTheme.colorScheme.secondary
-    ProviderType.STABILITY -> MaterialTheme.colorScheme.error
-    ProviderType.ELEVENLABS -> MaterialTheme.colorScheme.tertiary
-    ProviderType.RUNWAY -> MaterialTheme.colorScheme.primary
-    ProviderType.CUSTOM -> MaterialTheme.colorScheme.onSurfaceVariant
-    ProviderType.LOCAL -> MaterialTheme.colorScheme.secondary
+    ProviderType.OPENAI -> NexusPurple
+    ProviderType.ANTHROPIC -> com.nexusai.core.ui.theme.NexusCyan
+    ProviderType.GEMINI -> com.nexusai.core.ui.theme.NexusBlue
+    ProviderType.STABILITY -> com.nexusai.core.ui.theme.NexusGreen
+    ProviderType.ELEVENLABS -> com.nexusai.core.ui.theme.NexusCyan
+    ProviderType.RUNWAY -> NexusPurple
+    ProviderType.CUSTOM -> NexusTextTertiary
+    ProviderType.LOCAL -> com.nexusai.core.ui.theme.NexusBlue
 }

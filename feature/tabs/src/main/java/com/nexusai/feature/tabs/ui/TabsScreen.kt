@@ -1,31 +1,64 @@
 package com.nexusai.feature.tabs.ui
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.Code
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.PlayCircle
+import androidx.compose.material.icons.filled.SmartToy
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.nexusai.core.ui.theme.NexusBackground
+import com.nexusai.core.ui.theme.NexusCard
+import com.nexusai.core.ui.theme.NexusCardHover
+import com.nexusai.core.ui.theme.NexusPurple
+import com.nexusai.core.ui.theme.NexusSurface
+import com.nexusai.core.ui.theme.NexusSurfaceLight
+import com.nexusai.core.ui.theme.NexusSurfaceVariant
+import com.nexusai.core.ui.theme.NexusTextPrimary
+import com.nexusai.core.ui.theme.NexusTextSecondary
+import com.nexusai.core.ui.theme.NexusTextTertiary
 import com.nexusai.feature.tabs.viewmodel.TabsViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TabsScreen(
     viewModel: TabsViewModel = hiltViewModel(),
@@ -41,68 +74,73 @@ fun TabsScreen(
     val activeTabId = tabsState.activeTabId
     val activeChatState = activeTabId?.let { chatStates[it] }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("NexsusAI") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                ),
-                actions = {
-                    IconButton(
-                        onClick = {
-                            selectedTabForProvider = activeTabId
-                            showProviderSelector = true
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.SwapHoriz,
-                            contentDescription = "Switch provider"
-                        )
-                    }
-                }
+    LazyColumn(
+        modifier = modifier
+            .fillMaxSize()
+            .background(NexusBackground)
+            .padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(vertical = 16.dp)
+    ) {
+        // Category Tabs
+        item {
+            CategoryTabs()
+        }
+
+        // Multi-Tab Section
+        item {
+            SectionHeader(
+                title = "Мульти-вкладки",
+                subtitle = "Работайте с разными AI и задачами одновременно",
+                showAll = true
             )
         }
-    ) { paddingValues ->
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
-            TabBar(
+
+        item {
+            MultiTabCards(
                 tabs = tabsState.tabs,
                 activeTabId = activeTabId,
                 onTabClick = { viewModel.setActiveTab(it) },
-                onTabClose = { viewModel.deleteTab(it) },
-                onNewTab = { viewModel.createTab() },
-                onRename = { id, name -> viewModel.renameTab(id, name) },
-                onDuplicate = { viewModel.duplicateTab(it) },
-                modifier = Modifier.fillMaxWidth()
+                onNewTab = { viewModel.createTab() }
             )
+        }
 
-            if (activeTabId != null && activeChatState != null) {
-                ChatScreen(
-                    chatState = activeChatState,
-                    modifier = Modifier.weight(1f)
-                )
+        // Recent Chats
+        item {
+            SectionHeader(
+                title = "Недавние чаты",
+                showAll = true
+            )
+        }
 
-                MessageInput(
-                    value = activeChatState.inputText,
-                    onValueChange = { viewModel.updateInput(activeTabId, it) },
-                    onSend = { viewModel.sendMessage(activeTabId) },
-                    onAttachFile = { /* TODO: File picker */ },
-                    onAttachImage = { /* TODO: Image picker */ },
-                    onVoiceInput = { /* TODO: Voice input */ },
-                    isGenerating = activeChatState.isGenerating,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                )
-            } else {
-                EmptyTabContent(
-                    onNewTab = { viewModel.createTab() }
-                )
-            }
+        item {
+            RecentChatsSection()
+        }
+
+        // Quick Actions
+        item {
+            SectionHeader(
+                title = "Быстрые действия",
+                showAll = false
+            )
+        }
+
+        item {
+            QuickActionsSection(
+                onNewChat = { viewModel.createTab() }
+            )
+        }
+
+        // Files and Projects
+        item {
+            SectionHeader(
+                title = "Файлы и проекты",
+                showAll = true
+            )
+        }
+
+        item {
+            FilesSection()
         }
     }
 
@@ -120,28 +158,368 @@ fun TabsScreen(
 }
 
 @Composable
-private fun EmptyTabContent(
+private fun CategoryTabs() {
+    val categories = listOf(
+        "Чат" to Icons.Default.SmartToy,
+        "Код" to Icons.Default.Code,
+        "Изображение" to Icons.Default.Image,
+        "Видео" to Icons.Default.PlayCircle,
+        "Агенты" to Icons.Default.SmartToy
+    )
+
+    var selectedCategory by remember { mutableStateOf("Чат") }
+
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(categories) { (name, icon) ->
+            val isSelected = name == selectedCategory
+            Surface(
+                shape = RoundedCornerShape(20.dp),
+                color = if (isSelected) NexusPurple else NexusSurfaceVariant,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(20.dp))
+                    .clickable { selectedCategory = name }
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp),
+                        tint = if (isSelected) NexusTextPrimary else NexusTextTertiary
+                    )
+                    Text(
+                        text = name,
+                        style = MaterialTheme.typography.labelMedium,
+                        color = if (isSelected) NexusTextPrimary else NexusTextTertiary,
+                        fontWeight = if (isSelected) FontWeight.Medium else FontWeight.Normal
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SectionHeader(
+    title: String,
+    subtitle: String? = null,
+    showAll: Boolean = true
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = NexusTextPrimary
+            )
+            if (subtitle != null) {
+                Text(
+                    text = subtitle,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = NexusTextTertiary
+                )
+            }
+        }
+        if (showAll) {
+            Row(
+                modifier = Modifier.clickable { },
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Все >",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = NexusPurple
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun MultiTabCards(
+    tabs: List<com.nexusai.domain.model.Tab>,
+    activeTabId: String?,
+    onTabClick: (String) -> Unit,
     onNewTab: () -> Unit
 ) {
-    androidx.compose.foundation.layout.Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        contentAlignment = androidx.compose.ui.Alignment.Center
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        items(tabs.take(5)) { tab ->
+            Card(
+                modifier = Modifier
+                    .width(120.dp)
+                    .clickable { onTabClick(tab.id) },
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = if (tab.id == activeTabId) NexusPurple.copy(alpha = 0.2f) else NexusCard
+                )
+            ) {
+                Column(
+                    modifier = Modifier.padding(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clip(CircleShape)
+                            .background(NexusPurple.copy(alpha = 0.3f)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.SmartToy,
+                            contentDescription = null,
+                            tint = NexusPurple,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                    Text(
+                        text = tab.title,
+                        style = MaterialTheme.typography.labelMedium,
+                        color = NexusTextPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Text(
+                        text = "Чат",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = NexusTextTertiary
+                    )
+                }
+            }
+        }
+
+        // New Tab Card
+        item {
+            Card(
+                modifier = Modifier
+                    .width(120.dp)
+                    .clickable { onNewTab() },
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = NexusCard
+                )
+            ) {
+                Column(
+                    modifier = Modifier.padding(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clip(CircleShape)
+                            .background(NexusSurfaceVariant),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "New tab",
+                            tint = NexusTextTertiary,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                    Text(
+                        text = "Новая вкладка",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = NexusTextTertiary,
+                        maxLines = 1
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun RecentChatsSection() {
+    val recentChats = listOf(
+        Triple("Архитектура Android приложения", "GPT-4o", "10:45"),
+        Triple("Оптимизация кода", "Claude 3.5", "Вчера"),
+        Triple("Исследование AI трендов", "Gemini 1.5", "Вчера"),
+        Triple("Генерация изображений", "Midjourney", "2 дня назад"),
+        Triple("Анализ данных", "GPT-4o", "3 дня назад")
+    )
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = NexusCard)
     ) {
         Column(
-            horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
-            verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(16.dp)
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text(
-                text = "No tabs open",
-                style = MaterialTheme.typography.headlineSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            androidx.compose.material3.FilledTonalButton(
-                onClick = onNewTab
+            recentChats.forEach { (title, provider, time) ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .clip(CircleShape)
+                            .background(NexusSurfaceVariant),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.SmartToy,
+                            contentDescription = null,
+                            tint = NexusTextTertiary,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = title,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = NexusTextPrimary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Text(
+                            text = provider,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = NexusTextTertiary
+                        )
+                    }
+                    Text(
+                        text = time,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = NexusTextTertiary
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun QuickActionsSection(
+    onNewChat: () -> Unit
+) {
+    val actions = listOf(
+        Triple("Новый чат", "Начать диалог с AI", Icons.Default.SmartToy) to onNewChat,
+        Triple("Написать код", "Создать или отладить код", Icons.Default.Code) to { },
+        Triple("Создать изображение", "Генерация изображений", Icons.Default.Image) to { },
+        Triple("Запустить агента", "Автоматизация задач", Icons.Default.SmartToy) to { }
+    )
+
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        items(actions) { (action, onClick) ->
+            val (title, subtitle, icon) = action
+            Card(
+                modifier = Modifier
+                    .width(140.dp)
+                    .clickable { onClick() },
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = NexusCard)
             ) {
-                Text("Create new tab")
+                Column(
+                    modifier = Modifier.padding(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clip(CircleShape)
+                            .background(NexusPurple.copy(alpha = 0.2f)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = icon,
+                            contentDescription = null,
+                            tint = NexusPurple,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.labelMedium,
+                        color = NexusTextPrimary,
+                        maxLines = 1
+                    )
+                    Text(
+                        text = subtitle,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = NexusTextTertiary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun FilesSection() {
+    val files = listOf(
+        Triple("architecture.md", "24 KB", "doc"),
+        Triple("app.zip", "12.4 MB", "zip"),
+        Triple("design.png", "1.2 MB", "image"),
+        Triple("video.mp4", "45.2 MB", "video")
+    )
+
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        items(files) { (name, size, type) ->
+            Card(
+                modifier = Modifier.width(120.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = NexusCard)
+            ) {
+                Column(
+                    modifier = Modifier.padding(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(NexusSurfaceVariant),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = when (type) {
+                                "doc" -> Icons.Default.Code
+                                "zip" -> Icons.Default.Code
+                                "image" -> Icons.Default.Image
+                                "video" -> Icons.Default.PlayCircle
+                                else -> Icons.Default.Code
+                            },
+                            contentDescription = null,
+                            tint = NexusTextTertiary,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                    Text(
+                        text = name,
+                        style = MaterialTheme.typography.labelMedium,
+                        color = NexusTextPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Text(
+                        text = size,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = NexusTextTertiary
+                    )
+                }
             }
         }
     }

@@ -5,10 +5,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,10 +19,15 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.SmartToy
+import androidx.compose.material.icons.filled.ThumbDown
+import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -28,7 +36,18 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.nexusai.core.ui.theme.NexusBackground
+import com.nexusai.core.ui.theme.NexusCard
+import com.nexusai.core.ui.theme.NexusPurple
+import com.nexusai.core.ui.theme.NexusSurface
+import com.nexusai.core.ui.theme.NexusSurfaceVariant
+import com.nexusai.core.ui.theme.NexusTextPrimary
+import com.nexusai.core.ui.theme.NexusTextSecondary
+import com.nexusai.core.ui.theme.NexusTextTertiary
+import com.nexusai.core.ui.theme.UserMessageBg
 import com.nexusai.domain.model.Message
 import com.nexusai.domain.model.MessageRole
 import com.nexusai.feature.tabs.viewmodel.ChatUiState
@@ -49,7 +68,7 @@ fun ChatScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(NexusBackground)
     ) {
         if (chatState.messages.isEmpty()) {
             EmptyState()
@@ -60,7 +79,7 @@ fun ChatScreen(
                     .weight(1f)
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
                 contentPadding = androidx.compose.foundation.layout.PaddingValues(vertical = 16.dp)
             ) {
                 items(chatState.messages, key = { it.id }) { message ->
@@ -69,24 +88,7 @@ fun ChatScreen(
 
                 if (chatState.isGenerating) {
                     item {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(8.dp),
-                            horizontalArrangement = Arrangement.Start,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(16.dp),
-                                strokeWidth = 2.dp
-                            )
-                            Text(
-                                text = "Thinking...",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(start = 8.dp)
-                            )
-                        }
+                        GeneratingIndicator()
                     }
                 }
             }
@@ -102,17 +104,32 @@ private fun EmptyState() {
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+            Box(
+                modifier = Modifier
+                    .size(80.dp)
+                    .clip(CircleShape)
+                    .background(NexusPurple.copy(alpha = 0.2f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.SmartToy,
+                    contentDescription = null,
+                    modifier = Modifier.size(40.dp),
+                    tint = NexusPurple
+                )
+            }
             Text(
-                text = "NexsusAI",
-                style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.primary
+                text = "Чем могу помочь?",
+                style = MaterialTheme.typography.headlineSmall,
+                color = NexusTextPrimary,
+                fontWeight = FontWeight.Medium
             )
             Text(
-                text = "Start a conversation",
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                text = "Выберите модель и начните диалог",
+                style = MaterialTheme.typography.bodyMedium,
+                color = NexusTextTertiary
             )
         }
     }
@@ -122,60 +139,167 @@ private fun EmptyState() {
 private fun MessageBubble(message: Message) {
     val isUser = message.role == MessageRole.USER
 
-    Row(
+    Column(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = if (isUser) Arrangement.End else Arrangement.Start
+        horizontalAlignment = if (isUser) Alignment.End else Alignment.Start
     ) {
         if (!isUser) {
-            Icon(
-                imageVector = Icons.Default.SmartToy,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(32.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primaryContainer)
-                    .padding(6.dp),
-                tint = MaterialTheme.colorScheme.onPrimaryContainer
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(bottom = 8.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(32.dp)
+                        .clip(CircleShape)
+                        .background(NexusPurple.copy(alpha = 0.2f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.SmartToy,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
+                        tint = NexusPurple
+                    )
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "GPT-4o",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = NexusTextPrimary,
+                    fontWeight = FontWeight.Medium
+                )
+            }
         }
 
         Surface(
-            modifier = Modifier
-                .padding(horizontal = 8.dp)
-                .widthIn(max = 300.dp),
+            modifier = Modifier.widthIn(max = 320.dp),
             shape = RoundedCornerShape(
                 topStart = if (isUser) 16.dp else 4.dp,
                 topEnd = if (isUser) 4.dp else 16.dp,
                 bottomStart = 16.dp,
                 bottomEnd = 16.dp
             ),
-            color = if (isUser)
-                MaterialTheme.colorScheme.primaryContainer
-            else
-                MaterialTheme.colorScheme.surfaceVariant
+            color = if (isUser) UserMessageBg else NexusCard
         ) {
-            Text(
-                text = message.content,
-                modifier = Modifier.padding(12.dp),
-                style = MaterialTheme.typography.bodyMedium,
-                color = if (isUser)
-                    MaterialTheme.colorScheme.onPrimaryContainer
-                else
-                    MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            Column(
+                modifier = Modifier.padding(12.dp)
+            ) {
+                Text(
+                    text = message.content,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = NexusTextPrimary,
+                    lineHeight = 22.sp
+                )
+
+                if (!isUser) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        IconButton(
+                            onClick = { },
+                            modifier = Modifier.size(24.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ContentCopy,
+                                contentDescription = "Copy",
+                                modifier = Modifier.size(14.dp),
+                                tint = NexusTextTertiary
+                            )
+                        }
+                        IconButton(
+                            onClick = { },
+                            modifier = Modifier.size(24.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Refresh,
+                                contentDescription = "Regenerate",
+                                modifier = Modifier.size(14.dp),
+                                tint = NexusTextTertiary
+                            )
+                        }
+                        IconButton(
+                            onClick = { },
+                            modifier = Modifier.size(24.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ThumbUp,
+                                contentDescription = "Like",
+                                modifier = Modifier.size(14.dp),
+                                tint = NexusTextTertiary
+                            )
+                        }
+                        IconButton(
+                            onClick = { },
+                            modifier = Modifier.size(24.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ThumbDown,
+                                contentDescription = "Dislike",
+                                modifier = Modifier.size(14.dp),
+                                tint = NexusTextTertiary
+                            )
+                        }
+                    }
+                }
+            }
         }
 
         if (isUser) {
-            Icon(
-                imageVector = Icons.Default.Person,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(32.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.tertiaryContainer)
-                    .padding(6.dp),
-                tint = MaterialTheme.colorScheme.onTertiaryContainer
+            Spacer(modifier = Modifier.height(4.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "10:20",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = NexusTextTertiary,
+                    fontSize = 10.sp
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clip(CircleShape)
+                        .background(NexusPurple.copy(alpha = 0.2f))
+                        .padding(4.dp),
+                    tint = NexusPurple
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun GeneratingIndicator() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .size(32.dp)
+                .clip(CircleShape)
+                .background(NexusPurple.copy(alpha = 0.2f)),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(16.dp),
+                strokeWidth = 2.dp,
+                color = NexusPurple
             )
         }
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = "Думаю...",
+            style = MaterialTheme.typography.bodySmall,
+            color = NexusTextTertiary
+        )
     }
 }
