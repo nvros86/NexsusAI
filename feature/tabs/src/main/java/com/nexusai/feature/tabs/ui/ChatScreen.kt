@@ -56,7 +56,8 @@ import com.nexusai.feature.tabs.viewmodel.ChatUiState
 @Composable
 fun ChatScreen(
     chatState: ChatUiState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onCopyMessage: (String) -> Unit = {}
 ) {
     val listState = rememberLazyListState()
 
@@ -84,7 +85,10 @@ fun ChatScreen(
                 contentPadding = androidx.compose.foundation.layout.PaddingValues(vertical = 16.dp)
             ) {
                 items(chatState.messages, key = { it.id }) { message ->
-                    MessageBubble(message = message)
+                    MessageBubble(
+                        message = message,
+                        onCopy = { onCopyMessage(message.content) }
+                    )
                 }
 
                 if (chatState.isGenerating) {
@@ -137,7 +141,10 @@ private fun EmptyState() {
 }
 
 @Composable
-private fun MessageBubble(message: Message) {
+private fun MessageBubble(
+    message: Message,
+    onCopy: () -> Unit = {}
+) {
     val isUser = message.role == MessageRole.USER
 
     Column(
@@ -206,7 +213,7 @@ private fun MessageBubble(message: Message) {
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         IconButton(
-                            onClick = { },
+                            onClick = onCopy,
                             modifier = Modifier.size(24.dp)
                         ) {
                             Icon(

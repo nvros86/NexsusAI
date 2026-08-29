@@ -2,9 +2,14 @@ package com.nexusai.app.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavDeepLink
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
+import com.nexusai.app.ui.ExportScreen
 import com.nexusai.app.ui.FilesScreen
 import com.nexusai.app.ui.TemplatesScreen
 import com.nexusai.domain.repository.TaskTemplateRepository
@@ -24,7 +29,10 @@ fun NavGraph(
         startDestination = Screen.Home.route,
         modifier = modifier
     ) {
-        composable(Screen.Home.route) {
+        composable(
+            route = Screen.Home.route,
+            deepLinks = listOf(navDeepLink { uriPattern = "nexsusai://open" })
+        ) {
             TabsScreen()
         }
         composable(Screen.Chat.route) {
@@ -60,6 +68,11 @@ fun NavGraph(
         }
         composable(Screen.Settings.route) {
             SettingsScreen()
+        }
+        composable(Screen.Export.route) {
+            ExportScreen(
+                onBack = { navController.popBackStack() }
+            )
         }
     }
 }
