@@ -57,21 +57,21 @@ import com.nexusai.app.navigation.NavGraph
 import com.nexusai.app.navigation.Screen
 import com.nexusai.app.navigation.bottomNavItems
 import com.nexusai.app.navigation.drawerNavItems
+import com.nexusai.app.ui.OnboardingScreen
 import com.nexusai.core.ui.theme.NexsusAITheme
 import com.nexusai.core.ui.theme.NexusBackground
-import com.nexusai.core.ui.theme.NexusCard
-import com.nexusai.core.ui.theme.NexusPurple
-import com.nexusai.core.ui.theme.NexusSurface
-import com.nexusai.core.ui.theme.NexusTextPrimary
-import com.nexusai.core.ui.theme.NexusTextSecondary
-import com.nexusai.core.ui.theme.NexusTextTertiary
-import com.nexusai.core.ui.theme.TabActive
-import com.nexusai.core.ui.theme.TabInactive
 import dagger.hilt.android.AndroidEntryPoint
+import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var appPreferences: AppPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -81,7 +81,23 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = NexusBackground
                 ) {
-                    MainScreen()
+                    val onboardingCompleted = appPreferences.isOnboardingCompleted.collectAsState(initial = null)
+
+                    when (onboardingCompleted.value) {
+                        null -> { }
+                        false -> {
+                            OnboardingScreen(
+                                onFinished = {
+                                    lifecycleScope.launch {
+                                        appPreferences.setOnboardingCompleted()
+                                    }
+                                }
+                            )
+                        }
+                        true -> {
+                            MainScreen()
+                        }
+                    }
                 }
             }
         }

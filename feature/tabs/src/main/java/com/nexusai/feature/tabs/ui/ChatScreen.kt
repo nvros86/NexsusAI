@@ -39,6 +39,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nexusai.core.ui.components.MarkdownText
 import com.nexusai.core.ui.theme.NexusBackground
 import com.nexusai.core.ui.theme.NexusCard
 import com.nexusai.core.ui.theme.NexusPurple
@@ -185,12 +186,19 @@ private fun MessageBubble(message: Message) {
             Column(
                 modifier = Modifier.padding(12.dp)
             ) {
-                Text(
-                    text = message.content,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = NexusTextPrimary,
-                    lineHeight = 22.sp
-                )
+                if (isUser) {
+                    Text(
+                        text = message.content,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = NexusTextPrimary,
+                        lineHeight = 22.sp
+                    )
+                } else {
+                    MarkdownText(
+                        text = message.content,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
 
                 if (!isUser) {
                     Spacer(modifier = Modifier.height(8.dp))

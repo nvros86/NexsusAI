@@ -71,6 +71,7 @@ dependencies {
     implementation(libs.hilt.navigation)
 
     implementation(libs.serialization.json)
+    implementation(libs.datastore.preferences)
 
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.material.icons)
