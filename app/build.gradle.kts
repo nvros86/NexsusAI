@@ -71,6 +71,7 @@ dependencies {
 
     implementation(libs.core.ktx)
     implementation(libs.activity.compose)
+    implementation(libs.coil.compose)
 
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)
