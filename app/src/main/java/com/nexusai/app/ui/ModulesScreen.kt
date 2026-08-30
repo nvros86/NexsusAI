@@ -28,6 +28,7 @@ import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.PhoneAndroid
 import androidx.compose.material.icons.filled.Psychology
+import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -329,6 +330,7 @@ private fun resolveIcon(iconId: String): ImageVector = when (iconId) {
     "Psychology" -> Icons.Default.Psychology
     "Router" -> Icons.Default.SwapHoriz
     "Compare" -> Icons.Default.SwapHoriz
+    "SmartToy" -> Icons.Default.SmartToy
     "Mic" -> Icons.Default.Mic
     else -> Icons.Default.PhoneAndroid
 }

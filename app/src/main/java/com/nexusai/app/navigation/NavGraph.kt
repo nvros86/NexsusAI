@@ -11,6 +11,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.nexusai.app.ui.AIRouterScreen
 import com.nexusai.app.ui.CodePlaygroundScreen
+import com.nexusai.app.ui.SplitViewScreen
 import com.nexusai.app.ui.ExportScreen
 import com.nexusai.app.ui.FilesScreen
 import com.nexusai.app.ui.MarketplaceScreen
@@ -101,6 +102,11 @@ fun NavGraph(
         }
         composable(Screen.AIRouter.route) {
             AIRouterScreen(
+                onBack = { navController.popBackStack() }
+            )
+        }
+        composable(Screen.SplitView.route) {
+            SplitViewScreen(
                 onBack = { navController.popBackStack() }
             )
         }

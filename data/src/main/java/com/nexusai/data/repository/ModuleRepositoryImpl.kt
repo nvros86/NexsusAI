@@ -112,9 +112,8 @@ class ModuleRepositoryImpl @Inject constructor(
             title = "Split View",
             description = "Сравнение ответов 2-4 AI на один вопрос",
             type = ModuleType.FEATURE,
-            iconId = "Compare",
-            isBuiltIn = false,
-            isEnabled = false,
+            iconId = "SmartToy",
+            route = "split_view",
             capabilities = listOf("2-4 AI", "Сравнение", "Рейтинг")
         ),
         NexusModule(

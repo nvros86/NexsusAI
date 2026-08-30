@@ -11,6 +11,7 @@ import com.nexusai.data.repository.AIProviderRepositoryImpl
 import com.nexusai.data.repository.MarketplaceRepositoryImpl
 import com.nexusai.data.repository.ModuleRepositoryImpl
 import com.nexusai.data.repository.PromptRepositoryImpl
+import com.nexusai.data.repository.SplitViewRepositoryImpl
 import com.nexusai.data.repository.TabRepositoryImpl
 import com.nexusai.data.repository.TaskTemplateRepositoryImpl
 import com.nexusai.data.security.ApiKeyEncryption
@@ -18,6 +19,7 @@ import com.nexusai.domain.repository.AIProviderRepository
 import com.nexusai.domain.repository.MarketplaceRepository
 import com.nexusai.domain.repository.ModuleRepository
 import com.nexusai.domain.repository.PromptRepository
+import com.nexusai.domain.repository.SplitViewRepository
 import com.nexusai.domain.repository.TabRepository
 import com.nexusai.domain.repository.TaskTemplateRepository
 import dagger.Module
@@ -86,6 +88,12 @@ object RepositoryModule {
     @Singleton
     fun provideModuleRepository(@ApplicationContext context: Context): ModuleRepository {
         return ModuleRepositoryImpl(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSplitViewRepository(@ApplicationContext context: Context): SplitViewRepository {
+        return SplitViewRepositoryImpl(context)
     }
 }
 
