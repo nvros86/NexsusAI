@@ -11,8 +11,6 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      HAS_KEYSTORE: ${{ secrets.KEYSTORE_BASE64 != '' }}
 
     steps:
     - name: Checkout code
@@ -30,41 +28,30 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
-    - name: Decode keystore
-      if: env.HAS_KEYSTORE == 'true'
-      env:
-        KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+    - name: Generate release keystore
       run: |
-        echo "$KEYSTORE_BASE64" | base64 -d > release.keystore
+        keytool -genkey -v \
+          -keystore release.keystore \
+          -alias nexusai \
+          -keyalg RSA \
+          -keysize 2048 \
+          -validity 10000 \
+          -storepass nexusai123 \
+          -keypass nexusai123 \
+          -dname "CN=NexsusAI, OU=Development, O=NexsusAI, L=Unknown, ST=Unknown, C=US"
 
     - name: Build signed release APK
-      if: env.HAS_KEYSTORE == 'true'
       env:
         KEYSTORE_PATH: release.keystore
-        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        KEYSTORE_PASSWORD: nexusai123
+        KEY_ALIAS: nexusai
+        KEY_PASSWORD: nexusai123
       run: ./gradlew assembleRelease
 
-    - name: Build debug APK
-      if: env.HAS_KEYSTORE != 'true'
-      run: ./gradlew assembleDebug
-
-    - name: Create GitHub Release (signed)
-      if: env.HAS_KEYSTORE == 'true'
+    - name: Create GitHub Release
       uses: softprops/action-gh-release@v2
       with:
         files: app/build/outputs/apk/release/app-release.apk
-        draft: true
-        generate_release_notes: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Create GitHub Release (debug)
-      if: env.HAS_KEYSTORE != 'true'
-      uses: softprops/action-gh-release@v2
-      with:
-        files: app/build/outputs/apk/debug/app-debug.apk
         draft: true
         generate_release_notes: true
       env:

@@ -40,7 +40,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            val signingConfigName = if (System.getenv("KEYSTORE_PATH") != null) "release" else "debug"
+            val signingConfigName = if (System.getenv("KEYSTORE_PATH")?.isNotEmpty() == true) "release" else "debug"
             signingConfig = signingConfigs.getByName(signingConfigName)
         }
     }
