@@ -1,7 +1,9 @@
 package com.nexusai.domain.model
 
+import kotlinx.serialization.Serializable
 import java.util.UUID
 
+@Serializable
 data class SplitSession(
     val id: String = UUID.randomUUID().toString(),
     val query: String,
@@ -10,6 +12,7 @@ data class SplitSession(
     val selectedWinner: String? = null
 )
 
+@Serializable
 data class SplitResult(
     val providerId: String,
     val providerName: String,
