@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
+import com.nexusai.app.ui.AIRouterScreen
 import com.nexusai.app.ui.CodePlaygroundScreen
 import com.nexusai.app.ui.ExportScreen
 import com.nexusai.app.ui.FilesScreen
@@ -95,6 +96,11 @@ fun NavGraph(
         }
         composable(Screen.Modules.route) {
             ModulesScreen(
+                onBack = { navController.popBackStack() }
+            )
+        }
+        composable(Screen.AIRouter.route) {
+            AIRouterScreen(
                 onBack = { navController.popBackStack() }
             )
         }

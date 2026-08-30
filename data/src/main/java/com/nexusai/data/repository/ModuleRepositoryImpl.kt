@@ -103,9 +103,8 @@ class ModuleRepositoryImpl @Inject constructor(
             title = "AI Router",
             description = "Авто-выбор лучшего AI для задачи с failover",
             type = ModuleType.AI_PROVIDER,
-            iconId = "Router",
-            isBuiltIn = false,
-            isEnabled = false,
+            iconId = "SwapHoriz",
+            route = "ai_router",
             capabilities = listOf("Auto-select", "Failover", "Cost optimization")
         ),
         NexusModule(
