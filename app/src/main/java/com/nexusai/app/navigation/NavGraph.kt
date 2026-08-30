@@ -2,12 +2,9 @@ package com.nexusai.app.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavDeepLink
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.nexusai.app.ui.AIRouterScreen
 import com.nexusai.app.ui.CodePlaygroundScreen

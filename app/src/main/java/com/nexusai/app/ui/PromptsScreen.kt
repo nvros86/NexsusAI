@@ -182,11 +182,13 @@ fun PromptsScreen(
                         prompt = prompt,
                         onToggleFavorite = { viewModel.toggleFavorite(prompt.id) },
                         onCopy = {
-                            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                            val clip = ClipData.newPlainText(prompt.title, prompt.content)
-                            clipboard.setPrimaryClip(clip)
-                            viewModel.copyPrompt(prompt.id)
-                            Toast.makeText(context, "Скопировано!", Toast.LENGTH_SHORT).show()
+                            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
+                            if (clipboard != null) {
+                                val clip = ClipData.newPlainText(prompt.title, prompt.content)
+                                clipboard.setPrimaryClip(clip)
+                                viewModel.copyPrompt(prompt.id)
+                                Toast.makeText(context, "Скопировано!", Toast.LENGTH_SHORT).show()
+                            }
                         },
                         onDetail = { showDetailPrompt = prompt }
                     )
@@ -226,10 +228,12 @@ fun PromptsScreen(
             },
             confirmButton = {
                 TextButton(onClick = {
-                    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    val clip = ClipData.newPlainText(prompt.title, prompt.content)
-                    clipboard.setPrimaryClip(clip)
-                    viewModel.copyPrompt(prompt.id)
+                    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
+                    if (clipboard != null) {
+                        val clip = ClipData.newPlainText(prompt.title, prompt.content)
+                        clipboard.setPrimaryClip(clip)
+                        viewModel.copyPrompt(prompt.id)
+                    }
                     showDetailPrompt = null
                     Toast.makeText(context, "Скопировано!", Toast.LENGTH_SHORT).show()
                 }) {

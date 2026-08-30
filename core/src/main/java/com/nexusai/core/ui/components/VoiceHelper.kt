@@ -111,7 +111,8 @@ class VoiceHelper(private val context: Context) {
 
                     @Deprecated("Deprecated in Java")
                     override fun onError(utteranceId: String?) {
-                        _state.value = VoiceState.IDLE
+                        _state.value = VoiceState.ERROR
+                        _error.value = "Ошибка воспроизведения"
                     }
                 })
             }
