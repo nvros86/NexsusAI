@@ -143,7 +143,7 @@ class VoiceModeViewModel @Inject constructor(
     }
 
     private suspend fun generateResponse(provider: AIProviderConfig, query: String): String {
-        kotlinx.coroutines.delay(500 + (0..1500).random())
+        kotlinx.coroutines.delay(500L + (0..1500).random())
         return when {
             query.lowercase().contains("привет") ->
                 "Привет! Я голосовой ассистент NexusAI. Чем могу помочь?"
