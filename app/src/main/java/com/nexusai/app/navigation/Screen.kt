@@ -34,6 +34,7 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector)
     data object Prompts : Screen("prompts", "Промпты", Icons.Default.Lightbulb)
     data object Modules : Screen("modules", "Модули", Icons.Default.Widgets)
     data object SplitView : Screen("split_view", "Split View", Icons.Default.SmartToy)
+    data object VoiceMode : Screen("voice_mode", "Voice", Icons.Default.Mic)
     data object AIRouter : Screen("ai_router", "AI Router", Icons.Default.SwapHoriz)
     data object Settings : Screen("settings", "Настройки", Icons.Default.Settings)
 }
@@ -61,6 +62,7 @@ val drawerNavItems = listOf(
     Screen.Prompts,
     Screen.Modules,
     Screen.SplitView,
+    Screen.VoiceMode,
     Screen.AIRouter,
     Screen.Export,
     Screen.Settings

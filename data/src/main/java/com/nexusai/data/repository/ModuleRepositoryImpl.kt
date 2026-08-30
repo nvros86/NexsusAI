@@ -122,8 +122,7 @@ class ModuleRepositoryImpl @Inject constructor(
             description = "Голосовое общение с AI (STT → LLM → TTS)",
             type = ModuleType.FEATURE,
             iconId = "Mic",
-            isBuiltIn = false,
-            isEnabled = false,
+            route = "voice_mode",
             capabilities = listOf("STT", "TTS", "Real-time")
         )
     )
