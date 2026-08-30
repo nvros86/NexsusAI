@@ -13,6 +13,7 @@ import com.nexusai.app.ui.CodePlaygroundScreen
 import com.nexusai.app.ui.ExportScreen
 import com.nexusai.app.ui.FilesScreen
 import com.nexusai.app.ui.MarketplaceScreen
+import com.nexusai.app.ui.ModulesScreen
 import com.nexusai.app.ui.PromptsScreen
 import com.nexusai.app.ui.TemplatesScreen
 import com.nexusai.domain.repository.TaskTemplateRepository
@@ -89,6 +90,11 @@ fun NavGraph(
         }
         composable(Screen.Prompts.route) {
             PromptsScreen(
+                onBack = { navController.popBackStack() }
+            )
+        }
+        composable(Screen.Modules.route) {
+            ModulesScreen(
                 onBack = { navController.popBackStack() }
             )
         }

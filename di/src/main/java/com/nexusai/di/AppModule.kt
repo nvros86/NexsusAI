@@ -9,12 +9,14 @@ import com.nexusai.data.local.AppDatabase
 import com.nexusai.data.local.TabDao
 import com.nexusai.data.repository.AIProviderRepositoryImpl
 import com.nexusai.data.repository.MarketplaceRepositoryImpl
+import com.nexusai.data.repository.ModuleRepositoryImpl
 import com.nexusai.data.repository.PromptRepositoryImpl
 import com.nexusai.data.repository.TabRepositoryImpl
 import com.nexusai.data.repository.TaskTemplateRepositoryImpl
 import com.nexusai.data.security.ApiKeyEncryption
 import com.nexusai.domain.repository.AIProviderRepository
 import com.nexusai.domain.repository.MarketplaceRepository
+import com.nexusai.domain.repository.ModuleRepository
 import com.nexusai.domain.repository.PromptRepository
 import com.nexusai.domain.repository.TabRepository
 import com.nexusai.domain.repository.TaskTemplateRepository
@@ -78,6 +80,12 @@ object RepositoryModule {
     @Singleton
     fun providePromptRepository(): PromptRepository {
         return PromptRepositoryImpl()
+    }
+
+    @Provides
+    @Singleton
+    fun provideModuleRepository(@ApplicationContext context: Context): ModuleRepository {
+        return ModuleRepositoryImpl(context)
     }
 }
 
