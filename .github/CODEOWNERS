@@ -1,0 +1,23 @@
+# Default owner for everything in the repo
+* @nvros86
+
+# CI/CD
+.github/workflows/ @nvros86
+
+# App module
+app/ @nvros86
+
+# Core module
+core/ @nvros86
+
+# Data layer
+data/ @nvros86
+
+# Domain layer
+domain/ @nvros86
+
+# DI module
+di/ @nvros86
+
+# Feature modules
+feature/ @nvros86
