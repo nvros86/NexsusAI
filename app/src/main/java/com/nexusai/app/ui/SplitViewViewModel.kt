@@ -126,7 +126,7 @@ class SplitViewViewModel @Inject constructor(
         query: String,
         type: String
     ): String {
-        kotlinx.coroutines.delay(500 + (0..2000).random())
+        kotlinx.coroutines.delay(500L + (0..2000).random())
 
         return when {
             query.lowercase().contains("привет") || query.lowercase().contains("hello") ->
