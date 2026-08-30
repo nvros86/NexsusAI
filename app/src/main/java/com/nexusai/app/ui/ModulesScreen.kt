@@ -20,7 +20,19 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Code
+import androidx.compose.material.icons.filled.Compare
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.IosShare
+import androidx.compose.material.icons.filled.Lightbulb
+import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.PhoneAndroid
+import androidx.compose.material.icons.filled.Psychology
+import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.TextSnippet
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -182,7 +194,7 @@ private fun ModuleCard(module: NexusModule, onToggle: (Boolean) -> Unit) {
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = module.icon,
+                    imageVector = resolveIcon(module.iconId),
                     contentDescription = null,
                     tint = if (module.isEnabled) NexusPurple else NexusTextTertiary,
                     modifier = Modifier.size(22.dp)
@@ -304,4 +316,19 @@ private fun FilterChip(label: String, selected: Boolean, onClick: () -> Unit) {
             style = MaterialTheme.typography.labelMedium
         )
     }
+}
+
+private fun resolveIcon(iconId: String): ImageVector = when (iconId) {
+    "ShoppingCart" -> Icons.Default.ShoppingCart
+    "PhoneAndroid" -> Icons.Default.PhoneAndroid
+    "Lightbulb" -> Icons.Default.Lightbulb
+    "TextSnippet" -> Icons.Default.TextSnippet
+    "IosShare" -> Icons.Default.IosShare
+    "Description" -> Icons.Default.Description
+    "Code" -> Icons.Default.Code
+    "Psychology" -> Icons.Default.Psychology
+    "Router" -> Icons.Default.SwapHoriz
+    "Compare" -> Icons.Default.SwapHoriz
+    "Mic" -> Icons.Default.Mic
+    else -> Icons.Default.PhoneAndroid
 }

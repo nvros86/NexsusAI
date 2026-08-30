@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -32,7 +31,7 @@ class ModuleRepositoryImpl @Inject constructor(
             title = "AI Маркетплейс",
             description = "Каталог AI-провайдеров с одной кнопкой подключения",
             type = ModuleType.AI_PROVIDER,
-            icon = androidx.compose.material.icons.Icons.Default.ShoppingCart,
+            iconId = "ShoppingCart",
             route = "marketplace",
             capabilities = listOf("Подключение AI", "Пресеты", "Поиск")
         ),
@@ -41,7 +40,7 @@ class ModuleRepositoryImpl @Inject constructor(
             title = "Code Playground",
             description = "Редактор HTML/CSS/JS с live-превью в WebView",
             type = ModuleType.TOOL,
-            icon = androidx.compose.material.icons.Icons.Default.PhoneAndroid,
+            iconId = "PhoneAndroid",
             route = "code_playground",
             capabilities = listOf("HTML", "CSS", "JavaScript", "Live Preview")
         ),
@@ -50,7 +49,7 @@ class ModuleRepositoryImpl @Inject constructor(
             title = "Библиотека промптов",
             description = "16 готовых промптов с категориями и поиском",
             type = ModuleType.FEATURE,
-            icon = androidx.compose.material.icons.Icons.Default.Lightbulb,
+            iconId = "Lightbulb",
             route = "prompts",
             capabilities = listOf("Поиск", "Категории", "Избранное", "Копирование")
         ),
@@ -59,7 +58,7 @@ class ModuleRepositoryImpl @Inject constructor(
             title = "Шаблоны задач",
             description = "Готовые шаблоны для типичных задач AI",
             type = ModuleType.FEATURE,
-            icon = androidx.compose.material.icons.Icons.Default.TextSnippet,
+            iconId = "TextSnippet",
             route = "templates",
             capabilities = listOf("11 шаблонов", "7 категорий", "Поиск")
         ),
@@ -68,7 +67,7 @@ class ModuleRepositoryImpl @Inject constructor(
             title = "Экспорт данных",
             description = "Экспорт чатов в Markdown, TXT, JSON, HTML",
             type = ModuleType.TOOL,
-            icon = androidx.compose.material.icons.Icons.Default.IosShare,
+            iconId = "IosShare",
             route = "export",
             capabilities = listOf("Markdown", "TXT", "JSON", "HTML", "Share")
         ),
@@ -77,7 +76,7 @@ class ModuleRepositoryImpl @Inject constructor(
             title = "Файловый менеджер",
             description = "Просмотр и управление файлами с фильтрацией",
             type = ModuleType.TOOL,
-            icon = androidx.compose.material.icons.Icons.Default.Description,
+            iconId = "Description",
             route = "files",
             capabilities = listOf("Галерея", "Фильтры", "Share", "Delete")
         ),
@@ -86,7 +85,7 @@ class ModuleRepositoryImpl @Inject constructor(
             title = "Редактор кода",
             description = "Подсветка синтаксиса и редактирование кода",
             type = ModuleType.TOOL,
-            icon = androidx.compose.material.icons.Icons.Default.Code,
+            iconId = "Code",
             route = "code",
             capabilities = listOf("Подсветка", "Строки", "Тулбар")
         ),
@@ -95,7 +94,7 @@ class ModuleRepositoryImpl @Inject constructor(
             title = "AI Чат",
             description = "Основной чат с AI-провайдерами",
             type = ModuleType.AI_PROVIDER,
-            icon = androidx.compose.material.icons.Icons.Default.Psychology,
+            iconId = "Psychology",
             isRequired = true,
             route = "chat",
             capabilities = listOf("Multi-provider", "Streaming", "История")
@@ -105,10 +104,9 @@ class ModuleRepositoryImpl @Inject constructor(
             title = "AI Router",
             description = "Авто-выбор лучшего AI для задачи с failover",
             type = ModuleType.AI_PROVIDER,
-            icon = androidx.compose.material.icons.Icons.Default.Search,
+            iconId = "Router",
             isBuiltIn = false,
             isEnabled = false,
-            route = null,
             capabilities = listOf("Auto-select", "Failover", "Cost optimization")
         ),
         NexusModule(
@@ -116,7 +114,7 @@ class ModuleRepositoryImpl @Inject constructor(
             title = "Split View",
             description = "Сравнение ответов 2-4 AI на один вопрос",
             type = ModuleType.FEATURE,
-            icon = androidx.compose.material.icons.Icons.Default.History,
+            iconId = "Compare",
             isBuiltIn = false,
             isEnabled = false,
             capabilities = listOf("2-4 AI", "Сравнение", "Рейтинг")
@@ -126,7 +124,7 @@ class ModuleRepositoryImpl @Inject constructor(
             title = "Voice Mode",
             description = "Голосовое общение с AI (STT → LLM → TTS)",
             type = ModuleType.FEATURE,
-            icon = androidx.compose.material.icons.Icons.Default.PhoneAndroid,
+            iconId = "Mic",
             isBuiltIn = false,
             isEnabled = false,
             capabilities = listOf("STT", "TTS", "Real-time")
