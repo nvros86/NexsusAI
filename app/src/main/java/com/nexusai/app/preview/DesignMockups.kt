@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AttachFile
 import androidx.compose.material.icons.filled.Check
@@ -27,7 +28,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Image
-import androidx.compose.material.icons.filled.InsertDriveFile
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.SmartToy
@@ -500,8 +500,8 @@ fun PreviewFileAttachments() {
             Text("File Attachments", style = MaterialTheme.typography.headlineSmall)
             FileAttachmentRow("screenshot.png", 2_450_000L, Icons.Default.Image)
             FileAttachmentRow("notes.txt", 1_200L, Icons.Default.Description)
-            FileAttachmentRow("MainActivity.kt", 4_500L, Icons.Default.InsertDriveFile)
-            FileAttachmentRow("report.pdf", 15_000_000L, Icons.Default.InsertDriveFile)
+            FileAttachmentRow("MainActivity.kt", 4_500L, Icons.AutoMirrored.Filled.InsertDriveFile)
+            FileAttachmentRow("report.pdf", 15_000_000L, Icons.AutoMirrored.Filled.InsertDriveFile)
         }
     }
 }

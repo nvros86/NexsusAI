@@ -27,12 +27,12 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CloudDownload
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Image
-import androidx.compose.material.icons.filled.InsertDriveFile
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material3.AlertDialog
@@ -437,8 +437,8 @@ private fun fileIcon(mimeType: String): ImageVector {
     return when {
         FileHelper.isImage(mimeType) -> Icons.Default.Image
         FileHelper.isText(mimeType) -> Icons.Default.Description
-        mimeType.startsWith("video/") || mimeType.startsWith("audio/") -> Icons.Default.InsertDriveFile
-        else -> Icons.Default.InsertDriveFile
+        mimeType.startsWith("video/") || mimeType.startsWith("audio/") -> Icons.AutoMirrored.Filled.InsertDriveFile
+        else -> Icons.AutoMirrored.Filled.InsertDriveFile
     }
 }
 

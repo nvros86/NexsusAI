@@ -1,6 +1,7 @@
 package com.nexusai.app.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.TextSnippet
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.Home
@@ -15,7 +16,6 @@ import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.filled.SwapHoriz
-import androidx.compose.material.icons.filled.TextSnippet
 import androidx.compose.material.icons.filled.Widgets
 import androidx.compose.ui.graphics.vector.ImageVector
 
@@ -29,7 +29,7 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector)
     data object Files : Screen("files", "Файлы", Icons.Default.Folder)
     data object Memory : Screen("memory", "Память", Icons.Default.Storage)
     data object CodePlayground : Screen("code_playground", "Playground", Icons.Default.PhoneAndroid)
-    data object Templates : Screen("templates", "Шаблоны", Icons.Default.TextSnippet)
+    data object Templates : Screen("templates", "Шаблоны", Icons.AutoMirrored.Filled.TextSnippet)
     data object Export : Screen("export", "Экспорт", Icons.Default.IosShare)
     data object Marketplace : Screen("marketplace", "Маркетплейс", Icons.Default.ShoppingCart)
     data object Prompts : Screen("prompts", "Промпты", Icons.Default.Lightbulb)

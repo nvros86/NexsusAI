@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.TextSnippet
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Compare
 import androidx.compose.material.icons.filled.Description
@@ -32,7 +33,6 @@ import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.filled.TextSnippet
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -323,7 +323,7 @@ private fun resolveIcon(iconId: String): ImageVector = when (iconId) {
     "ShoppingCart" -> Icons.Default.ShoppingCart
     "PhoneAndroid" -> Icons.Default.PhoneAndroid
     "Lightbulb" -> Icons.Default.Lightbulb
-    "TextSnippet" -> Icons.Default.TextSnippet
+    "TextSnippet" -> Icons.AutoMirrored.Filled.TextSnippet
     "IosShare" -> Icons.Default.IosShare
     "Description" -> Icons.Default.Description
     "Code" -> Icons.Default.Code
