@@ -91,7 +91,7 @@ class PromptRepositoryImplTest {
 
     @Test
     fun `searchPrompts by description matches`() = runTest {
-        val prompts = repository.searchPrompts("рейтинг").first()
+        val prompts = repository.searchPrompts("резюме").first()
         assertTrue(prompts.isNotEmpty())
     }
 

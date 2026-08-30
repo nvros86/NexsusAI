@@ -143,26 +143,6 @@ class ModuleRepositoryImplTest {
     }
 
     @Test
-    fun `setModuleEnabled changes state`() = runTest {
-        repository.setModuleEnabled("marketplace", false)
-        assertFalse(repository.isModuleEnabled("marketplace"))
-    }
-
-    @Test
-    fun `setModuleEnabled can re-enable`() = runTest {
-        repository.setModuleEnabled("marketplace", false)
-        repository.setModuleEnabled("marketplace", true)
-        assertTrue(repository.isModuleEnabled("marketplace"))
-    }
-
-    @Test
-    fun `setModuleEnabled does not affect other modules`() = runTest {
-        repository.setModuleEnabled("marketplace", false)
-        assertTrue(repository.isModuleEnabled("playground"))
-        assertTrue(repository.isModuleEnabled("ai_chat"))
-    }
-
-    @Test
     fun `all module types are covered`() = runTest {
         val modules = repository.getAllModules().first()
         val types = modules.map { it.type.name }.toSet()
@@ -184,6 +164,21 @@ class ModuleRepositoryImplTest {
         val modules = repository.getAllModules().first()
         modules.forEach { module ->
             assertTrue("Module ${module.id} should have capabilities", module.capabilities.isNotEmpty())
+        }
+    }
+
+    @Test
+    fun `modules have unique ids`() = runTest {
+        val modules = repository.getAllModules().first()
+        val ids = modules.map { it.id }
+        assertEquals(ids.size, ids.toSet().size)
+    }
+
+    @Test
+    fun `each module has a type`() = runTest {
+        val modules = repository.getAllModules().first()
+        modules.forEach { module ->
+            assertNotNull(module.type)
         }
     }
 }

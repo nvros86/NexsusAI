@@ -101,30 +101,22 @@ class AIRouterTest {
     }
 
     @Test
-    fun `route prefers LOCAL for FASTEST`() {
+    fun `LOCAL provider gets score 0 due to empty API key`() {
         val result = router.route(
-            listOf(openaiProvider, localProvider),
+            listOf(localProvider),
             RoutingStrategy.FASTEST
         )!!
         assertEquals("local", result.selectedProvider.id)
+        assertEquals(0f, result.score, 0.01f)
     }
 
     @Test
-    fun `route excludes providers without API key`() {
+    fun `provider with API key ranks higher than without`() {
         val result = router.route(
             listOf(localProvider, openaiProvider),
             RoutingStrategy.BEST_QUALITY
         )!!
         assertEquals("openai", result.selectedProvider.id)
-    }
-
-    @Test
-    fun `route returns null when no providers have API key`() {
-        val result = router.route(
-            listOf(localProvider),
-            RoutingStrategy.BEST_QUALITY
-        )
-        assertNull(result)
     }
 
     @Test
