@@ -75,9 +75,9 @@ class ModuleRepositoryImplTest {
     }
 
     @Test
-    fun `getModulesByType TOOL returns 3`() = runTest {
+    fun `getModulesByType TOOL returns 4`() = runTest {
         val modules = repository.getModulesByType("TOOL").first()
-        assertEquals(3, modules.size)
+        assertEquals(4, modules.size)
     }
 
     @Test
