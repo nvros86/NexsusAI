@@ -11,7 +11,6 @@ import com.nexusai.domain.model.NexusModule
 import com.nexusai.domain.repository.ModuleRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -143,13 +142,15 @@ class ModuleRepositoryImpl @Inject constructor(
     }
 
     override fun getEnabledModules(): Flow<List<NexusModule>> {
-        return combine(flow { enabledOverrides.collect { emit(it) } }) { overrides ->
-            builtinModules.filter { m ->
-                val enabled = overrides[m.id] ?: m.isEnabled
-                enabled
-            }.map { m ->
-                val enabled = overrides[m.id] ?: m.isEnabled
-                m.copy(isEnabled = enabled)
+        return flow {
+            enabledOverrides.collect { overrides ->
+                emit(builtinModules.filter { m ->
+                    val enabled = overrides[m.id] ?: m.isEnabled
+                    enabled
+                }.map { m ->
+                    val enabled = overrides[m.id] ?: m.isEnabled
+                    m.copy(isEnabled = enabled)
+                })
             }
         }
     }
