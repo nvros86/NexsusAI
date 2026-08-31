@@ -6,6 +6,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
+import com.nexusai.app.ui.AgentsScreen
+import com.nexusai.app.ui.ImageScreen
+import com.nexusai.app.ui.MemoryScreen
+import com.nexusai.app.ui.VideoScreen
 import com.nexusai.app.ui.AIRouterScreen
 import com.nexusai.app.ui.CodePlaygroundScreen
 import com.nexusai.app.ui.SplitViewScreen
@@ -46,13 +50,19 @@ fun NavGraph(
             EditorScreen()
         }
         composable(Screen.Image.route) {
-            TabsScreen()
+            ImageScreen(
+                onBack = { navController.popBackStack() }
+            )
         }
         composable(Screen.Video.route) {
-            TabsScreen()
+            VideoScreen(
+                onBack = { navController.popBackStack() }
+            )
         }
         composable(Screen.Agents.route) {
-            TabsScreen()
+            AgentsScreen(
+                onBack = { navController.popBackStack() }
+            )
         }
         composable(Screen.Files.route) {
             FilesScreen(
@@ -60,7 +70,9 @@ fun NavGraph(
             )
         }
         composable(Screen.Memory.route) {
-            TabsScreen()
+            MemoryScreen(
+                onBack = { navController.popBackStack() }
+            )
         }
         composable(Screen.Templates.route) {
             if (taskTemplateRepository != null) {
