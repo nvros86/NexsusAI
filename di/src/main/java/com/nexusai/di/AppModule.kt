@@ -11,6 +11,7 @@ import com.nexusai.data.repository.AIProviderRepositoryImpl
 import com.nexusai.data.repository.ChainRepositoryImpl
 import com.nexusai.data.repository.MarketplaceRepositoryImpl
 import com.nexusai.data.repository.ModuleRepositoryImpl
+import com.nexusai.data.repository.PluginRepositoryImpl
 import com.nexusai.data.repository.PromptRepositoryImpl
 import com.nexusai.data.repository.SplitViewRepositoryImpl
 import com.nexusai.data.repository.TabRepositoryImpl
@@ -20,6 +21,7 @@ import com.nexusai.domain.repository.AIProviderRepository
 import com.nexusai.domain.repository.ChainRepository
 import com.nexusai.domain.repository.MarketplaceRepository
 import com.nexusai.domain.repository.ModuleRepository
+import com.nexusai.domain.repository.PluginRepository
 import com.nexusai.domain.repository.PromptRepository
 import com.nexusai.domain.repository.SplitViewRepository
 import com.nexusai.domain.repository.TabRepository
@@ -105,6 +107,12 @@ object RepositoryModule {
         aiProviderManager: AIProviderManager
     ): ChainRepository {
         return ChainRepositoryImpl(providerRepository, aiProviderManager)
+    }
+
+    @Provides
+    @Singleton
+    fun providePluginRepository(): PluginRepository {
+        return PluginRepositoryImpl()
     }
 }
 

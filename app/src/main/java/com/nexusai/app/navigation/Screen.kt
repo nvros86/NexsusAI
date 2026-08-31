@@ -41,6 +41,7 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector)
     data object AIProvider : Screen("ai_provider/{providerId}", "AI Провайдер", Icons.Default.SmartToy)
     data object Chains : Screen("chains", "Цепочки", Icons.Default.SwapHoriz)
     data object ChainDetail : Screen("chain_detail/{chainId}", "Цепочка", Icons.Default.SwapHoriz)
+    data object Plugins : Screen("plugins", "Плагины", Icons.Default.Widgets)
 }
 
 val bottomNavItems = listOf(
@@ -66,6 +67,7 @@ val drawerNavItems = listOf(
     Screen.Prompts,
     Screen.Modules,
     Screen.Chains,
+    Screen.Plugins,
     Screen.SplitView,
     Screen.VoiceMode,
     Screen.AIRouter,

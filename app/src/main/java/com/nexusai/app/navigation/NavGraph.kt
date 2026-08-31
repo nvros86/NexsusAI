@@ -11,6 +11,9 @@ import com.nexusai.app.ui.ChainsScreen
 import com.nexusai.app.ui.ChainDetailScreen
 import com.nexusai.app.ui.ImageScreen
 import com.nexusai.app.ui.MemoryScreen
+import com.nexusai.app.ui.PluginsScreen
+import com.nexusai.app.ui.VideoScreen
+import com.nexusai.app.ui.MemoryScreen
 import com.nexusai.app.ui.VideoScreen
 import com.nexusai.app.ui.AIRouterScreen
 import com.nexusai.app.ui.CodePlaygroundScreen
@@ -147,6 +150,11 @@ fun NavGraph(
         composable(Screen.ChainDetail.route) {
             ChainDetailScreen(
                 chainId = it.arguments?.getString("chainId") ?: "new",
+                onBack = { navController.popBackStack() }
+            )
+        }
+        composable(Screen.Plugins.route) {
+            PluginsScreen(
                 onBack = { navController.popBackStack() }
             )
         }
