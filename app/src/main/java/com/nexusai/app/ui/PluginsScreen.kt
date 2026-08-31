@@ -174,6 +174,7 @@ fun PluginsScreen(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun PluginCard(
     plugin: NexsusPlugin,
