@@ -22,7 +22,9 @@ data class TabsUiState(
     val tabs: List<Tab> = emptyList(),
     val activeTabId: String? = null,
     val isLoading: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
+    val isSplitViewMode: Boolean = false,
+    val splitViewTabIds: Pair<String, String>? = null
 )
 
 data class ChatUiState(
@@ -225,6 +227,20 @@ class TabsViewModel @Inject constructor(
 
     fun stopGeneration(tabId: String) {
         updateChatState(tabId) { it.copy(isGenerating = false) }
+    }
+
+    fun enableSplitView(leftTabId: String, rightTabId: String) {
+        _tabsState.value = _tabsState.value.copy(
+            isSplitViewMode = true,
+            splitViewTabIds = Pair(leftTabId, rightTabId)
+        )
+    }
+
+    fun disableSplitView() {
+        _tabsState.value = _tabsState.value.copy(
+            isSplitViewMode = false,
+            splitViewTabIds = null
+        )
     }
 
     private fun updateChatState(tabId: String, transform: (ChatUiState) -> ChatUiState) {
