@@ -141,8 +141,8 @@ fun SettingsScreen(
                     title = "Режим инкогнито",
                     subtitle = "Не сохранять историю чатов",
                     icon = "🕶️",
-                    checked = false,
-                    onCheckedChange = { }
+                    checked = state.incognitoMode,
+                    onCheckedChange = { viewModel.toggleIncognito() }
                 )
             }
 
@@ -151,8 +151,8 @@ fun SettingsScreen(
                     title = "Тактильная отдача",
                     subtitle = "Вибрация при отправке и нажатиях",
                     icon = "📳",
-                    checked = true,
-                    onCheckedChange = { }
+                    checked = state.hapticFeedback,
+                    onCheckedChange = { viewModel.toggleHaptic() }
                 )
             }
 
@@ -161,8 +161,8 @@ fun SettingsScreen(
                     title = "Блокировка приложения",
                     subtitle = "Требовать PIN или биометрию",
                     icon = "🔒",
-                    checked = false,
-                    onCheckedChange = { }
+                    checked = state.appLock,
+                    onCheckedChange = { viewModel.toggleAppLock() }
                 )
             }
 

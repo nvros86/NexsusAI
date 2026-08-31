@@ -18,7 +18,10 @@ data class SettingsState(
     val isLoading: Boolean = false,
     val error: String? = null,
     val showAddDialog: Boolean = false,
-    val editingProvider: AIProviderConfig? = null
+    val editingProvider: AIProviderConfig? = null,
+    val incognitoMode: Boolean = false,
+    val hapticFeedback: Boolean = true,
+    val appLock: Boolean = false
 )
 
 @HiltViewModel
@@ -110,5 +113,17 @@ class SettingsViewModel @Inject constructor(
             val provider = _state.value.providers.firstOrNull { it.id == id } ?: return@launch
             aiProviderRepository.updateProvider(provider.copy(isFavorite = !provider.isFavorite))
         }
+    }
+
+    fun toggleIncognito() {
+        _state.value = _state.value.copy(incognitoMode = !_state.value.incognitoMode)
+    }
+
+    fun toggleHaptic() {
+        _state.value = _state.value.copy(hapticFeedback = !_state.value.hapticFeedback)
+    }
+
+    fun toggleAppLock() {
+        _state.value = _state.value.copy(appLock = !_state.value.appLock)
     }
 }

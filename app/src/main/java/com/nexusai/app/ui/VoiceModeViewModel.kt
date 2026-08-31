@@ -5,7 +5,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexusai.core.ui.components.VoiceHelper
 import com.nexusai.core.ui.components.VoiceState
+import com.nexusai.data.ai.AIProviderManager
 import com.nexusai.domain.model.AIProviderConfig
+import com.nexusai.domain.model.ChatMessage
+import com.nexusai.domain.model.MessageRole
 import com.nexusai.domain.repository.AIProviderRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,7 +37,8 @@ data class VoiceModeUiState(
 @HiltViewModel
 class VoiceModeViewModel @Inject constructor(
     application: Application,
-    private val providerRepository: AIProviderRepository
+    private val providerRepository: AIProviderRepository,
+    private val aiProviderManager: AIProviderManager
 ) : AndroidViewModel(application) {
 
     val voiceHelper = VoiceHelper(application)
@@ -143,24 +147,18 @@ class VoiceModeViewModel @Inject constructor(
     }
 
     private suspend fun generateResponse(provider: AIProviderConfig, query: String): String {
-        kotlinx.coroutines.delay(500L + (0..1500).random())
-        return when {
-            query.lowercase().contains("привет") ->
-                "Привет! Я голосовой ассистент NexusAI. Чем могу помочь?"
-            query.lowercase().contains("время") -> {
-                val hour = java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY)
-                val minute = java.util.Calendar.getInstance().get(java.util.Calendar.MINUTE)
-                "Сейчас ${hour}:${String.format("%02d", minute)}"
-            }
-            query.lowercase().contains("дата") -> {
-                val sdf = java.text.SimpleDateFormat("d MMMM yyyy", java.util.Locale("ru"))
-                sdf.format(java.util.Date())
-            }
-            query.lowercase().contains("помощь") || query.lowercase().contains("help") ->
-                "Я могу ответить на вопросы, рассказать о погоде, времени, или просто поболтать. Попробуйте спросить что-нибудь!"
-            else ->
-                "Понял ваш запрос: \"$query\". Вот мой ответ от ${provider.name}: обработка завершена."
-        }
+        val aiProvider = aiProviderManager.getProvider(provider)
+        val model = provider.defaultModel.ifEmpty { provider.models.firstOrNull() ?: "default" }
+        val chatMessages = listOf(
+            ChatMessage(role = MessageRole.USER, content = query)
+        )
+        val response = aiProvider.sendMessage(
+            messages = chatMessages,
+            model = model,
+            maxTokens = provider.maxTokens,
+            temperature = provider.temperature
+        )
+        return response.content
     }
 
     fun setProvider(provider: AIProviderConfig) {

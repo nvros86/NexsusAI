@@ -66,6 +66,9 @@ fun NavGraph(
             if (taskTemplateRepository != null) {
                 TemplatesScreen(
                     repository = taskTemplateRepository,
+                    onTemplateClick = { template ->
+                        navController.navigate(Screen.Chat.route)
+                    },
                     onBack = { navController.popBackStack() }
                 )
             }

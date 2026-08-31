@@ -2,8 +2,11 @@ package com.nexusai.app.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nexusai.data.ai.AIProviderManager
 import com.nexusai.domain.model.AIProviderConfig
+import com.nexusai.domain.model.ChatMessage
 import com.nexusai.domain.model.ComparisonMode
+import com.nexusai.domain.model.MessageRole
 import com.nexusai.domain.model.SplitResult
 import com.nexusai.domain.model.SplitSession
 import com.nexusai.domain.repository.AIProviderRepository
@@ -27,7 +30,8 @@ data class SplitViewUiState(
 
 @HiltViewModel
 class SplitViewViewModel @Inject constructor(
-    private val providerRepository: AIProviderRepository
+    private val providerRepository: AIProviderRepository,
+    private val aiProviderManager: AIProviderManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SplitViewUiState())
@@ -91,18 +95,26 @@ class SplitViewViewModel @Inject constructor(
             val finalResults = state.selectedProviders.mapIndexed { index, provider ->
                 val startTime = System.currentTimeMillis()
                 try {
-                    val type = provider.type.name
                     val model = provider.defaultModel.ifEmpty { provider.models.firstOrNull() ?: "default" }
-                    val response = simulateResponse(provider, state.query, type)
+                    val aiProvider = aiProviderManager.getProvider(provider)
+                    val chatMessages = listOf(
+                        ChatMessage(role = MessageRole.USER, content = state.query)
+                    )
+                    val response = aiProvider.sendMessage(
+                        messages = chatMessages,
+                        model = model,
+                        maxTokens = provider.maxTokens,
+                        temperature = provider.temperature
+                    )
                     val latency = System.currentTimeMillis() - startTime
 
                     SplitResult(
                         providerId = provider.id,
                         providerName = provider.name,
                         modelName = model,
-                        response = response,
+                        response = response.content,
                         latencyMs = latency,
-                        tokensUsed = response.length / 4
+                        tokensUsed = response.usage?.totalTokens ?: (response.content.length / 4)
                     )
                 } catch (e: Exception) {
                     SplitResult(
@@ -118,25 +130,6 @@ class SplitViewViewModel @Inject constructor(
                 results = finalResults,
                 isRunning = false
             )
-        }
-    }
-
-    private suspend fun simulateResponse(
-        provider: AIProviderConfig,
-        query: String,
-        type: String
-    ): String {
-        kotlinx.coroutines.delay(500L + (0..2000).random())
-
-        return when {
-            query.lowercase().contains("привет") || query.lowercase().contains("hello") ->
-                "Привет! Я ${provider.name}. Рад помочь тебе с любыми задачами."
-            query.lowercase().contains("код") || query.lowercase().contains("code") ->
-                "```\n// Ответ от ${provider.name}\nfun main() {\n    println(\"Привет, мир!\")\n}\n```\n\nЭто базовый пример на Kotlin."
-            query.lowercase().contains("объясни") || query.lowercase().contains("explain") ->
-                "Конечно! Позволь объяснить.\n\n${query.take(50)} — это важная тема. Вот основные моменты:\n\n1. Первый аспект\n2. Второй аспект\n3. Третий аспект\n\nХочешь подробнее?"
-            else ->
-                "Это отличный вопрос! Вот мой ответ от ${provider.name}:\n\nОбработка запроса завершена. Для более детального ответа уточни задачу."
         }
     }
 
