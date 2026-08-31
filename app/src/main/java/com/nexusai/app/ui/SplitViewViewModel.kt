@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexusai.data.ai.AIProviderManager
 import com.nexusai.domain.model.AIProviderConfig
-import com.nexusai.domain.model.ChatMessage
+import com.nexusai.domain.ai.ChatMessage
 import com.nexusai.domain.model.ComparisonMode
 import com.nexusai.domain.model.MessageRole
 import com.nexusai.domain.model.SplitResult

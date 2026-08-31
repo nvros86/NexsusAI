@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.nexusai.core.ui.components.VoiceHelper
 import com.nexusai.core.ui.components.VoiceState
 import com.nexusai.data.ai.AIProviderManager
+import com.nexusai.domain.ai.ChatMessage
 import com.nexusai.domain.model.AIProviderConfig
-import com.nexusai.domain.model.ChatMessage
 import com.nexusai.domain.model.MessageRole
 import com.nexusai.domain.repository.AIProviderRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
