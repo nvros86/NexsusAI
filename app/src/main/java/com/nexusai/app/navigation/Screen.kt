@@ -38,6 +38,7 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector)
     data object VoiceMode : Screen("voice_mode", "Voice", Icons.Default.Mic)
     data object AIRouter : Screen("ai_router", "AI Router", Icons.Default.SwapHoriz)
     data object Settings : Screen("settings", "Настройки", Icons.Default.Settings)
+    data object AIProvider : Screen("ai_provider/{providerId}", "AI Провайдер", Icons.Default.SmartToy)
 }
 
 val bottomNavItems = listOf(

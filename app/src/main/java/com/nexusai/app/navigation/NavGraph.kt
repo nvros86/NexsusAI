@@ -116,5 +116,11 @@ fun NavGraph(
                 onBack = { navController.popBackStack() }
             )
         }
+        composable(Screen.AIProvider.route) {
+            AIProviderScreen(
+                providerId = it.arguments?.getString("providerId") ?: "",
+                onBack = { navController.popBackStack() }
+            )
+        }
     }
 }
