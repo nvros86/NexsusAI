@@ -7,6 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import com.nexusai.app.ui.AgentsScreen
+import com.nexusai.app.ui.ChainsScreen
+import com.nexusai.app.ui.ChainDetailScreen
 import com.nexusai.app.ui.ImageScreen
 import com.nexusai.app.ui.MemoryScreen
 import com.nexusai.app.ui.VideoScreen
@@ -131,6 +133,20 @@ fun NavGraph(
         composable(Screen.AIProvider.route) {
             AIProviderScreen(
                 providerId = it.arguments?.getString("providerId") ?: "",
+                onBack = { navController.popBackStack() }
+            )
+        }
+        composable(Screen.Chains.route) {
+            ChainsScreen(
+                onChainClick = { chainId ->
+                    navController.navigate("chain_detail/$chainId")
+                },
+                onBack = { navController.popBackStack() }
+            )
+        }
+        composable(Screen.ChainDetail.route) {
+            ChainDetailScreen(
+                chainId = it.arguments?.getString("chainId") ?: "new",
                 onBack = { navController.popBackStack() }
             )
         }
