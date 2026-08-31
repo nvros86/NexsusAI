@@ -163,7 +163,7 @@ private fun ProviderHeader(
         modifier = Modifier.fillMaxWidth()
     ) {
         AIProviderIcon(
-            providerType = type,
+            providerId = type.lowercase(),
             modifier = Modifier.size(48.dp)
         )
         Spacer(modifier = Modifier.width(16.dp))
