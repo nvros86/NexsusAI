@@ -48,7 +48,7 @@ class AIProviderRepositoryImpl @Inject constructor(
         name = name,
         type = ProviderType.valueOf(type),
         baseUrl = baseUrl,
-        apiKey = "",
+        apiKey = apiKeyEncrypted,
         models = json.decodeFromString(modelsJson),
         defaultModel = defaultModel,
         maxTokens = maxTokens,

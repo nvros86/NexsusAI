@@ -110,6 +110,17 @@ class TabsViewModel @Inject constructor(
         }
     }
 
+    fun closeAllTabs() {
+        viewModelScope.launch {
+            val tabs = _tabsState.value.tabs
+            tabs.forEach { tab ->
+                tabRepository.deleteTab(tab.id)
+            }
+            // Create a new default tab after closing all
+            createTab("New Tab")
+        }
+    }
+
     fun setTabProvider(tabId: String, providerId: String) {
         viewModelScope.launch {
             val provider = _providers.value.firstOrNull { it.id == providerId } ?: return@launch
@@ -190,24 +201,54 @@ class TabsViewModel @Inject constructor(
                     content = text.ifEmpty { "Attached file(s)" }
                 )
 
-                val response = provider.sendMessage(
-                    messages = chatMessages,
-                    model = providerConfig.defaultModel,
-                    maxTokens = providerConfig.maxTokens,
-                    temperature = providerConfig.temperature
-                )
-
-                val assistantMessage = Message(
-                    id = UUID.randomUUID().toString(),
-                    content = response.content,
+                val assistantMessageId = UUID.randomUUID().toString()
+                val streamingMessage = Message(
+                    id = assistantMessageId,
+                    content = "",
                     role = MessageRole.ASSISTANT
                 )
 
                 updateChatState(tabId) {
                     it.copy(
-                        messages = it.messages + assistantMessage,
+                        messages = it.messages + userMessage + streamingMessage,
+                        isGenerating = true
+                    )
+                }
+
+                var fullResponse = ""
+                provider.sendMessageStream(
+                    messages = chatMessages,
+                    model = providerConfig.defaultModel,
+                    maxTokens = providerConfig.maxTokens,
+                    temperature = providerConfig.temperature
+                ).collect { token ->
+                    fullResponse += token
+                    updateChatState(tabId) { state ->
+                        val updatedMsgs = state.messages.map { msg ->
+                            if (msg.id == assistantMessageId) msg.copy(content = fullResponse) else msg
+                        }
+                        state.copy(messages = updatedMsgs)
+                    }
+                }
+
+                val assistantMessage = Message(
+                    id = assistantMessageId,
+                    content = fullResponse,
+                    role = MessageRole.ASSISTANT
+                )
+
+                val updatedMessages = chatState.messages + userMessage + assistantMessage
+                updateChatState(tabId) {
+                    it.copy(
+                        messages = updatedMessages,
                         isGenerating = false
                     )
+                }
+
+                // Save messages to database
+                val tab = tabRepository.getTabById(tabId)
+                if (tab != null) {
+                    tabRepository.updateTab(tab.copy(messages = updatedMessages))
                 }
             } catch (e: Exception) {
                 val errorMessage = Message(
@@ -215,11 +256,18 @@ class TabsViewModel @Inject constructor(
                     content = "Error: ${e.message}",
                     role = MessageRole.ASSISTANT
                 )
+                val updatedMessages = chatState.messages + userMessage + errorMessage
                 updateChatState(tabId) {
                     it.copy(
-                        messages = it.messages + errorMessage,
+                        messages = updatedMessages,
                         isGenerating = false
                     )
+                }
+
+                // Save messages to database even on error
+                val tab = tabRepository.getTabById(tabId)
+                if (tab != null) {
+                    tabRepository.updateTab(tab.copy(messages = updatedMessages))
                 }
             }
         }

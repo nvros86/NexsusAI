@@ -57,6 +57,7 @@ import com.nexusai.feature.tabs.viewmodel.ChatUiState
 fun ChatScreen(
     chatState: ChatUiState,
     modifier: Modifier = Modifier,
+    providerName: String = "AI",
     onCopyMessage: (String) -> Unit = {}
 ) {
     val listState = rememberLazyListState()
@@ -87,6 +88,7 @@ fun ChatScreen(
                 items(chatState.messages, key = { it.id }) { message ->
                     MessageBubble(
                         message = message,
+                        providerName = providerName,
                         onCopy = { onCopyMessage(message.content) }
                     )
                 }
@@ -143,6 +145,7 @@ private fun EmptyState() {
 @Composable
 private fun MessageBubble(
     message: Message,
+    providerName: String = "AI",
     onCopy: () -> Unit = {}
 ) {
     val isUser = message.role == MessageRole.USER
@@ -172,7 +175,7 @@ private fun MessageBubble(
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "GPT-4o",
+                    text = providerName,
                     style = MaterialTheme.typography.labelMedium,
                     color = NexusTextPrimary,
                     fontWeight = FontWeight.Medium
@@ -267,7 +270,7 @@ private fun MessageBubble(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "10:20",
+                    text = java.text.SimpleDateFormat("HH:mm", java.util.Locale.getDefault()).format(java.util.Date(message.timestamp)),
                     style = MaterialTheme.typography.bodySmall,
                     color = NexusTextTertiary,
                     fontSize = 10.sp
