@@ -68,6 +68,8 @@ dependencies {
     implementation(project(":feature:settings"))
     implementation(project(":feature:editor"))
     implementation(project(":feature:aiprovider"))
+    implementation(project(":feature:localai"))
+    implementation(project(":feature:teamworkspaces"))
 
     implementation(libs.core.ktx)
     implementation(libs.activity.compose)

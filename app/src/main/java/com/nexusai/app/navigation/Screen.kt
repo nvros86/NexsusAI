@@ -42,6 +42,8 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector)
     data object Chains : Screen("chains", "Цепочки", Icons.Default.SwapHoriz)
     data object ChainDetail : Screen("chain_detail/{chainId}", "Цепочка", Icons.Default.SwapHoriz)
     data object Plugins : Screen("plugins", "Плагины", Icons.Default.Widgets)
+    data object LocalAI : Screen("local_ai", "Local AI", Icons.Default.SmartToy)
+    data object TeamWorkspaces : Screen("team_workspaces", "Team", Icons.Default.SmartToy)
 }
 
 val bottomNavItems = listOf(
@@ -68,6 +70,8 @@ val drawerNavItems = listOf(
     Screen.Modules,
     Screen.Chains,
     Screen.Plugins,
+    Screen.LocalAI,
+    Screen.TeamWorkspaces,
     Screen.SplitView,
     Screen.VoiceMode,
     Screen.AIRouter,

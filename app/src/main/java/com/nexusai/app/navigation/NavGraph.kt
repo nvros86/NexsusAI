@@ -13,6 +13,8 @@ import com.nexusai.app.ui.ImageScreen
 import com.nexusai.app.ui.MemoryScreen
 import com.nexusai.app.ui.PluginsScreen
 import com.nexusai.app.ui.VideoScreen
+import com.nexusai.feature.localai.ui.LocalAIScreen
+import com.nexusai.feature.teamworkspaces.ui.TeamWorkspacesScreen
 import com.nexusai.app.ui.MemoryScreen
 import com.nexusai.app.ui.VideoScreen
 import com.nexusai.app.ui.AIRouterScreen
@@ -155,6 +157,16 @@ fun NavGraph(
         }
         composable(Screen.Plugins.route) {
             PluginsScreen(
+                onBack = { navController.popBackStack() }
+            )
+        }
+        composable(Screen.LocalAI.route) {
+            LocalAIScreen(
+                onBack = { navController.popBackStack() }
+            )
+        }
+        composable(Screen.TeamWorkspaces.route) {
+            TeamWorkspacesScreen(
                 onBack = { navController.popBackStack() }
             )
         }
