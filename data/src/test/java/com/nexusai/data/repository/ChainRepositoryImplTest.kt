@@ -1,5 +1,6 @@
 package com.nexusai.data.repository
 
+import com.nexusai.domain.model.AutomationChain
 import com.nexusai.domain.model.ChainStep
 import com.nexusai.domain.model.ChainStepType
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,10 +24,15 @@ class ChainRepositoryImplTest {
     @Before
     fun setUp() {
         kotlinx.coroutines.Dispatchers.setMain(testDispatcher)
-        repository = ChainRepositoryImpl(
-            providerRepository = com.nexusai.domain.repository.AIProviderRepository::class.java.getDeclaredConstructor().newInstance() as com.nexusai.domain.repository.AIProviderRepository,
-            aiProviderManager = com.nexusai.data.ai.AIProviderManager::class.java.getDeclaredConstructor().newInstance() as com.nexusai.data.ai.AIProviderManager
-        )
+        val fakeProviderRepo = object : com.nexusai.domain.repository.AIProviderRepository {
+            override fun getAllProviders() = kotlinx.coroutines.flow.flowOf(emptyList<com.nexusai.domain.model.AIProviderConfig>())
+            override suspend fun getProviderById(id: String) = null
+            override suspend fun saveProvider(provider: com.nexusai.domain.model.AIProviderConfig) {}
+            override suspend fun deleteProvider(id: String) {}
+            override suspend fun updateProvider(provider: com.nexusai.domain.model.AIProviderConfig) {}
+        }
+        val fakeManager = io.mockk.mockk<com.nexusai.data.ai.AIProviderManager>()
+        repository = ChainRepositoryImpl(fakeProviderRepo, fakeManager)
     }
 
     @After
@@ -57,7 +63,7 @@ class ChainRepositoryImplTest {
 
     @Test
     fun `saveChain adds new chain`() = runTest {
-        val newChain = com.nexusai.domain.model.AutomationChain(
+        val newChain = AutomationChain(
             id = "test_chain",
             name = "Test Chain",
             description = "Test",
