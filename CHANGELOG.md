@@ -1,5 +1,28 @@
 # Changelog
 
+## v1.0.0-beta.2
+
+### доработка — Killer Features реальны
+
+#### Agents + Memory интеграция с AI
+- **Agents** — активные агенты автоматически добавляют системный промпт в каждый чат
+- **Memory** — записи памяти (key/value) инжектятся как контекст пользователя в AI
+- **AppDataManager** — общий Hilt singleton для agents и memory
+
+#### Исправления UX
+- **Chains** — ошибки показываются пользователю (красная карточка), вместо проглатывания
+- **SplitView** — результаты сравнения сохраняются в сессии
+- **Voice Mode** — полная история диалога отправляется в AI (multi-turn)
+- **Marketplace** — при добавлении провайдера появляется поле ввода API Key
+- **CodePlayground** — превью авто-обновляется с задержкой 500ms (debounce)
+
+#### Architecture
+- Database v2 — agentId в Tab
+- AIAgent, MemoryEntry модели в domain module
+- TabBar улучшен (swipe-to-dismiss, анимации)
+
+---
+
 ## v1.0.0-beta.1
 
 ### Beta Release — полный функционал
