@@ -1,7 +1,7 @@
 package com.nexusai.feature.tabs.viewmodel
 
 import com.nexusai.data.ai.AIProviderManager
-import com.nexusai.core.common.AppDataManager
+import com.nexusai.domain.common.AppDataManager
 import com.nexusai.domain.model.AIProviderConfig
 import com.nexusai.domain.model.Tab
 import com.nexusai.domain.repository.AIProviderRepository

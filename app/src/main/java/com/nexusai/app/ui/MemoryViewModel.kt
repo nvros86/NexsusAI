@@ -1,7 +1,7 @@
 package com.nexusai.app.ui
 
 import androidx.lifecycle.ViewModel
-import com.nexusai.core.common.AppDataManager
+import com.nexusai.domain.common.AppDataManager
 import com.nexusai.domain.model.MemoryEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

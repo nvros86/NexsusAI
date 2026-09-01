@@ -1,4 +1,4 @@
-package com.nexusai.core.common
+package com.nexusai.domain.common
 
 import com.nexusai.domain.model.AIAgent
 import com.nexusai.domain.model.MemoryEntry

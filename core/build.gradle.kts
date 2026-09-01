@@ -28,7 +28,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":domain"))
     implementation(libs.core.ktx)
     implementation(libs.coroutines.core)
     implementation(libs.serialization.json)
