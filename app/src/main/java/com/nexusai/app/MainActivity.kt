@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Search
@@ -42,7 +43,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -82,6 +85,11 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var taskTemplateRepository: TaskTemplateRepository
 
+    @Inject
+    lateinit var biometricHelper: BiometricHelper
+
+    private var isAuthenticated = mutableStateOf(false)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -92,6 +100,8 @@ class MainActivity : ComponentActivity() {
                     color = NexusBackground
                 ) {
                     val onboardingCompleted = appPreferences.isOnboardingCompleted.collectAsState(initial = null)
+                    val appLockEnabled = appPreferences.isAppLockEnabled.collectAsState(initial = false)
+                    val authenticated by isAuthenticated
 
                     when (onboardingCompleted.value) {
                         null -> { }
@@ -105,7 +115,15 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         true -> {
-                            MainScreen(taskTemplateRepository = taskTemplateRepository)
+                            if (appLockEnabled.value && !authenticated) {
+                                BiometricLockScreen(
+                                    onAuthenticated = { isAuthenticated.value = true },
+                                    biometricHelper = biometricHelper,
+                                    activity = this@MainActivity
+                                )
+                            } else {
+                                MainScreen(taskTemplateRepository = taskTemplateRepository)
+                            }
                         }
                     }
                 }

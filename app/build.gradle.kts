@@ -90,6 +90,7 @@ dependencies {
 
     implementation(libs.serialization.json)
     implementation(libs.datastore.preferences)
+    implementation(libs.biometric)
 
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.material.icons)
