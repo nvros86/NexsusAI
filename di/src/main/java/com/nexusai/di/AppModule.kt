@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.nexusai.core.common.constants.AppConstants
 import com.nexusai.data.ai.AIProviderManager
+import com.nexusai.data.common.AppDataManager
 import com.nexusai.data.local.AIProviderDao
 import com.nexusai.data.local.AppDatabase
 import com.nexusai.data.local.TabDao
@@ -58,6 +59,12 @@ object DatabaseModule {
 
     @Provides
     fun provideMemoryEntryDao(database: AppDatabase): MemoryEntryDao = database.memoryEntryDao()
+
+    @Provides
+    @Singleton
+    fun provideAppDataManager(agentDao: AgentDao, memoryEntryDao: MemoryEntryDao): AppDataManager {
+        return AppDataManager(agentDao, memoryEntryDao)
+    }
 }
 
 @Module

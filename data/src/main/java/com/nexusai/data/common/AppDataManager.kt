@@ -8,11 +8,8 @@ import com.nexusai.domain.model.AIAgent
 import com.nexusai.domain.model.MemoryEntry
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class AppDataManager @Inject constructor(
+class AppDataManager(
     private val agentDao: AgentDao,
     private val memoryEntryDao: MemoryEntryDao
 ) {
@@ -25,16 +22,12 @@ class AppDataManager @Inject constructor(
     }
 
     suspend fun getActiveAgentSystemPrompt(): String? {
-        val agents = agentDao.getAllAgents().map { list -> list.filter { it.isActive } }
-        var result: String? = null
-        agents.collect { activeAgents ->
-            if (activeAgents.isNotEmpty()) {
-                result = activeAgents.joinToString("\n\n") { agent ->
-                    "[${agent.name}]: ${agent.systemPrompt}"
-                }
-            }
+        val result = mutableListOf<AgentEntity>()
+        agentDao.getAllAgents().collect { list -> result.addAll(list.filter { it.isActive }) }
+        if (result.isEmpty()) return null
+        return result.joinToString("\n\n") { agent ->
+            "[${agent.name}]: ${agent.systemPrompt}"
         }
-        return result
     }
 
     suspend fun getMemoryContext(): String? {
