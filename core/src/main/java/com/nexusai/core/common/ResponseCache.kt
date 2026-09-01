@@ -2,16 +2,11 @@ package com.nexusai.core.common
 
 import android.content.Context
 import android.content.SharedPreferences
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class ResponseCache @Inject constructor(
-    @ApplicationContext private val context: Context
-) {
+class ResponseCache(context: Context) {
+
     private val prefs: SharedPreferences by lazy {
         context.getSharedPreferences("response_cache", Context.MODE_PRIVATE)
     }
