@@ -1,5 +1,22 @@
 # Changelog
 
+## v1.0.0-beta.3
+
+### Persistence — данные больше не теряются
+
+#### Room DB v3
+- **Agents** — хранятся в Room DB, переживают перезапуск приложения
+- **Memory entries** — хранятся в Room DB, важные помечены звёздочкой
+- AgentDao, MemoryEntryDao с полными CRUD операциями
+- AppDataManager перенесён в data module, работает через Room
+
+#### Architecture
+- DataModule (Hilt) в data модуле — все Room-зависимости в одном месте
+- AIModule в di модуле — только API Key encryption и Provider Manager
+- Database fallbackToDestructiveMigration для beta-версий
+
+---
+
 ## v1.0.0-beta.2
 
 ### доработка — Killer Features реальны
