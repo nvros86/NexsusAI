@@ -57,14 +57,6 @@ import com.nexusai.core.ui.theme.NexusTextSecondary
 import com.nexusai.core.ui.theme.NexusTextTertiary
 import com.nexusai.domain.model.MemoryEntry
 
-data class MemoryUiState(
-    val entries: List<MemoryEntry> = emptyList(),
-    val searchQuery: String = "",
-    val showAddDialog: Boolean = false,
-    val newKey: String = "",
-    val newValue: String = ""
-)
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MemoryScreen(

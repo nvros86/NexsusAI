@@ -135,7 +135,7 @@ class SplitViewViewModel @Inject constructor(
                 id = System.currentTimeMillis().toString(),
                 query = state.query,
                 results = finalResults,
-                createdAt = System.currentTimeMillis()
+                timestamp = System.currentTimeMillis()
             )
             _uiState.value = _uiState.value.copy(
                 sessions = _uiState.value.sessions + session,
@@ -163,7 +163,7 @@ class SplitViewViewModel @Inject constructor(
                 query = _uiState.value.query,
                 results = _uiState.value.results,
                 selectedWinner = providerId,
-                createdAt = System.currentTimeMillis()
+                timestamp = System.currentTimeMillis()
             )
             _uiState.value = _uiState.value.copy(
                 sessions = _uiState.value.sessions + session,

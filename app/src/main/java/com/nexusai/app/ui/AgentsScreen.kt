@@ -58,14 +58,6 @@ import com.nexusai.core.ui.theme.NexusTextSecondary
 import com.nexusai.core.ui.theme.NexusTextTertiary
 import com.nexusai.domain.model.AIAgent
 
-data class AgentsUiState(
-    val agents: List<AIAgent> = emptyList(),
-    val showCreateDialog: Boolean = false,
-    val newAgentName: String = "",
-    val newAgentDescription: String = "",
-    val newAgentPrompt: String = ""
-)
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AgentsScreen(
