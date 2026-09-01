@@ -1,17 +1,18 @@
 package com.nexusai.app.ui
 
 import androidx.lifecycle.ViewModel
-import com.nexusai.domain.common.AppDataManager
+import androidx.lifecycle.viewModelScope
+import com.nexusai.data.common.AppDataManager
 import com.nexusai.domain.model.AIAgent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class AgentsUiState(
     val agents: List<AIAgent> = emptyList(),
-    val showCreateDialog: Boolean = false,
     val newAgentName: String = "",
     val newAgentDescription: String = "",
     val newAgentPrompt: String = ""
@@ -26,8 +27,11 @@ class AgentsViewModel @Inject constructor(
     val uiState: StateFlow<AgentsUiState> = _uiState.asStateFlow()
 
     init {
-        val currentAgents = appDataManager.agents.value
-        _uiState.value = _uiState.value.copy(agents = currentAgents)
+        viewModelScope.launch {
+            appDataManager.agents.collect { agents ->
+                _uiState.value = _uiState.value.copy(agents = agents)
+            }
+        }
     }
 
     fun setNewAgentName(name: String) {
@@ -46,34 +50,32 @@ class AgentsViewModel @Inject constructor(
         val state = _uiState.value
         if (state.newAgentName.isBlank() || state.newAgentPrompt.isBlank()) return
 
-        val agent = AIAgent(
-            id = System.currentTimeMillis().toString(),
-            name = state.newAgentName,
-            description = state.newAgentDescription,
-            systemPrompt = state.newAgentPrompt
-        )
-
-        appDataManager.addAgent(agent)
-        _uiState.value = state.copy(
-            agents = appDataManager.agents.value,
-            newAgentName = "",
-            newAgentDescription = "",
-            newAgentPrompt = ""
-        )
+        viewModelScope.launch {
+            val agent = AIAgent(
+                id = System.currentTimeMillis().toString(),
+                name = state.newAgentName,
+                description = state.newAgentDescription,
+                systemPrompt = state.newAgentPrompt
+            )
+            appDataManager.addAgent(agent)
+            _uiState.value = _uiState.value.copy(
+                newAgentName = "",
+                newAgentDescription = "",
+                newAgentPrompt = ""
+            )
+        }
     }
 
     fun toggleAgent(id: String) {
-        val agent = appDataManager.agents.value.find { it.id == id } ?: return
-        appDataManager.updateAgent(agent.copy(isActive = !agent.isActive))
-        _uiState.value = _uiState.value.copy(
-            agents = appDataManager.agents.value
-        )
+        val agent = _uiState.value.agents.find { it.id == id } ?: return
+        viewModelScope.launch {
+            appDataManager.updateAgent(agent.copy(isActive = !agent.isActive))
+        }
     }
 
     fun deleteAgent(id: String) {
-        appDataManager.removeAgent(id)
-        _uiState.value = _uiState.value.copy(
-            agents = appDataManager.agents.value
-        )
+        viewModelScope.launch {
+            appDataManager.removeAgent(id)
+        }
     }
 }

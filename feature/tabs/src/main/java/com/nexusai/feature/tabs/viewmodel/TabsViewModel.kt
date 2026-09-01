@@ -10,7 +10,7 @@ import com.nexusai.domain.model.MessageRole
 import com.nexusai.domain.model.Tab
 import com.nexusai.domain.repository.AIProviderRepository
 import com.nexusai.domain.repository.TabRepository
-import com.nexusai.domain.common.AppDataManager
+import com.nexusai.data.common.AppDataManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

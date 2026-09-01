@@ -52,6 +52,12 @@ object DatabaseModule {
 
     @Provides
     fun provideAIProviderDao(database: AppDatabase): AIProviderDao = database.aiProviderDao()
+
+    @Provides
+    fun provideAgentDao(database: AppDatabase): AgentDao = database.agentDao()
+
+    @Provides
+    fun provideMemoryEntryDao(database: AppDatabase): MemoryEntryDao = database.memoryEntryDao()
 }
 
 @Module

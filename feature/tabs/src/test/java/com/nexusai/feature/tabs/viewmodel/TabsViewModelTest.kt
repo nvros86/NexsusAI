@@ -1,7 +1,7 @@
 package com.nexusai.feature.tabs.viewmodel
 
 import com.nexusai.data.ai.AIProviderManager
-import com.nexusai.domain.common.AppDataManager
+import com.nexusai.data.common.AppDataManager
 import com.nexusai.domain.model.AIProviderConfig
 import com.nexusai.domain.model.Tab
 import com.nexusai.domain.repository.AIProviderRepository
@@ -51,7 +51,12 @@ class TabsViewModelTest {
         tabRepository = mockk(relaxed = true)
         aiProviderRepository = mockk(relaxed = true)
         aiProviderManager = mockk(relaxed = true)
-        appDataManager = AppDataManager()
+
+        val fakeAgentDao = mockk<com.nexusai.data.local.AgentDao>(relaxed = true)
+        every { fakeAgentDao.getAllAgents() } returns flowOf(emptyList())
+        val fakeMemoryDao = mockk<com.nexusai.data.local.MemoryEntryDao>(relaxed = true)
+        every { fakeMemoryDao.getAllEntries() } returns flowOf(emptyList())
+        appDataManager = AppDataManager(fakeAgentDao, fakeMemoryDao)
 
         every { tabRepository.getAllTabs() } returns tabsFlow
         every { aiProviderRepository.getAllProviders() } returns providersFlow
