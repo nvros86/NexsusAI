@@ -507,6 +507,7 @@ private fun AddServerDialog(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun LocalAIChatDialog(
     config: LocalAIConfig,
