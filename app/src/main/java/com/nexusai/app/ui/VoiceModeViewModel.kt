@@ -149,9 +149,18 @@ class VoiceModeViewModel @Inject constructor(
     private suspend fun generateResponse(provider: AIProviderConfig, query: String): String {
         val aiProvider = aiProviderManager.getProvider(provider)
         val model = provider.defaultModel.ifEmpty { provider.models.firstOrNull() ?: "default" }
-        val chatMessages = listOf(
-            ChatMessage(role = MessageRole.USER, content = query)
-        )
+
+        val chatMessages = mutableListOf<ChatMessage>()
+        _uiState.value.messages.forEach { msg ->
+            chatMessages.add(
+                ChatMessage(
+                    role = if (msg.isUser) MessageRole.USER else MessageRole.ASSISTANT,
+                    content = msg.text
+                )
+            )
+        }
+        chatMessages.add(ChatMessage(role = MessageRole.USER, content = query))
+
         val response = aiProvider.sendMessage(
             messages = chatMessages,
             model = model,

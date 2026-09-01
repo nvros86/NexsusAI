@@ -182,6 +182,7 @@ fun MarketplaceScreen(
     }
 
     showAddDialog?.let { provider ->
+        var apiKeyInput by remember { mutableStateOf("") }
         AlertDialog(
             onDismissRequest = { showAddDialog = null },
             title = {
@@ -204,16 +205,26 @@ fun MarketplaceScreen(
                         color = NexusTextTertiary,
                         style = MaterialTheme.typography.bodySmall
                     )
-                    Text(
-                        text = "Нужен API ключ для активации",
-                        color = NexusTextTertiary,
-                        style = MaterialTheme.typography.bodySmall
+                    Spacer(modifier = Modifier.height(8.dp))
+                    OutlinedTextField(
+                        value = apiKeyInput,
+                        onValueChange = { apiKeyInput = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        placeholder = { Text("API Key", color = NexusTextTertiary) },
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = NexusPurple,
+                            unfocusedBorderColor = NexusSurface,
+                            focusedContainerColor = NexusCard,
+                            unfocusedContainerColor = NexusCard
+                        ),
+                        shape = RoundedCornerShape(12.dp),
+                        singleLine = true
                     )
                 }
             },
             confirmButton = {
                 TextButton(onClick = {
-                    viewModel.addProvider(provider)
+                    viewModel.addProvider(provider, apiKeyInput)
                     showAddDialog = null
                 }) {
                     Text("Добавить", color = NexusPurple)

@@ -1,17 +1,34 @@
 package com.nexusai.app.ui
 
 import androidx.lifecycle.ViewModel
+import com.nexusai.core.common.AppDataManager
+import com.nexusai.domain.model.AIAgent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
+data class AgentsUiState(
+    val agents: List<AIAgent> = emptyList(),
+    val showCreateDialog: Boolean = false,
+    val newAgentName: String = "",
+    val newAgentDescription: String = "",
+    val newAgentPrompt: String = ""
+)
+
 @HiltViewModel
-class AgentsViewModel @Inject constructor() : ViewModel() {
+class AgentsViewModel @Inject constructor(
+    private val appDataManager: AppDataManager
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AgentsUiState())
     val uiState: StateFlow<AgentsUiState> = _uiState.asStateFlow()
+
+    init {
+        val currentAgents = appDataManager.agents.value
+        _uiState.value = _uiState.value.copy(agents = currentAgents)
+    }
 
     fun setNewAgentName(name: String) {
         _uiState.value = _uiState.value.copy(newAgentName = name)
@@ -36,8 +53,9 @@ class AgentsViewModel @Inject constructor() : ViewModel() {
             systemPrompt = state.newAgentPrompt
         )
 
+        appDataManager.addAgent(agent)
         _uiState.value = state.copy(
-            agents = state.agents + agent,
+            agents = appDataManager.agents.value,
             newAgentName = "",
             newAgentDescription = "",
             newAgentPrompt = ""
@@ -45,16 +63,17 @@ class AgentsViewModel @Inject constructor() : ViewModel() {
     }
 
     fun toggleAgent(id: String) {
+        val agent = appDataManager.agents.value.find { it.id == id } ?: return
+        appDataManager.updateAgent(agent.copy(isActive = !agent.isActive))
         _uiState.value = _uiState.value.copy(
-            agents = _uiState.value.agents.map {
-                if (it.id == id) it.copy(isActive = !it.isActive) else it
-            }
+            agents = appDataManager.agents.value
         )
     }
 
     fun deleteAgent(id: String) {
+        appDataManager.removeAgent(id)
         _uiState.value = _uiState.value.copy(
-            agents = _uiState.value.agents.filter { it.id != id }
+            agents = appDataManager.agents.value
         )
     }
 }

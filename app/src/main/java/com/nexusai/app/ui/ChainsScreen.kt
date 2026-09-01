@@ -55,7 +55,8 @@ import com.nexusai.domain.model.AutomationChain
 data class ChainsUiState(
     val chains: List<AutomationChain> = emptyList(),
     val isRunning: Boolean = false,
-    val runningChainId: String? = null
+    val runningChainId: String? = null,
+    val error: String? = null
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,6 +79,26 @@ fun ChainsScreen(
             },
             colors = TopAppBarDefaults.topAppBarColors(containerColor = NexusBackground)
         )
+
+        state.error?.let { error ->
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.errorContainer
+                ),
+                shape = RoundedCornerShape(12.dp),
+                onClick = { viewModel.clearError() }
+            ) {
+                Text(
+                    text = error,
+                    modifier = Modifier.padding(12.dp),
+                    color = MaterialTheme.colorScheme.onErrorContainer,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+        }
 
         if (state.chains.isEmpty()) {
             Box(

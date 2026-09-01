@@ -8,6 +8,7 @@ data class TabEntity(
     @PrimaryKey val id: String,
     val title: String,
     val aiProviderId: String?,
+    val agentId: String?,
     val messagesJson: String,
     val attachedFilesJson: String,
     val isActive: Boolean,

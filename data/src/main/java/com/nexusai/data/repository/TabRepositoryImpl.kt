@@ -48,6 +48,7 @@ class TabRepositoryImpl @Inject constructor(
         id = id,
         title = title,
         aiProviderId = aiProviderId,
+        agentId = agentId,
         messages = try {
             json.decodeFromString(messagesJson)
         } catch (e: Exception) {
@@ -67,6 +68,7 @@ class TabRepositoryImpl @Inject constructor(
         id = id,
         title = title,
         aiProviderId = aiProviderId,
+        agentId = agentId,
         messagesJson = json.encodeToString(messages),
         attachedFilesJson = json.encodeToString(attachedFiles),
         isActive = isActive,

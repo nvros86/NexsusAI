@@ -35,11 +35,15 @@ class ChainsViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(
                 isRunning = true,
-                runningChainId = chain.id
+                runningChainId = chain.id,
+                error = null
             )
             try {
                 chainRepository.runChain(chain)
-            } catch (_: Exception) {
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    error = "Ошибка: ${e.message ?: "Неизвестная ошибка"}"
+                )
             } finally {
                 _uiState.value = _uiState.value.copy(
                     isRunning = false,
@@ -47,6 +51,10 @@ class ChainsViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    fun clearError() {
+        _uiState.value = _uiState.value.copy(error = null)
     }
 
     fun deleteChain(id: String) {

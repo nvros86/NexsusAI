@@ -130,6 +130,17 @@ class SplitViewViewModel @Inject constructor(
                 results = finalResults,
                 isRunning = false
             )
+
+            val session = SplitSession(
+                id = System.currentTimeMillis().toString(),
+                query = state.query,
+                results = finalResults,
+                createdAt = System.currentTimeMillis()
+            )
+            _uiState.value = _uiState.value.copy(
+                sessions = _uiState.value.sessions + session,
+                selectedSession = session
+            )
         }
     }
 
@@ -141,8 +152,23 @@ class SplitViewViewModel @Inject constructor(
     }
 
     fun selectWinner(providerId: String) {
-        _uiState.value = _uiState.value.copy(
-            selectedSession = _uiState.value.selectedSession?.copy(selectedWinner = providerId)
-        )
+        val currentSession = _uiState.value.selectedSession
+        if (currentSession != null) {
+            _uiState.value = _uiState.value.copy(
+                selectedSession = currentSession.copy(selectedWinner = providerId)
+            )
+        } else {
+            val session = SplitSession(
+                id = System.currentTimeMillis().toString(),
+                query = _uiState.value.query,
+                results = _uiState.value.results,
+                selectedWinner = providerId,
+                createdAt = System.currentTimeMillis()
+            )
+            _uiState.value = _uiState.value.copy(
+                sessions = _uiState.value.sessions + session,
+                selectedSession = session
+            )
+        }
     }
 }

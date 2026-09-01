@@ -4,6 +4,7 @@ data class Tab(
     val id: String,
     val title: String,
     val aiProviderId: String? = null,
+    val agentId: String? = null,
     val messages: List<Message> = emptyList(),
     val attachedFiles: List<AttachedFile> = emptyList(),
     val isActive: Boolean = false,

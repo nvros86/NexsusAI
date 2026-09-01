@@ -55,15 +55,7 @@ import com.nexusai.core.ui.theme.NexusSurface
 import com.nexusai.core.ui.theme.NexusTextPrimary
 import com.nexusai.core.ui.theme.NexusTextSecondary
 import com.nexusai.core.ui.theme.NexusTextTertiary
-
-data class MemoryEntry(
-    val id: String,
-    val key: String,
-    val value: String,
-    val isImportant: Boolean = false,
-    val createdAt: Long = System.currentTimeMillis(),
-    val updatedAt: Long = System.currentTimeMillis()
-)
+import com.nexusai.domain.model.MemoryEntry
 
 data class MemoryUiState(
     val entries: List<MemoryEntry> = emptyList(),

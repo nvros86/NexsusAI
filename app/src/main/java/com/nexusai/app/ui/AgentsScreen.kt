@@ -56,15 +56,7 @@ import com.nexusai.core.ui.theme.NexusSurface
 import com.nexusai.core.ui.theme.NexusTextPrimary
 import com.nexusai.core.ui.theme.NexusTextSecondary
 import com.nexusai.core.ui.theme.NexusTextTertiary
-
-data class AIAgent(
-    val id: String,
-    val name: String,
-    val description: String,
-    val systemPrompt: String,
-    val isActive: Boolean = true,
-    val createdAt: Long = System.currentTimeMillis()
-)
+import com.nexusai.domain.model.AIAgent
 
 data class AgentsUiState(
     val agents: List<AIAgent> = emptyList(),

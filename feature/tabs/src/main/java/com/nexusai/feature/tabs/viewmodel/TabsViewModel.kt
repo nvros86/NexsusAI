@@ -10,6 +10,7 @@ import com.nexusai.domain.model.MessageRole
 import com.nexusai.domain.model.Tab
 import com.nexusai.domain.repository.AIProviderRepository
 import com.nexusai.domain.repository.TabRepository
+import com.nexusai.core.common.AppDataManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,7 +40,8 @@ data class ChatUiState(
 class TabsViewModel @Inject constructor(
     private val tabRepository: TabRepository,
     private val aiProviderRepository: AIProviderRepository,
-    private val aiProviderManager: AIProviderManager
+    private val aiProviderManager: AIProviderManager,
+    private val appDataManager: AppDataManager
 ) : ViewModel() {
 
     private val _tabsState = MutableStateFlow(TabsUiState())
@@ -130,6 +132,13 @@ class TabsViewModel @Inject constructor(
         }
     }
 
+    fun setTabAgent(tabId: String, agentId: String?) {
+        viewModelScope.launch {
+            val tab = tabRepository.getTabById(tabId) ?: return@launch
+            tabRepository.updateTab(tab.copy(agentId = agentId))
+        }
+    }
+
     fun updateInput(tabId: String, text: String) {
         updateChatState(tabId) { it.copy(inputText = text) }
     }
@@ -187,7 +196,39 @@ class TabsViewModel @Inject constructor(
 
             try {
                 val provider = aiProviderManager.getProvider(providerConfig)
-                val chatMessages = chatState.messages.map {
+                val tab = tabRepository.getTabById(tabId)
+
+                val systemPromptParts = mutableListOf<String>()
+
+                val agentPrompt = appDataManager.getActiveAgentSystemPrompt()
+                if (agentPrompt != null) {
+                    systemPromptParts.add("System Instructions:\n$agentPrompt")
+                }
+
+                val memoryContext = appDataManager.getMemoryContext()
+                if (memoryContext != null) {
+                    systemPromptParts.add("User Context (from memory):\n$memoryContext")
+                }
+
+                val providerSystemPrompt = providerConfig.systemPrompt
+                if (providerSystemPrompt.isNotBlank()) {
+                    systemPromptParts.add(providerSystemPrompt)
+                }
+
+                val fullSystemPrompt = systemPromptParts.joinToString("\n\n")
+
+                val chatMessages = mutableListOf<com.nexusai.domain.ai.ChatMessage>()
+
+                if (fullSystemPrompt.isNotBlank()) {
+                    chatMessages.add(
+                        com.nexusai.domain.ai.ChatMessage(
+                            role = com.nexusai.domain.ai.MessageRole.SYSTEM,
+                            content = fullSystemPrompt
+                        )
+                    )
+                }
+
+                chatState.messages.map {
                     com.nexusai.domain.ai.ChatMessage(
                         role = when (it.role) {
                             MessageRole.USER -> com.nexusai.domain.ai.MessageRole.USER
@@ -196,9 +237,13 @@ class TabsViewModel @Inject constructor(
                         },
                         content = it.content
                     )
-                } + com.nexusai.domain.ai.ChatMessage(
-                    role = com.nexusai.domain.ai.MessageRole.USER,
-                    content = text.ifEmpty { "Attached file(s)" }
+                }.forEach { chatMessages.add(it) }
+
+                chatMessages.add(
+                    com.nexusai.domain.ai.ChatMessage(
+                        role = com.nexusai.domain.ai.MessageRole.USER,
+                        content = text.ifEmpty { "Attached file(s)" }
+                    )
                 )
 
                 val assistantMessageId = UUID.randomUUID().toString()

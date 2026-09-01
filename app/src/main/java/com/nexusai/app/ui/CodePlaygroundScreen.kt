@@ -37,6 +37,8 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import kotlinx.coroutines.delay
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -131,6 +133,11 @@ fun CodePlaygroundScreen(
     var js by remember { mutableStateOf(DEFAULT_JS) }
     var activeTab by remember { mutableIntStateOf(0) }
     var previewHtml by remember { mutableStateOf(buildPreview(html, css, js)) }
+
+    LaunchedEffect(html, css, js) {
+        delay(500)
+        previewHtml = buildPreview(html, css, js)
+    }
 
     val tabs = listOf("HTML", "CSS", "JS")
 

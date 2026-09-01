@@ -1,6 +1,7 @@
 package com.nexusai.feature.tabs.viewmodel
 
 import com.nexusai.data.ai.AIProviderManager
+import com.nexusai.core.common.AppDataManager
 import com.nexusai.domain.model.AIProviderConfig
 import com.nexusai.domain.model.Tab
 import com.nexusai.domain.repository.AIProviderRepository
@@ -32,6 +33,7 @@ class TabsViewModelTest {
     private lateinit var tabRepository: TabRepository
     private lateinit var aiProviderRepository: AIProviderRepository
     private lateinit var aiProviderManager: AIProviderManager
+    private lateinit var appDataManager: AppDataManager
     private lateinit var viewModel: TabsViewModel
 
     private val tabsFlow = MutableStateFlow<List<Tab>>(emptyList())
@@ -49,13 +51,14 @@ class TabsViewModelTest {
         tabRepository = mockk(relaxed = true)
         aiProviderRepository = mockk(relaxed = true)
         aiProviderManager = mockk(relaxed = true)
+        appDataManager = AppDataManager()
 
         every { tabRepository.getAllTabs() } returns tabsFlow
         every { aiProviderRepository.getAllProviders() } returns providersFlow
         coEvery { tabRepository.createTab(any()) } returns createTab()
         coEvery { tabRepository.getTabById(any()) } returns createTab()
 
-        viewModel = TabsViewModel(tabRepository, aiProviderRepository, aiProviderManager)
+        viewModel = TabsViewModel(tabRepository, aiProviderRepository, aiProviderManager, appDataManager)
     }
 
     @After

@@ -71,14 +71,14 @@ class MarketplaceViewModel @Inject constructor(
         }
     }
 
-    fun addProvider(preset: MarketplaceProvider) {
+    fun addProvider(preset: MarketplaceProvider, apiKey: String = "") {
         viewModelScope.launch {
             val provider = AIProviderConfig(
                 id = UUID.randomUUID().toString(),
                 name = preset.name,
                 type = preset.type,
                 baseUrl = preset.baseUrl,
-                apiKey = "",
+                apiKey = apiKey,
                 models = preset.models,
                 defaultModel = preset.defaultModel,
                 maxTokens = preset.maxTokens,
