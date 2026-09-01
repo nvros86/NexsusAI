@@ -291,9 +291,9 @@ class TabsViewModel @Inject constructor(
                 }
 
                 // Save messages to database
-                val tab = tabRepository.getTabById(tabId)
-                if (tab != null) {
-                    tabRepository.updateTab(tab.copy(messages = updatedMessages))
+                val currentTab = tabRepository.getTabById(tabId)
+                if (currentTab != null) {
+                    tabRepository.updateTab(currentTab.copy(messages = updatedMessages))
                 }
             } catch (e: Exception) {
                 val errorMessage = Message(
@@ -310,9 +310,9 @@ class TabsViewModel @Inject constructor(
                 }
 
                 // Save messages to database even on error
-                val tab = tabRepository.getTabById(tabId)
-                if (tab != null) {
-                    tabRepository.updateTab(tab.copy(messages = updatedMessages))
+                val errorTab = tabRepository.getTabById(tabId)
+                if (errorTab != null) {
+                    tabRepository.updateTab(errorTab.copy(messages = updatedMessages))
                 }
             }
         }
