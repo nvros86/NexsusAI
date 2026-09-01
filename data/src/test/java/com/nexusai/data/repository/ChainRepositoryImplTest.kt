@@ -27,9 +27,10 @@ class ChainRepositoryImplTest {
         val fakeProviderRepo = object : com.nexusai.domain.repository.AIProviderRepository {
             override fun getAllProviders() = kotlinx.coroutines.flow.flowOf(emptyList<com.nexusai.domain.model.AIProviderConfig>())
             override suspend fun getProviderById(id: String) = null
-            override suspend fun saveProvider(provider: com.nexusai.domain.model.AIProviderConfig) {}
-            override suspend fun deleteProvider(id: String) {}
+            override suspend fun addProvider(provider: com.nexusai.domain.model.AIProviderConfig) {}
             override suspend fun updateProvider(provider: com.nexusai.domain.model.AIProviderConfig) {}
+            override suspend fun deleteProvider(id: String) {}
+            override suspend fun getFavoriteProviders() = emptyList<com.nexusai.domain.model.AIProviderConfig>()
         }
         val fakeManager = io.mockk.mockk<com.nexusai.data.ai.AIProviderManager>()
         repository = ChainRepositoryImpl(fakeProviderRepo, fakeManager)
