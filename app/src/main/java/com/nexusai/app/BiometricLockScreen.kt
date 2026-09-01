@@ -1,6 +1,5 @@
 package com.nexusai.app
 
-import androidx.activity.compose.rememberComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
