@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexusai.data.ai.AIProviderManager
 import com.nexusai.domain.model.AIProviderConfig
+import com.nexusai.domain.model.ProviderType
 import com.nexusai.domain.repository.AIProviderRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -51,7 +52,7 @@ class ImageViewModel @Inject constructor(
                 var openAIProvider: AIProviderConfig? = null
                 providers.collect { list ->
                     openAIProvider = list.firstOrNull {
-                        it.apiKey.isNotEmpty() && it.type == "OPENAI" && it.supportsImages
+                        it.apiKey.isNotEmpty() && it.type == ProviderType.OPENAI && it.supportsImages
                     }
                     return@collect
                 }
