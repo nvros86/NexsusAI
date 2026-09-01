@@ -3,15 +3,18 @@ package com.nexusai.app.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexusai.data.ai.AIProviderManager
-import com.nexusai.domain.ai.ChatMessage
-import com.nexusai.domain.ai.MessageRole
 import com.nexusai.domain.model.AIProviderConfig
 import com.nexusai.domain.repository.AIProviderRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.net.HttpURLConnection
+import java.net.URL
+import java.net.URLEncoder
 import javax.inject.Inject
 
 @HiltViewModel
@@ -45,48 +48,115 @@ class ImageViewModel @Inject constructor(
 
             try {
                 val providers = providerRepository.getAllProviders()
-                var provider: AIProviderConfig? = null
+                var openAIProvider: AIProviderConfig? = null
                 providers.collect { list ->
-                    provider = list.firstOrNull { it.apiKey.isNotEmpty() }
+                    openAIProvider = list.firstOrNull {
+                        it.apiKey.isNotEmpty() && it.type == "OPENAI" && it.supportsImages
+                    }
                     return@collect
                 }
 
-                if (provider != null) {
-                    val aiProvider = aiProviderManager.getProvider(provider!!)
-                    val model = provider!!.defaultModel.ifEmpty { provider!!.models.firstOrNull() ?: "default" }
-                    val messages = listOf(
-                        ChatMessage(
-                            role = MessageRole.USER,
-                            content = "Сгенерируй URL изображения по описанию: $prompt. Ответь только URL или placeholder."
-                        )
-                    )
-                    val response = aiProvider.sendMessage(
-                        messages = messages,
-                        model = model,
-                        maxTokens = 512
-                    )
-
-                    val imageUrl = response.content.trim().let {
-                        if (it.startsWith("http")) it else null
-                    }
-
-                    _uiState.value = _uiState.value.copy(
-                        images = _uiState.value.images.map {
-                            if (it.id == newImage.id) it.copy(url = imageUrl) else it
-                        },
-                        isGenerating = false
-                    )
+                if (openAIProvider != null) {
+                    generateWithDALLE(openAIProvider!!, prompt, newImage.id)
                 } else {
-                    _uiState.value = _uiState.value.copy(
-                        error = "Нет доступных провайдеров",
-                        isGenerating = false
-                    )
+                    generateWithPollinations(prompt, newImage.id)
                 }
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
-                    error = e.message,
+                    error = "Ошибка: ${e.message}",
                     isGenerating = false
                 )
+            }
+        }
+    }
+
+    private suspend fun generateWithDALLE(
+        provider: AIProviderConfig,
+        prompt: String,
+        imageId: String
+    ) {
+        withContext(Dispatchers.IO) {
+            try {
+                val url = URL("https://api.openai.com/v1/images/generations")
+                val connection = url.openConnection() as HttpURLConnection
+                connection.requestMethod = "POST"
+                connection.setRequestProperty("Authorization", "Bearer ${provider.apiKey}")
+                connection.setRequestProperty("Content-Type", "application/json")
+                connection.doOutput = true
+                connection.connectTimeout = 60000
+                connection.readTimeout = 60000
+
+                val body = """{"model":"dall-e-3","prompt":"$prompt","n":1,"size":"1024x1024"}"""
+                connection.outputStream.write(body.toByteArray())
+
+                if (connection.responseCode == 200) {
+                    val response = connection.inputStream.bufferedReader().readText()
+                    val imageUrl = Regex("\"url\":\"(.*?)\"").find(response)?.groupValues?.get(1)
+
+                    withContext(Dispatchers.Main) {
+                        _uiState.value = _uiState.value.copy(
+                            images = _uiState.value.images.map {
+                                if (it.id == imageId) it.copy(url = imageUrl) else it
+                            },
+                            isGenerating = false
+                        )
+                    }
+                } else {
+                    withContext(Dispatchers.Main) {
+                        _uiState.value = _uiState.value.copy(
+                            error = "DALL-E API: ошибка ${connection.responseCode}",
+                            isGenerating = false
+                        )
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    _uiState.value = _uiState.value.copy(
+                        error = "DALL-E: ${e.message}",
+                        isGenerating = false
+                    )
+                }
+            }
+        }
+    }
+
+    private suspend fun generateWithPollinations(prompt: String, imageId: String) {
+        withContext(Dispatchers.IO) {
+            try {
+                val encodedPrompt = URLEncoder.encode(prompt, "UTF-8")
+                val imageUrl = "https://image.pollinations.ai/prompt/$encodedPrompt?width=1024&height=1024&nologo=true"
+
+                val connection = URL(imageUrl).openConnection() as HttpURLConnection
+                connection.requestMethod = "GET"
+                connection.connectTimeout = 30000
+                connection.readTimeout = 30000
+                connection.instanceFollowRedirects = true
+
+                val responseCode = connection.responseCode
+                if (responseCode == 200) {
+                    withContext(Dispatchers.Main) {
+                        _uiState.value = _uiState.value.copy(
+                            images = _uiState.value.images.map {
+                                if (it.id == imageId) it.copy(url = imageUrl) else it
+                            },
+                            isGenerating = false
+                        )
+                    }
+                } else {
+                    withContext(Dispatchers.Main) {
+                        _uiState.value = _uiState.value.copy(
+                            error = "Pollinations: ошибка $responseCode",
+                            isGenerating = false
+                        )
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    _uiState.value = _uiState.value.copy(
+                        error = "Ошибка: ${e.message}",
+                        isGenerating = false
+                    )
+                }
             }
         }
     }
