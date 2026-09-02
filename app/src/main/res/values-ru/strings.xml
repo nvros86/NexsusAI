@@ -249,6 +249,80 @@
     <string name="ai_provider_streaming">Streaming</string>
     <string name="ai_provider_loading">Загрузка\u2026</string>
 
+    <!-- Local AI -->
+    <string name="local_ai_title">Local AI</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Главная</string>
+    <string name="nav_chat">Чат</string>
+    <string name="nav_code">Код</string>
+    <string name="nav_image">Изображение</string>
+    <string name="nav_video">Видео</string>
+    <string name="nav_agents">Агенты</string>
+    <string name="nav_files">Файлы</string>
+    <string name="nav_memory">Память</string>
+    <string name="nav_templates">Шаблоны</string>
+    <string name="nav_export">Экспорт</string>
+    <string name="nav_marketplace">Маркетплейс</string>
+    <string name="nav_prompts">Промпты</string>
+    <string name="nav_modules">Модули</string>
+    <string name="nav_settings">Настройки</string>
+    <string name="nav_ai_provider">AI Провайдер</string>
+    <string name="nav_chains">Цепочки</string>
+    <string name="nav_chain">Цепочка</string>
+    <string name="nav_plugins">Плагины</string>
+
+    <!-- Export -->
+    <string name="export_format_markdown">Markdown</string>
+    <string name="export_format_txt">Текстовый файл</string>
+    <string name="export_format_json">JSON</string>
+    <string name="export_format_html">HTML</string>
+    <string name="export_share_chooser">Поделиться экспортом</string>
+    <string name="export_footer_md">Экспортировано из NexsusAI</string>
+    <string name="export_footer_html">Экспортировано из NexsusAI</string>
+    <string name="export_role_user">Пользователь</string>
+    <string name="export_role_assistant">Ассистент</string>
+    <string name="export_role_system">Система</string>
+    <string name="export_attachments">Вложения:</string>
+
+    <!-- Voice Mode -->
+    <string name="voice_no_providers">Нет доступных провайдеров. Добавьте API-ключ в настройках.</string>
+
+    <!-- Video Generation -->
+    <string name="video_not_supported">Генерация видео пока не поддерживается. Используйте Automation Chains для создания видеоконтента через AI.</string>
+
+    <!-- Error messages -->
+    <string name="error_chain_run">Ошибка: %1$s</string>
+    <string name="error_chain_run_unknown">Ошибка: Неизвестная ошибка</string>
+    <string name="error_agent_create">Ошибка создания агента: %1$s</string>
+    <string name="error_agent_update">Ошибка обновления агента: %1$s</string>
+    <string name="error_agent_delete">Ошибка удаления агента: %1$s</string>
+    <string name="error_provider_add">Ошибка добавления провайдера: %1$s</string>
+    <string name="error_export">Ошибка экспорта: %1$s</string>
+    <string name="error_memory_add">Ошибка добавления записи: %1$s</string>
+    <string name="error_memory_update">Ошибка обновления записи: %1$s</string>
+    <string name="error_memory_delete">Ошибка удаления записи: %1$s</string>
+    <string name="error_memory_clear">Ошибка очистки памяти: %1$s</string>
+    <string name="error_plugin_execute">Ошибка: %1$s</string>
+    <string name="error_image_general">Ошибка: %1$s</string>
+    <string name="error_image_dalle_api">DALL-E API: ошибка %1$d</string>
+    <string name="error_image_pollinations">Pollinations: ошибка %1$d</string>
+    <string name="error_image_dalle">DALL-E: %1$s</string>
+
+    <!-- Code Playground -->
+    <string name="playground_title">Code Playground</string>
+    <string name="playground_back">Назад</string>
+    <string name="playground_refresh">Обновить</string>
+
+    <!-- Biometric -->
+    <string name="biometric_auth_title">Аутентификация</string>
+    <string name="biometric_auth_subtitle">Подтвердите свою личность</string>
+    <string name="biometric_auth_unavailable">Биометрическая аутентификация недоступна</string>
+    <string name="biometric_cancel">Отмена</string>
+
+    <!-- Chain default name -->
+    <string name="chain_default_name">Цепочка</string>
+
     <!-- Team Workspaces -->
     <string name="workspaces_title">Team Workspaces</string>
     <string name="workspaces_empty">Нет workspace</string>

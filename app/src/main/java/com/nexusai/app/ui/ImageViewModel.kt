@@ -1,7 +1,9 @@
 package com.nexusai.app.ui
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.nexusai.app.R
 import com.nexusai.data.ai.AIProviderManager
 import com.nexusai.domain.model.AIProviderConfig
 import com.nexusai.domain.model.ProviderType
@@ -20,9 +22,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ImageViewModel @Inject constructor(
+    application: Application,
     private val providerRepository: AIProviderRepository,
     private val aiProviderManager: AIProviderManager
-) : ViewModel() {
+) : AndroidViewModel(application) {
 
     private val _uiState = MutableStateFlow(ImageGenUiState())
     val uiState: StateFlow<ImageGenUiState> = _uiState.asStateFlow()
@@ -64,7 +67,7 @@ class ImageViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
-                    error = "Ошибка: ${e.message}",
+                    error = getApplication<Application>().getString(R.string.error_image_general, e.message ?: ""),
                     isGenerating = false
                 )
             }
@@ -105,7 +108,7 @@ class ImageViewModel @Inject constructor(
                 } else {
                     withContext(Dispatchers.Main) {
                         _uiState.value = _uiState.value.copy(
-                            error = "DALL-E API: ошибка ${connection.responseCode}",
+                            error = getApplication<Application>().getString(R.string.error_image_dalle_api, connection.responseCode),
                             isGenerating = false
                         )
                     }
@@ -113,7 +116,7 @@ class ImageViewModel @Inject constructor(
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     _uiState.value = _uiState.value.copy(
-                        error = "DALL-E: ${e.message}",
+                        error = getApplication<Application>().getString(R.string.error_image_dalle, e.message ?: ""),
                         isGenerating = false
                     )
                 }
@@ -146,7 +149,7 @@ class ImageViewModel @Inject constructor(
                 } else {
                     withContext(Dispatchers.Main) {
                         _uiState.value = _uiState.value.copy(
-                            error = "Pollinations: ошибка $responseCode",
+                            error = getApplication<Application>().getString(R.string.error_image_pollinations, responseCode),
                             isGenerating = false
                         )
                     }
@@ -154,7 +157,7 @@ class ImageViewModel @Inject constructor(
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     _uiState.value = _uiState.value.copy(
-                        error = "Ошибка: ${e.message}",
+                        error = getApplication<Application>().getString(R.string.error_image_general, e.message ?: ""),
                         isGenerating = false
                     )
                 }

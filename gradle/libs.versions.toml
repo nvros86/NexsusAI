@@ -7,13 +7,11 @@ compose-bom = "2024.12.01"
 lifecycle = "2.8.7"
 navigation = "2.8.5"
 room = "2.6.1"
-retrofit = "2.11.0"
-okhttp = "4.12.0"
 ktor = "3.0.3"
 serialization = "1.7.3"
 coroutines = "1.9.0"
 datastore = "1.1.1"
-coil = "2.7.0"
+coil = "3.0.4"
 activity-compose = "1.9.3"
 documentfile = "1.0.1"
 core-ktx = "1.15.0"
@@ -22,13 +20,15 @@ junit-ext = "1.2.1"
 espresso = "3.6.1"
 androidx-test = "1.6.2"
 mockk = "1.13.10"
-biometric = "1.2.0-alpha05"
+biometric = "1.2.0-alpha06"
+splashscreen = "1.0.1"
 javax-inject = "1"
 
 [libraries]
 # Core
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+androidx-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }
 
 # Compose
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
@@ -58,10 +58,6 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 
 # Network
-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
-retrofit-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
-okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
-okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 ktor-client = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-content = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
@@ -78,7 +74,7 @@ coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutin
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 
 # Image loading
-coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+coil-compose = { group = "io.coil", name = "coil-compose", version.ref = "coil" }
 documentfile = { group = "androidx.documentfile", name = "documentfile", version.ref = "documentfile" }
 
 # Testing

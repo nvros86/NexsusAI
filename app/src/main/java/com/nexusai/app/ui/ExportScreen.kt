@@ -146,7 +146,7 @@ fun ExportScreen(
                         if (isSelected) {
                             Icon(
                                 imageVector = Icons.Default.CheckCircle,
-                                contentDescription = "Выбрано",
+                                contentDescription = stringResource(R.string.label_selected),
                                 tint = NexusPurple,
                                 modifier = Modifier.size(24.dp)
                             )
@@ -192,7 +192,7 @@ fun ExportScreen(
                             Spacer(modifier = Modifier.width(12.dp))
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    text = format.displayName,
+                                    text = stringResource(format.displayNameRes),
                                     color = NexusTextPrimary,
                                     style = MaterialTheme.typography.bodyLarge
                                 )

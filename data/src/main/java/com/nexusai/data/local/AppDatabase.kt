@@ -6,7 +6,7 @@ import androidx.room.RoomDatabase
 @Database(
     entities = [TabEntity::class, AIProviderEntity::class, AgentEntity::class, MemoryEntryEntity::class],
     version = 3,
-    exportSchema = false // TODO: Set to true before v1.0.0 stable release
+    exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun tabDao(): TabDao

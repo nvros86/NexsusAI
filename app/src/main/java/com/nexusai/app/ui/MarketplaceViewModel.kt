@@ -1,7 +1,9 @@
 package com.nexusai.app.ui
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.nexusai.app.R
 import com.nexusai.domain.model.AIProviderConfig
 import com.nexusai.domain.model.MarketplaceProvider
 import com.nexusai.domain.repository.AIProviderRepository
@@ -25,9 +27,10 @@ data class MarketplaceUiState(
 
 @HiltViewModel
 class MarketplaceViewModel @Inject constructor(
+    application: Application,
     private val marketplaceRepository: MarketplaceRepository,
     private val aiProviderRepository: AIProviderRepository
-) : ViewModel() {
+) : AndroidViewModel(application) {
 
     private val _uiState = MutableStateFlow(MarketplaceUiState())
     val uiState: StateFlow<MarketplaceUiState> = _uiState.asStateFlow()
@@ -96,7 +99,9 @@ class MarketplaceViewModel @Inject constructor(
                 marketplaceRepository.markAsAdded(preset.id)
                 _uiState.value = _uiState.value.copy(addedProviderName = preset.name)
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(error = "Ошибка добавления провайдера: ${e.message}")
+                _uiState.value = _uiState.value.copy(
+                    error = getApplication<Application>().getString(R.string.error_provider_add, e.message ?: "")
+                )
             }
         }
     }

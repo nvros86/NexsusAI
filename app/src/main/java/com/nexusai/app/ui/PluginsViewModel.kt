@@ -1,7 +1,9 @@
 package com.nexusai.app.ui
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.nexusai.app.R
 import com.nexusai.domain.model.NexsusPlugin
 import com.nexusai.domain.model.PluginCommand
 import com.nexusai.domain.repository.PluginRepository
@@ -14,8 +16,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PluginsViewModel @Inject constructor(
+    application: Application,
     private val pluginRepository: PluginRepository
-) : ViewModel() {
+) : AndroidViewModel(application) {
 
     private val _uiState = MutableStateFlow(PluginsUiState())
     val uiState: StateFlow<PluginsUiState> = _uiState.asStateFlow()
@@ -78,13 +81,13 @@ class PluginsViewModel @Inject constructor(
                     lastResult = if (result.success) {
                         result.output
                     } else {
-                        "Ошибка: ${result.error}"
+                        getApplication<Application>().getString(R.string.error_plugin_execute, result.error ?: "")
                     }
                 )
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isExecuting = false,
-                    lastResult = "Ошибка: ${e.message}"
+                    lastResult = getApplication<Application>().getString(R.string.error_plugin_execute, e.message ?: "")
                 )
             }
         }

@@ -51,10 +51,6 @@ object DatabaseModule {
             AppConstants.DATABASE_NAME
         )
             .addMigrations(*ALL_MIGRATIONS)
-            // TODO: Remove fallbackToDestructiveMigration before v1.0.0 stable release
-            // Currently kept for beta — users expect data loss on schema changes.
-            // After v1.0.0, only use .addMigrations() and remove the line below.
-            .fallbackToDestructiveMigration()
             .build()
     }
 

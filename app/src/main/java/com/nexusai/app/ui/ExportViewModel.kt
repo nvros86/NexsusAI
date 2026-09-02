@@ -1,11 +1,13 @@
 package com.nexusai.app.ui
 
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.core.content.FileProvider
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.nexusai.app.R
 import com.nexusai.domain.model.Message
 import com.nexusai.domain.model.MessageRole
 import com.nexusai.domain.model.Tab
@@ -28,11 +30,11 @@ import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
 
-enum class ExportFormat(val displayName: String, val extension: String, val mimeType: String) {
-    MARKDOWN("Markdown", ".md", "text/markdown"),
-    TXT("Текстовый файл", ".txt", "text/plain"),
-    JSON("JSON", ".json", "application/json"),
-    HTML("HTML", ".html", "text/html")
+enum class ExportFormat(val extension: String, val mimeType: String, val displayNameRes: Int) {
+    MARKDOWN(".md", "text/markdown", R.string.export_format_markdown),
+    TXT(".txt", "text/plain", R.string.export_format_txt),
+    JSON(".json", "application/json", R.string.export_format_json),
+    HTML(".html", "text/html", R.string.export_format_html)
 }
 
 data class ExportUiState(
@@ -46,8 +48,9 @@ data class ExportUiState(
 
 @HiltViewModel
 class ExportViewModel @Inject constructor(
+    application: Application,
     private val tabRepository: TabRepository
-) : ViewModel() {
+) : AndroidViewModel(application) {
 
     private val _uiState = MutableStateFlow(ExportUiState())
     val uiState: StateFlow<ExportUiState> = _uiState.asStateFlow()
@@ -103,7 +106,7 @@ class ExportViewModel @Inject constructor(
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isExporting = false,
-                    error = "Ошибка экспорта: ${e.message}"
+                    error = getApplication<Application>().getString(R.string.error_export, e.message ?: "")
                 )
             }
         }
@@ -120,7 +123,7 @@ class ExportViewModel @Inject constructor(
             putExtra(Intent.EXTRA_SUBJECT, "NexsusAI - ${tab.title}")
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
-        context.startActivity(Intent.createChooser(intent, "Поделиться экспортом"))
+        context.startActivity(Intent.createChooser(intent, getApplication<Application>().getString(R.string.export_share_chooser)))
     }
 
     fun clearExport() {
@@ -157,38 +160,40 @@ class ExportViewModel @Inject constructor(
     }
 
     private fun toMarkdown(tab: Tab): String = buildString {
+        val ctx = getApplication<Application>()
         appendLine("# ${tab.title}")
         appendLine()
-        appendLine("*Экспортировано из NexsusAI — ${SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault()).format(Date())}*")
+        appendLine("*${ctx.getString(R.string.export_footer_md)} — ${SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault()).format(Date())}*")
         appendLine()
         appendLine("---")
         appendLine()
         tab.messages.forEach { msg ->
             val role = when (msg.role) {
-                MessageRole.USER -> "👤 Пользователь"
-                MessageRole.ASSISTANT -> "🤖 Ассистент"
-                MessageRole.SYSTEM -> "⚙️ Система"
+                MessageRole.USER -> ctx.getString(R.string.export_role_user)
+                MessageRole.ASSISTANT -> ctx.getString(R.string.export_role_assistant)
+                MessageRole.SYSTEM -> ctx.getString(R.string.export_role_system)
             }
             appendLine("### $role")
             appendLine()
             appendLine(msg.content)
             appendLine()
             if (msg.attachments.isNotEmpty()) {
-                appendLine("**Вложения:** ${msg.attachments.joinToString(", ") { it.name }}")
+                appendLine("**${ctx.getString(R.string.export_attachments)}** ${msg.attachments.joinToString(", ") { it.name }}")
                 appendLine()
             }
         }
     }
 
     private fun toPlainText(tab: Tab): String = buildString {
+        val ctx = getApplication<Application>()
         appendLine("${tab.title}")
         appendLine("=".repeat(tab.title.length))
         appendLine()
         tab.messages.forEach { msg ->
             val role = when (msg.role) {
-                MessageRole.USER -> "Пользователь"
-                MessageRole.ASSISTANT -> "Ассистент"
-                MessageRole.SYSTEM -> "Система"
+                MessageRole.USER -> ctx.getString(R.string.export_role_user)
+                MessageRole.ASSISTANT -> ctx.getString(R.string.export_role_assistant)
+                MessageRole.SYSTEM -> ctx.getString(R.string.export_role_system)
             }
             appendLine("[$role]")
             appendLine(msg.content)
@@ -226,6 +231,7 @@ class ExportViewModel @Inject constructor(
     }
 
     private fun toHtml(tab: Tab): String = buildString {
+        val ctx = getApplication<Application>()
         appendLine("<!DOCTYPE html>")
         appendLine("<html lang=\"ru\">")
         appendLine("<head>")
@@ -245,7 +251,7 @@ class ExportViewModel @Inject constructor(
         appendLine("</head>")
         appendLine("<body>")
         appendLine("<h1>${tab.title}</h1>")
-        appendLine("<p><em>Экспортировано из NexsusAI</em></p>")
+        appendLine("<p><em>${ctx.getString(R.string.export_footer_html)}</em></p>")
         appendLine("<hr>")
 
         tab.messages.forEach { msg ->
@@ -255,9 +261,9 @@ class ExportViewModel @Inject constructor(
                 MessageRole.SYSTEM -> "user"
             }
             val roleLabel = when (msg.role) {
-                MessageRole.USER -> "Пользователь"
-                MessageRole.ASSISTANT -> "Ассистент"
-                MessageRole.SYSTEM -> "Система"
+                MessageRole.USER -> ctx.getString(R.string.export_role_user)
+                MessageRole.ASSISTANT -> ctx.getString(R.string.export_role_assistant)
+                MessageRole.SYSTEM -> ctx.getString(R.string.export_role_system)
             }
             appendLine("<div class=\"message $roleClass\">")
             appendLine("<div class=\"role\">$roleLabel</div>")

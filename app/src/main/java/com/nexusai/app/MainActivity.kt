@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.FragmentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -53,6 +54,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -93,6 +95,7 @@ class MainActivity : FragmentActivity() {
     private var isAuthenticated = mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
@@ -245,13 +248,13 @@ fun MainScreen(taskTemplateRepository: TaskTemplateRepository) {
                             icon = {
                                 Icon(
                                     screen.icon,
-                                    contentDescription = screen.title,
+                                    contentDescription = stringResource(screen.titleRes),
                                     modifier = Modifier.size(24.dp)
                                 )
                             },
                             label = {
                                 Text(
-                                    screen.title,
+                                    stringResource(screen.titleRes),
                                     fontSize = 10.sp
                                 )
                             },
@@ -360,13 +363,13 @@ private fun NavigationDrawerItem(
         icon = {
             Icon(
                 screen.icon,
-                contentDescription = screen.title,
+                contentDescription = stringResource(screen.titleRes),
                 modifier = Modifier.size(24.dp)
             )
         },
         label = {
             Text(
-                screen.title,
+                stringResource(screen.titleRes),
                 style = MaterialTheme.typography.bodyMedium
             )
         },

@@ -1,7 +1,9 @@
 package com.nexusai.app.ui
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.nexusai.app.R
 import com.nexusai.data.common.AppDataManager
 import com.nexusai.domain.model.AIAgent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,8 +23,9 @@ data class AgentsUiState(
 
 @HiltViewModel
 class AgentsViewModel @Inject constructor(
+    application: Application,
     private val appDataManager: AppDataManager
-) : ViewModel() {
+) : AndroidViewModel(application) {
 
     private val _uiState = MutableStateFlow(AgentsUiState())
     val uiState: StateFlow<AgentsUiState> = _uiState.asStateFlow()
@@ -66,7 +69,9 @@ class AgentsViewModel @Inject constructor(
                     newAgentPrompt = ""
                 )
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(error = "Ошибка создания агента: ${e.message}")
+                _uiState.value = _uiState.value.copy(
+                    error = getApplication<Application>().getString(R.string.error_agent_create, e.message ?: "")
+                )
             }
         }
     }
@@ -77,7 +82,9 @@ class AgentsViewModel @Inject constructor(
             try {
                 appDataManager.updateAgent(agent.copy(isActive = !agent.isActive))
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(error = "Ошибка обновления агента: ${e.message}")
+                _uiState.value = _uiState.value.copy(
+                    error = getApplication<Application>().getString(R.string.error_agent_update, e.message ?: "")
+                )
             }
         }
     }
@@ -87,7 +94,9 @@ class AgentsViewModel @Inject constructor(
             try {
                 appDataManager.removeAgent(id)
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(error = "Ошибка удаления агента: ${e.message}")
+                _uiState.value = _uiState.value.copy(
+                    error = getApplication<Application>().getString(R.string.error_agent_delete, e.message ?: "")
+                )
             }
         }
     }

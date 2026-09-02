@@ -31,14 +31,14 @@ class BiometricHelper @Inject constructor(
 
     fun authenticate(
         activity: FragmentActivity,
-        title: String = "Аутентификация",
-        subtitle: String = "Подтвердите свою личность",
+        title: String = context.getString(com.nexusai.app.R.string.biometric_auth_title),
+        subtitle: String = context.getString(com.nexusai.app.R.string.biometric_auth_subtitle),
         onSuccess: () -> Unit,
         onError: (String) -> Unit,
         onFailed: () -> Unit = {}
     ) {
         if (!canAuthenticate()) {
-            onError("Биометрическая аутентификация недоступна")
+            onError(context.getString(com.nexusai.app.R.string.biometric_auth_unavailable))
             return
         }
 
@@ -70,7 +70,7 @@ class BiometricHelper @Inject constructor(
                 BiometricManager.Authenticators.BIOMETRIC_STRONG or
                         BiometricManager.Authenticators.BIOMETRIC_WEAK
             )
-            .setNegativeButtonText("Отмена")
+            .setNegativeButtonText(context.getString(com.nexusai.app.R.string.biometric_cancel))
             .build()
 
         biometricPrompt.authenticate(promptInfo)

@@ -43,9 +43,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.nexusai.app.R
 import com.nexusai.core.ui.theme.NexusBackground
 import com.nexusai.core.ui.theme.NexusCard
 import com.nexusai.core.ui.theme.NexusPurple
@@ -145,12 +147,12 @@ fun CodePlaygroundScreen(
         containerColor = NexusBackground,
         topBar = {
             TopAppBar(
-                title = { Text("Code Playground", color = NexusTextPrimary) },
+                title = { Text(stringResource(R.string.playground_title), color = NexusTextPrimary) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Назад",
+                            contentDescription = stringResource(R.string.playground_back),
                             tint = NexusTextPrimary
                         )
                     }
@@ -159,7 +161,7 @@ fun CodePlaygroundScreen(
                     IconButton(onClick = { previewHtml = buildPreview(html, css, js) }) {
                         Icon(
                             imageVector = Icons.Default.Refresh,
-                            contentDescription = "Обновить",
+                            contentDescription = stringResource(R.string.playground_refresh),
                             tint = NexusPurple
                         )
                     }

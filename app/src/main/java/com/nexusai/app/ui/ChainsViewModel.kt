@@ -1,7 +1,9 @@
 package com.nexusai.app.ui
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.nexusai.app.R
 import com.nexusai.domain.model.AutomationChain
 import com.nexusai.domain.repository.ChainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,8 +15,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChainsViewModel @Inject constructor(
+    application: Application,
     private val chainRepository: ChainRepository
-) : ViewModel() {
+) : AndroidViewModel(application) {
 
     private val _uiState = MutableStateFlow(ChainsUiState())
     val uiState: StateFlow<ChainsUiState> = _uiState.asStateFlow()
@@ -41,8 +44,13 @@ class ChainsViewModel @Inject constructor(
             try {
                 chainRepository.runChain(chain)
             } catch (e: Exception) {
+                val errorMsg = e.message
                 _uiState.value = _uiState.value.copy(
-                    error = "Ошибка: ${e.message ?: "Неизвестная ошибка"}"
+                    error = if (errorMsg != null) {
+                        getApplication<Application>().getString(R.string.error_chain_run, errorMsg)
+                    } else {
+                        getApplication<Application>().getString(R.string.error_chain_run_unknown)
+                    }
                 )
             } finally {
                 _uiState.value = _uiState.value.copy(

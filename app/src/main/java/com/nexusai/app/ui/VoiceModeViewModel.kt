@@ -131,7 +131,7 @@ class VoiceModeViewModel @Inject constructor(
                         _uiState.value = _uiState.value.copy(voiceState = VoiceState.IDLE)
                     }
                 } else {
-                    val fallback = "Нет доступных провайдеров. Добавьте API-ключ в настройках."
+                    val fallback = getApplication<android.app.Application>().getString(com.nexusai.app.R.string.voice_no_providers)
                     _uiState.value = _uiState.value.copy(
                         messages = _uiState.value.messages + VoiceMessage(text = fallback, isUser = false),
                         voiceState = VoiceState.IDLE

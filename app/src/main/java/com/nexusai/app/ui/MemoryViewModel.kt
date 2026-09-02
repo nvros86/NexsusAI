@@ -1,7 +1,9 @@
 package com.nexusai.app.ui
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.nexusai.app.R
 import com.nexusai.data.common.AppDataManager
 import com.nexusai.domain.model.MemoryEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,8 +23,9 @@ data class MemoryUiState(
 
 @HiltViewModel
 class MemoryViewModel @Inject constructor(
+    application: Application,
     private val appDataManager: AppDataManager
-) : ViewModel() {
+) : AndroidViewModel(application) {
 
     private val _uiState = MutableStateFlow(MemoryUiState())
     val uiState: StateFlow<MemoryUiState> = _uiState.asStateFlow()
@@ -61,7 +64,9 @@ class MemoryViewModel @Inject constructor(
                 appDataManager.addMemoryEntry(entry)
                 _uiState.value = _uiState.value.copy(newKey = "", newValue = "")
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(error = "Ошибка добавления записи: ${e.message}")
+                _uiState.value = _uiState.value.copy(
+                    error = getApplication<Application>().getString(R.string.error_memory_add, e.message ?: "")
+                )
             }
         }
     }
@@ -72,7 +77,9 @@ class MemoryViewModel @Inject constructor(
             try {
                 appDataManager.updateMemoryEntry(entry.copy(isImportant = !entry.isImportant))
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(error = "Ошибка обновления записи: ${e.message}")
+                _uiState.value = _uiState.value.copy(
+                    error = getApplication<Application>().getString(R.string.error_memory_update, e.message ?: "")
+                )
             }
         }
     }
@@ -82,7 +89,9 @@ class MemoryViewModel @Inject constructor(
             try {
                 appDataManager.removeMemoryEntry(id)
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(error = "Ошибка удаления записи: ${e.message}")
+                _uiState.value = _uiState.value.copy(
+                    error = getApplication<Application>().getString(R.string.error_memory_delete, e.message ?: "")
+                )
             }
         }
     }
@@ -92,7 +101,9 @@ class MemoryViewModel @Inject constructor(
             try {
                 appDataManager.clearMemory()
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(error = "Ошибка очистки памяти: ${e.message}")
+                _uiState.value = _uiState.value.copy(
+                    error = getApplication<Application>().getString(R.string.error_memory_clear, e.message ?: "")
+                )
             }
         }
     }

@@ -1,7 +1,9 @@
 package com.nexusai.app.ui
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.nexusai.app.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -10,7 +12,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class VideoViewModel @Inject constructor() : ViewModel() {
+class VideoViewModel @Inject constructor(
+    application: Application
+) : AndroidViewModel(application) {
 
     private val _uiState = MutableStateFlow(VideoGenUiState())
     val uiState: StateFlow<VideoGenUiState> = _uiState.asStateFlow()
@@ -23,9 +27,10 @@ class VideoViewModel @Inject constructor() : ViewModel() {
         val prompt = _uiState.value.prompt
         if (prompt.isBlank()) return
 
+        val context = getApplication<Application>()
         _uiState.value = _uiState.value.copy(
             prompt = "",
-            error = "Генерация видео пока не поддерживается. Используйте Automation Chains для создания видеоконтента через AI."
+            error = context.getString(R.string.video_not_supported)
         )
     }
 
