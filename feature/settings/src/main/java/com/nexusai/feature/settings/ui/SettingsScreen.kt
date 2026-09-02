@@ -169,6 +169,34 @@ fun SettingsScreen(
             item {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
+                    text = "Доступность",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = NexusTextPrimary,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+            }
+
+            item {
+                FontScaleSelector(
+                    currentScale = state.fontScale,
+                    onScaleSelected = { viewModel.setFontScale(it) }
+                )
+            }
+
+            item {
+                PrivacyToggle(
+                    title = "Высокий контраст",
+                    subtitle = "Увеличенная контрастность текста и элементов",
+                    icon = "🔲",
+                    checked = state.highContrast,
+                    onCheckedChange = { viewModel.toggleHighContrast() }
+                )
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
                     text = "AI Провайдеры",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
@@ -550,6 +578,64 @@ private fun AddEditProviderDialog(
             }
         }
     )
+}
+
+@Composable
+private fun FontScaleSelector(
+    currentScale: Int,
+    onScaleSelected: (Int) -> Unit
+) {
+    val scales = listOf(
+        0 to "Маленький",
+        1 to "Стандартный",
+        2 to "Большой",
+        3 to "Очень большой"
+    )
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = NexusCard),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = "📐 Размер шрифта",
+                style = MaterialTheme.typography.headlineSmall
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "Выберите размер текста в приложении",
+                style = MaterialTheme.typography.bodySmall,
+                color = NexusTextTertiary
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                scales.forEach { (scale, label) ->
+                    val isSelected = currentScale == scale
+                    Surface(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clip(RoundedCornerShape(8.dp))
+                            .clickable { onScaleSelected(scale) },
+                        color = if (isSelected) NexusPurple else NexusSurfaceVariant,
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Text(
+                            text = label,
+                            modifier = Modifier.padding(vertical = 8.dp),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = if (isSelected) NexusTextPrimary else NexusTextSecondary,
+                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                        )
+                    }
+                }
+            }
+        }
+    }
 }
 
 @Composable

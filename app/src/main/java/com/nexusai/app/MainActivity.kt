@@ -70,6 +70,7 @@ import com.nexusai.core.ui.theme.NexusSurface
 import com.nexusai.core.ui.theme.NexusTextPrimary
 import com.nexusai.core.ui.theme.NexusTextSecondary
 import com.nexusai.core.ui.theme.NexusTextTertiary
+import com.nexusai.core.preferences.AppPreferences
 import com.nexusai.domain.repository.TaskTemplateRepository
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.compose.runtime.collectAsState
@@ -95,7 +96,10 @@ class MainActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            NexsusAITheme {
+            val fontScale by appPreferences.fontScale.collectAsState(initial = 1)
+            val highContrast by appPreferences.isHighContrast.collectAsState(initial = false)
+
+            NexsusAITheme(fontScale = fontScale, highContrast = highContrast) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = NexusBackground

@@ -2,6 +2,7 @@ package com.nexusai.feature.settings.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nexusai.domain.preferences.AppPreferencesRepository
 import com.nexusai.domain.model.AIProviderConfig
 import com.nexusai.domain.model.ProviderType
 import com.nexusai.domain.repository.AIProviderRepository
@@ -21,12 +22,15 @@ data class SettingsState(
     val editingProvider: AIProviderConfig? = null,
     val incognitoMode: Boolean = false,
     val hapticFeedback: Boolean = true,
-    val appLock: Boolean = false
+    val appLock: Boolean = false,
+    val fontScale: Int = 1,
+    val highContrast: Boolean = false
 )
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val aiProviderRepository: AIProviderRepository
+    private val aiProviderRepository: AIProviderRepository,
+    private val appPreferences: AppPreferencesRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SettingsState())
@@ -36,6 +40,31 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             aiProviderRepository.getAllProviders().collect { providers ->
                 _state.value = _state.value.copy(providers = providers)
+            }
+        }
+        viewModelScope.launch {
+            appPreferences.fontScale.collect { scale ->
+                _state.value = _state.value.copy(fontScale = scale)
+            }
+        }
+        viewModelScope.launch {
+            appPreferences.isHighContrast.collect { hc ->
+                _state.value = _state.value.copy(highContrast = hc)
+            }
+        }
+        viewModelScope.launch {
+            appPreferences.isIncognitoMode.collect { mode ->
+                _state.value = _state.value.copy(incognitoMode = mode)
+            }
+        }
+        viewModelScope.launch {
+            appPreferences.isHapticEnabled.collect { enabled ->
+                _state.value = _state.value.copy(hapticFeedback = enabled)
+            }
+        }
+        viewModelScope.launch {
+            appPreferences.isAppLockEnabled.collect { enabled ->
+                _state.value = _state.value.copy(appLock = enabled)
             }
         }
     }
@@ -116,14 +145,32 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun toggleIncognito() {
-        _state.value = _state.value.copy(incognitoMode = !_state.value.incognitoMode)
+        viewModelScope.launch {
+            appPreferences.setIncognitoMode(!_state.value.incognitoMode)
+        }
     }
 
     fun toggleHaptic() {
-        _state.value = _state.value.copy(hapticFeedback = !_state.value.hapticFeedback)
+        viewModelScope.launch {
+            appPreferences.setHapticEnabled(!_state.value.hapticFeedback)
+        }
     }
 
     fun toggleAppLock() {
-        _state.value = _state.value.copy(appLock = !_state.value.appLock)
+        viewModelScope.launch {
+            appPreferences.setAppLockEnabled(!_state.value.appLock)
+        }
+    }
+
+    fun setFontScale(scale: Int) {
+        viewModelScope.launch {
+            appPreferences.setFontScale(scale)
+        }
+    }
+
+    fun toggleHighContrast() {
+        viewModelScope.launch {
+            appPreferences.setHighContrast(!_state.value.highContrast)
+        }
     }
 }

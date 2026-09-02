@@ -36,6 +36,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -184,7 +186,11 @@ private fun MessageBubble(
         }
 
         Surface(
-            modifier = Modifier.widthIn(max = 320.dp),
+            modifier = Modifier
+                .widthIn(max = 320.dp)
+                .semantics {
+                    contentDescription = if (isUser) "Ваше сообщение" else "Ответ AI: $providerName"
+                },
             shape = RoundedCornerShape(
                 topStart = if (isUser) 16.dp else 4.dp,
                 topEnd = if (isUser) 4.dp else 16.dp,

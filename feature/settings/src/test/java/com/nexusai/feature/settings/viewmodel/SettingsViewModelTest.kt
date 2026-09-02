@@ -2,9 +2,11 @@ package com.nexusai.feature.settings.viewmodel
 
 import com.nexusai.domain.model.AIProviderConfig
 import com.nexusai.domain.model.ProviderType
+import com.nexusai.domain.preferences.AppPreferencesRepository
 import com.nexusai.domain.repository.AIProviderRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
 import kotlinx.coroutines.Dispatchers
@@ -27,6 +29,7 @@ class SettingsViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
     private lateinit var repository: AIProviderRepository
+    private lateinit var appPreferences: AppPreferencesRepository
     private lateinit var viewModel: SettingsViewModel
 
     private fun createProvider(
@@ -50,8 +53,14 @@ class SettingsViewModelTest {
     fun setup() {
         Dispatchers.setMain(testDispatcher)
         repository = mockk(relaxed = true)
+        appPreferences = mockk(relaxed = true)
+        every { appPreferences.fontScale } returns flowOf(1)
+        every { appPreferences.isHighContrast } returns flowOf(false)
+        every { appPreferences.isIncognitoMode } returns flowOf(false)
+        every { appPreferences.isHapticEnabled } returns flowOf(true)
+        every { appPreferences.isAppLockEnabled } returns flowOf(false)
         coEvery { repository.getAllProviders() } returns flowOf(emptyList())
-        viewModel = SettingsViewModel(repository)
+        viewModel = SettingsViewModel(repository, appPreferences)
     }
 
     @After
@@ -106,7 +115,7 @@ class SettingsViewModelTest {
     fun `toggleFavorite updates provider isFavorite`() = runTest {
         val provider = createProvider(isFavorite = false)
         coEvery { repository.getAllProviders() } returns flowOf(listOf(provider))
-        val vm = SettingsViewModel(repository)
+        val vm = SettingsViewModel(repository, appPreferences)
         testDispatcher.scheduler.advanceUntilIdle()
 
         vm.toggleFavorite("1")
@@ -138,7 +147,7 @@ class SettingsViewModelTest {
     fun `saveProvider updates existing provider when editing`() = runTest {
         val existing = createProvider()
         coEvery { repository.getAllProviders() } returns flowOf(listOf(existing))
-        val vm = SettingsViewModel(repository)
+        val vm = SettingsViewModel(repository, appPreferences)
         testDispatcher.scheduler.advanceUntilIdle()
 
         vm.showEditDialog(existing)

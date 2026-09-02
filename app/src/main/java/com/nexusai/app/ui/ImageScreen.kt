@@ -105,6 +105,26 @@ fun ImageScreen(
             colors = TopAppBarDefaults.topAppBarColors(containerColor = NexusBackground)
         )
 
+        state.error?.let { error ->
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.errorContainer
+                ),
+                shape = RoundedCornerShape(12.dp),
+                onClick = { viewModel.dismissError() }
+            ) {
+                Text(
+                    text = error,
+                    modifier = Modifier.padding(12.dp),
+                    color = MaterialTheme.colorScheme.onErrorContainer,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+        }
+
         if (state.images.isEmpty() && !state.isGenerating) {
             Box(
                 modifier = Modifier.fillMaxSize(),

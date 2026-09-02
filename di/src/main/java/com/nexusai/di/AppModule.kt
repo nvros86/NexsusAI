@@ -1,8 +1,10 @@
 package com.nexusai.di
 
 import android.content.Context
+import com.nexusai.core.preferences.AppPreferences
 import com.nexusai.data.ai.AIProviderManager
 import com.nexusai.data.security.ApiKeyEncryption
+import com.nexusai.domain.preferences.AppPreferencesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,5 +26,17 @@ object AIModule {
     @Singleton
     fun provideAIProviderManager(encryption: ApiKeyEncryption): AIProviderManager {
         return AIProviderManager(encryption)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAppPreferences(@ApplicationContext context: Context): AppPreferences {
+        return AppPreferences(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAppPreferencesRepository(appPreferences: AppPreferences): AppPreferencesRepository {
+        return appPreferences
     }
 }
