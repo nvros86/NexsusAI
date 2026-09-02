@@ -48,6 +48,10 @@
     <string name="chat_user_message">Ваше сообщение</string>
     <string name="chat_ai_answer">Ответ AI: %s</string>
 
+    <!-- AI Provider Selector -->
+    <string name="provider_selector_title">Выберите AI провайдер</string>
+    <string name="provider_selector_empty">Нет настроенных провайдеров. Добавьте в Настройках.</string>
+
     <!-- TabBar -->
     <string name="tab_title_format">Вкладка: %1$s%2$s</string>
     <string name="tab_active_suffix">, активная</string>

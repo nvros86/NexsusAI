@@ -193,18 +193,20 @@ fun TeamWorkspacesScreen(
         )
     }
 
-    if (showChat && state.selectedWorkspace != null) {
-        WorkspaceChatDialog(
-            workspace = state.selectedWorkspace!!,
-            messages = state.messages,
-            onSend = { content ->
-                viewModel.sendMessage(content)
-            },
-            onDismiss = {
-                showChat = false
-                viewModel.clearSelectedWorkspace()
-            }
-        )
+    if (showChat) {
+        state.selectedWorkspace?.let { workspace ->
+            WorkspaceChatDialog(
+                workspace = workspace,
+                messages = state.messages,
+                onSend = { content ->
+                    viewModel.sendMessage(content)
+                },
+                onDismiss = {
+                    showChat = false
+                    viewModel.clearSelectedWorkspace()
+                }
+            )
+        }
     }
 }
 

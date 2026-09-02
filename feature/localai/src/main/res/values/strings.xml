@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Common actions -->
+    <string name="action_back">Back</string>
+    <string name="action_close">Close</string>
+    <string name="label_delete">Delete</string>
+
     <string name="localai_title">Local AI</string>
     <string name="localai_refresh">Refresh</string>
     <string name="localai_no_connections">No connections</string>
@@ -14,4 +19,13 @@
     <string name="localai_chat">Chat: %s</string>
     <string name="localai_prompt">Prompt</string>
     <string name="localai_test">Test</string>
+    <string name="localai_chat_action">Chat</string>
+    <string name="localai_name_label">Name</string>
+    <string name="localai_url_label">URL</string>
+    <string name="localai_add">Add</string>
+    <string name="localai_model_label">Model</string>
+    <string name="localai_send">Send</string>
+    <string name="localai_close">Close</string>
+    <string name="localai_models_format">%1$d models | %2$s</string>
+    <string name="localai_server_name">%1$s | %2$s</string>
 </resources>

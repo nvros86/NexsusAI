@@ -22,6 +22,30 @@
     <string name="marketplace_added_snackbar">%1$s added to Settings</string>
     <string name="marketplace_tokens_label">Up to %d tokens</string>
 
+    <!-- Onboarding -->
+    <string name="onboarding_workspace_title">NexusAI</string>
+    <string name="onboarding_workspace_subtitle">AI Workspace. All Models. One Place.</string>
+    <string name="onboarding_workspace_desc">Work with any AI models, agents and tools in one workspace.</string>
+    <string name="onboarding_multimodel_title">Multi-model chat</string>
+    <string name="onboarding_multimodel_subtitle">Multi-tabs</string>
+    <string name="onboarding_multimodel_desc">Work with different AI simultaneously. Each tab is a separate AI with its own settings.</string>
+    <string name="onboarding_code_title">Code and files</string>
+    <string name="onboarding_code_subtitle">Built-in editor</string>
+    <string name="onboarding_code_desc">Write, edit and debug code right inside the app.</string>
+    <string name="onboarding_ready_title">Ready to go</string>
+    <string name="onboarding_ready_subtitle">Add an AI provider</string>
+    <string name="onboarding_ready_desc">Enter your AI provider\'s API key and start a conversation.</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_start">Start</string>
+    <string name="onboarding_skip">Skip</string>
+
+    <!-- Biometric Lock -->
+    <string name="biometric_title">NexusAI is locked</string>
+    <string name="biometric_subtitle">Verify your identity to sign in</string>
+    <string name="biometric_locked">App is locked</string>
+    <string name="biometric_use_biometric">Use biometrics to sign in</string>
+    <string name="biometric_unlock">Unlock</string>
+
     <!-- Export -->
     <string name="export_title">Export</string>
     <string name="export_no_chats">No chats to export</string>

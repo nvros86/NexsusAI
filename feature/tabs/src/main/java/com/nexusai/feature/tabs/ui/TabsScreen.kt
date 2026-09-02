@@ -180,16 +180,18 @@ fun TabsScreen(
         } // end else (search inactive)
     }
 
-    if (showProviderSelector && selectedTabForProvider != null) {
-        AIProviderSelector(
-            providers = providers,
-            selectedProviderId = activeChatState?.currentProvider?.id,
-            onProviderSelected = { providerId ->
-                viewModel.setTabProvider(selectedTabForProvider!!, providerId)
-                showProviderSelector = false
-            },
-            onDismiss = { showProviderSelector = false }
-        )
+    if (showProviderSelector) {
+        selectedTabForProvider?.let { tabId ->
+            AIProviderSelector(
+                providers = providers,
+                selectedProviderId = activeChatState?.currentProvider?.id,
+                onProviderSelected = { providerId ->
+                    viewModel.setTabProvider(tabId, providerId)
+                    showProviderSelector = false
+                },
+                onDismiss = { showProviderSelector = false }
+            )
+        }
     }
 }
 

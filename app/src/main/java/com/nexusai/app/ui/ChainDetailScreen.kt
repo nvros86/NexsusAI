@@ -200,25 +200,25 @@ fun ChainDetailScreen(
             }
         }
 
-        if (state.lastResult != null) {
+        state.lastResult?.let { lastResult ->
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = if (state.lastResult!!.isError) NexusTextTertiary.copy(alpha = 0.1f) else NexusPurple.copy(alpha = 0.1f)
+                    containerColor = if (lastResult.isError) NexusTextTertiary.copy(alpha = 0.1f) else NexusPurple.copy(alpha = 0.1f)
                 ),
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Column(modifier = Modifier.padding(12.dp)) {
                     Text(
-                        text = if (state.lastResult!!.isError) stringResource(R.string.chain_detail_error) else stringResource(R.string.chain_detail_result),
+                        text = if (lastResult.isError) stringResource(R.string.chain_detail_error) else stringResource(R.string.chain_detail_result),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = NexusTextPrimary
                     )
                     Spacer(modifier = Modifier.height(4.dp))
-                    state.lastResult!!.stepResults.forEach { result ->
+                    lastResult.stepResults.forEach { result ->
                         Text(
                             text = "${result.stepName}: ${result.output.take(100)}${if (result.output.length > 100) "..." else ""}",
                             style = MaterialTheme.typography.bodySmall,

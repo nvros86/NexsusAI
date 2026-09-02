@@ -100,7 +100,6 @@ dependencies {
     implementation(libs.biometric)
 
     debugImplementation(libs.compose.ui.tooling)
-    debugImplementation(libs.compose.material.icons)
 
     testImplementation(libs.junit)
     testImplementation(libs.mockk)

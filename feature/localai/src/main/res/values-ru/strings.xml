@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Common actions -->
+    <string name="action_back">Назад</string>
+    <string name="action_close">Закрыть</string>
+    <string name="label_delete">Удалить</string>
+
     <string name="localai_title">Local AI</string>
     <string name="localai_refresh">Обновить</string>
     <string name="localai_no_connections">Нет подключений</string>
@@ -14,4 +19,13 @@
     <string name="localai_chat">Чат: %s</string>
     <string name="localai_prompt">Промпт</string>
     <string name="localai_test">Тест</string>
+    <string name="localai_chat_action">Чат</string>
+    <string name="localai_name_label">Имя</string>
+    <string name="localai_url_label">URL</string>
+    <string name="localai_add">Добавить</string>
+    <string name="localai_model_label">Модель</string>
+    <string name="localai_send">Отправить</string>
+    <string name="localai_close">Закрыть</string>
+    <string name="localai_models_format">%1$d моделей | %2$s</string>
+    <string name="localai_server_name">%1$s | %2$s</string>
 </resources>

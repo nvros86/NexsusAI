@@ -22,6 +22,30 @@
     <string name="marketplace_added_snackbar">%1$s добавлен в Настройки</string>
     <string name="marketplace_tokens_label">До %d токенов</string>
 
+    <!-- Onboarding -->
+    <string name="onboarding_workspace_title">NexusAI</string>
+    <string name="onboarding_workspace_subtitle">AI Workspace. All Models. One Place.</string>
+    <string name="onboarding_workspace_desc">Работайте с любыми AI-моделями, агентами и инструментами в одном пространстве.</string>
+    <string name="onboarding_multimodel_title">Мульти-модельный чат</string>
+    <string name="onboarding_multimodel_subtitle">Мульти-вкладки</string>
+    <string name="onboarding_multimodel_desc">Работайте с разными AI одновременно. Каждая вкладка — отдельный AI с настройками.</string>
+    <string name="onboarding_code_title">Код и файлы</string>
+    <string name="onboarding_code_subtitle">Встроенный редактор</string>
+    <string name="onboarding_code_desc">Пишите, редактируйте и отлаживайте код прямо внутри приложения.</string>
+    <string name="onboarding_ready_title">Готово к работе</string>
+    <string name="onboarding_ready_subtitle">Добавьте AI провайдер</string>
+    <string name="onboarding_ready_desc">Введите API ключ вашего AI-провайдера и начните диалог.</string>
+    <string name="onboarding_next">Далее</string>
+    <string name="onboarding_start">Начать</string>
+    <string name="onboarding_skip">Пропустить</string>
+
+    <!-- Biometric Lock -->
+    <string name="biometric_title">NexusAI заблокирован</string>
+    <string name="biometric_subtitle">Подтвердите личность для входа</string>
+    <string name="biometric_locked">Приложение заблокировано</string>
+    <string name="biometric_use_biometric">Используйте биометрию для входа</string>
+    <string name="biometric_unlock">Разблокировать</string>
+
     <!-- Export -->
     <string name="export_title">Экспорт</string>
     <string name="export_no_chats">Нет чатов для экспорта</string>

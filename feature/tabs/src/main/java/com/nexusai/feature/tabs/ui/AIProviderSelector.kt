@@ -21,7 +21,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.nexusai.feature.tabs.R
 import com.nexusai.core.ui.theme.NexusCard
 import com.nexusai.core.ui.theme.NexusPurple
 import com.nexusai.core.ui.theme.NexusSurface
@@ -44,14 +46,14 @@ fun AIProviderSelector(
         containerColor = NexusSurface,
         title = {
             Text(
-                "Выберите AI провайдер",
+                stringResource(R.string.provider_selector_title),
                 color = NexusTextPrimary
             )
         },
         text = {
             if (providers.isEmpty()) {
                 Text(
-                    text = "Нет настроенных провайдеров. Добавьте в Настройках.",
+                    text = stringResource(R.string.provider_selector_empty),
                     color = NexusTextTertiary
                 )
             } else {
@@ -70,7 +72,7 @@ fun AIProviderSelector(
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("Закрыть", color = NexusTextTertiary)
+                Text(stringResource(R.string.action_close), color = NexusTextTertiary)
             }
         }
     )

@@ -48,6 +48,10 @@
     <string name="chat_user_message">Your message</string>
     <string name="chat_ai_answer">AI answer: %s</string>
 
+    <!-- AI Provider Selector -->
+    <string name="provider_selector_title">Select AI provider</string>
+    <string name="provider_selector_empty">No providers configured. Add in Settings.</string>
+
     <!-- TabBar -->
     <string name="tab_title_format">Tab: %1$s%2$s</string>
     <string name="tab_active_suffix">, active</string>

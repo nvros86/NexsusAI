@@ -42,5 +42,5 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.documentfile)
     implementation(libs.datastore.preferences)
-    implementation("javax.inject:javax.inject:1")
+    implementation(libs.javax.inject)
 }

@@ -34,8 +34,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nexusai.app.R
 import com.nexusai.core.ui.theme.NexusBackground
 import com.nexusai.core.ui.theme.NexusPurple
 import com.nexusai.core.ui.theme.NexusPurpleLight
@@ -52,27 +54,27 @@ fun OnboardingScreen(
     val pages = listOf(
         OnboardingPage(
             icon = Icons.Default.SmartToy,
-            title = "NexusAI",
-            subtitle = "AI Workspace. All Models. One Place.",
-            description = "Работайте с любыми AI-моделями, агентами и инструментами в одном пространстве."
+            title = stringResource(R.string.onboarding_workspace_title),
+            subtitle = stringResource(R.string.onboarding_workspace_subtitle),
+            description = stringResource(R.string.onboarding_workspace_desc)
         ),
         OnboardingPage(
             icon = Icons.Default.Add,
-            title = "Мульти-модельный чат",
-            subtitle = "Мульти-вкладки",
-            description = "Работайте с разными AI одновременно. Каждая вкладка — отдельный AI с настройками."
+            title = stringResource(R.string.onboarding_multimodel_title),
+            subtitle = stringResource(R.string.onboarding_multimodel_subtitle),
+            description = stringResource(R.string.onboarding_multimodel_desc)
         ),
         OnboardingPage(
             icon = Icons.Default.Code,
-            title = "Код и файлы",
-            subtitle = "Встроенный редактор",
-            description = "Пишите, редактируйте и отлаживайте код прямо внутри приложения."
+            title = stringResource(R.string.onboarding_code_title),
+            subtitle = stringResource(R.string.onboarding_code_subtitle),
+            description = stringResource(R.string.onboarding_code_desc)
         ),
         OnboardingPage(
             icon = Icons.Default.Image,
-            title = "Готово к работе",
-            subtitle = "Добавьте AI провайдер",
-            description = "Введите API ключ вашего AI-провайдера и начните диалог."
+            title = stringResource(R.string.onboarding_ready_title),
+            subtitle = stringResource(R.string.onboarding_ready_subtitle),
+            description = stringResource(R.string.onboarding_ready_desc)
         )
     )
 
@@ -137,7 +139,7 @@ fun OnboardingScreen(
                 )
             ) {
                 Text(
-                    text = if (pagerState.currentPage < pages.size - 1) "Далее" else "Начать",
+                    text = if (pagerState.currentPage < pages.size - 1) stringResource(R.string.onboarding_next) else stringResource(R.string.onboarding_start),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -149,7 +151,7 @@ fun OnboardingScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = "Пропустить",
+                        text = stringResource(R.string.onboarding_skip),
                         color = NexusTextTertiary
                     )
                 }

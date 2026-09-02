@@ -26,7 +26,7 @@ dependencies {
     implementation(project(":core"))
     implementation(libs.coroutines.core)
     implementation(libs.serialization.json)
-    implementation("javax.inject:javax.inject:1")
+    implementation(libs.javax.inject)
 
     testImplementation(libs.junit)
     testImplementation(libs.mockk)

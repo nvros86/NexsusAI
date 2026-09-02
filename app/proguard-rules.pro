@@ -19,5 +19,16 @@
 -keep class com.nexusai.domain.model.** { *; }
 -keep class com.nexusai.domain.ai.** { *; }
 
+# Retrofit
+-keepattributes Signature
+-keepattributes Exceptions
+-keepattributes *Annotation*
+-keep class retrofit2.** { *; }
+-keepclasseswithmembers class * { @retrofit2.http.* <methods>; }
+
+# Coil
+-keep class coil.** { *; }
+-dontwarn coil.**
+
 # AI Provider classes
 -keep class com.nexusai.data.ai.** { *; }

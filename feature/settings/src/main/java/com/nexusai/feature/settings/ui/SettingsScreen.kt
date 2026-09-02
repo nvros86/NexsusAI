@@ -356,7 +356,7 @@ private fun ProviderCard(
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "API Key",
+                        text = stringResource(R.string.label_api_key),
                         style = MaterialTheme.typography.bodySmall,
                         color = NexusTextTertiary
                     )
@@ -368,7 +368,7 @@ private fun ProviderCard(
                 }
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "Base URL",
+                        text = stringResource(R.string.label_base_url),
                         style = MaterialTheme.typography.bodySmall,
                         color = NexusTextTertiary
                     )

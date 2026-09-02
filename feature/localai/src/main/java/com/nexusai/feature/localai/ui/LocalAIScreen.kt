@@ -53,9 +53,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.nexusai.feature.localai.R
 import com.nexusai.core.ui.theme.NexusBackground
 import com.nexusai.core.ui.theme.NexusCard
 import com.nexusai.core.ui.theme.NexusPurple
@@ -90,20 +92,20 @@ fun LocalAIScreen(
             },
             navigationIcon = {
                 IconButton(onClick = onBack) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = "Назад",
-                        tint = NexusTextPrimary
-                    )
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = stringResource(R.string.action_back),
+                    tint = NexusTextPrimary
+                )
                 }
             },
             actions = {
                 IconButton(onClick = { viewModel.refresh() }) {
-                    Icon(
-                        imageVector = Icons.Default.Refresh,
-                        contentDescription = "Обновить",
-                        tint = NexusTextPrimary
-                    )
+                Icon(
+                    imageVector = Icons.Default.Refresh,
+                    contentDescription = stringResource(R.string.localai_refresh),
+                    tint = NexusTextPrimary
+                )
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(containerColor = NexusBackground)
@@ -127,13 +129,13 @@ fun LocalAIScreen(
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = "Нет подключений",
+                        text = stringResource(R.string.localai_no_connections),
                         style = MaterialTheme.typography.titleMedium,
                         color = NexusTextSecondary
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "Добавьте локальный AI сервер",
+                        text = stringResource(R.string.localai_add_server_hint),
                         style = MaterialTheme.typography.bodyMedium,
                         color = NexusTextTertiary
                     )
@@ -162,7 +164,7 @@ fun LocalAIScreen(
                 if (state.models.isNotEmpty()) {
                     item {
                         Text(
-                            text = "Доступные модели",
+                            text = stringResource(R.string.localai_available_models),
                             style = MaterialTheme.typography.titleMedium,
                             color = NexusTextPrimary,
                             modifier = Modifier.padding(vertical = 8.dp)
@@ -192,7 +194,7 @@ fun LocalAIScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Добавить сервер"
+                    contentDescription = stringResource(R.string.localai_add_server)
                 )
             }
         }
@@ -209,20 +211,22 @@ fun LocalAIScreen(
         )
     }
 
-    if (showChatDialog && state.selectedConfig != null) {
-        LocalAIChatDialog(
-            config = state.selectedConfig!!,
-            models = state.models,
-            onSend = { model, prompt ->
-                viewModel.sendPrompt(model, prompt)
-            },
-            response = state.lastResponse,
-            isGenerating = state.isGenerating,
-            onDismiss = {
-                showChatDialog = false
-                viewModel.clearResponse()
-            }
-        )
+    if (showChatDialog) {
+        state.selectedConfig?.let { config ->
+            LocalAIChatDialog(
+                config = config,
+                models = state.models,
+                onSend = { model, prompt ->
+                    viewModel.sendPrompt(model, prompt)
+                },
+                response = state.lastResponse,
+                isGenerating = state.isGenerating,
+                onDismiss = {
+                    showChatDialog = false
+                    viewModel.clearResponse()
+                }
+            )
+        }
     }
 }
 
@@ -254,23 +258,23 @@ private fun StatusCard(status: LocalAIStatus) {
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = if (status.isRunning) "Сервер запущен" else "Сервер остановлен",
+                    text = if (status.isRunning) stringResource(R.string.localai_server_running) else stringResource(R.string.localai_server_stopped),
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Medium,
                     color = NexusTextPrimary
                 )
                 if (status.isRunning) {
                     Text(
-                        text = "${status.modelsCount} моделей | ${status.loadedModel ?: "Нет загруженной модели"}",
+                        text = stringResource(R.string.localai_models_format, status.modelsCount, status.loadedModel ?: stringResource(R.string.localai_no_loaded_model)),
                         style = MaterialTheme.typography.bodySmall,
                         color = NexusTextTertiary
                     )
                 }
             }
 
-            if (status.error != null) {
+            status.error?.let { error ->
                 Text(
-                    text = status.error!!,
+                    text = error,
                     style = MaterialTheme.typography.bodySmall,
                     color = NexusTextTertiary
                 )
@@ -304,7 +308,7 @@ private fun ServerCard(
                     color = NexusTextPrimary
                 )
                 Text(
-                    text = "${config.type.displayName} | ${config.baseUrl}",
+                    text = stringResource(R.string.localai_server_name, config.type.displayName, config.baseUrl),
                     style = MaterialTheme.typography.bodySmall,
                     color = NexusTextTertiary
                 )
@@ -313,7 +317,7 @@ private fun ServerCard(
             IconButton(onClick = onTest, modifier = Modifier.size(32.dp)) {
                 Icon(
                     imageVector = Icons.Default.Refresh,
-                    contentDescription = "Тест",
+                    contentDescription = stringResource(R.string.localai_test),
                     tint = NexusPurple,
                     modifier = Modifier.size(18.dp)
                 )
@@ -322,7 +326,7 @@ private fun ServerCard(
             IconButton(onClick = onChat, modifier = Modifier.size(32.dp)) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.Send,
-                    contentDescription = "Чат",
+                    contentDescription = stringResource(R.string.localai_chat_action),
                     tint = if (config.isConnected) NexusPurple else NexusTextTertiary,
                     modifier = Modifier.size(18.dp)
                 )
@@ -331,7 +335,7 @@ private fun ServerCard(
             IconButton(onClick = onDelete, modifier = Modifier.size(32.dp)) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = "Удалить",
+                    contentDescription = stringResource(R.string.label_delete),
                     tint = NexusTextTertiary,
                     modifier = Modifier.size(18.dp)
                 )
@@ -391,7 +395,7 @@ private fun ModelCard(
             IconButton(onClick = onDelete, modifier = Modifier.size(32.dp)) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = "Удалить",
+                    contentDescription = stringResource(R.string.label_delete),
                     tint = NexusTextTertiary,
                     modifier = Modifier.size(18.dp)
                 )
@@ -415,7 +419,7 @@ private fun AddServerDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text("Добавить сервер", color = NexusTextPrimary)
+            Text(stringResource(R.string.localai_add_server), color = NexusTextPrimary)
         },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -423,7 +427,7 @@ private fun AddServerDialog(
                     value = name,
                     onValueChange = { name = it },
                     modifier = Modifier.fillMaxWidth(),
-                    label = { Text("Имя") },
+                    label = { Text(stringResource(R.string.localai_name_label)) },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = NexusPurple,
                         unfocusedBorderColor = NexusSurface,
@@ -445,7 +449,7 @@ private fun AddServerDialog(
                             .fillMaxWidth()
                             .menuAnchor(MenuAnchorType.PrimaryNotEditable),
                         readOnly = true,
-                        label = { Text("Тип сервера") },
+                        label = { Text(stringResource(R.string.localai_server_type)) },
                         trailingIcon = {
                             ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                         },
@@ -478,7 +482,7 @@ private fun AddServerDialog(
                     value = url,
                     onValueChange = { url = it },
                     modifier = Modifier.fillMaxWidth(),
-                    label = { Text("URL") },
+                    label = { Text(stringResource(R.string.localai_url_label)) },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = NexusPurple,
                         unfocusedBorderColor = NexusSurface,
@@ -495,12 +499,12 @@ private fun AddServerDialog(
                 onClick = { onAdd(name, type, url) },
                 enabled = name.isNotBlank() && url.isNotBlank()
             ) {
-                Text("Добавить", color = NexusPurple)
+                Text(stringResource(R.string.localai_add), color = NexusPurple)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Отмена", color = NexusTextSecondary)
+                Text(stringResource(R.string.action_close), color = NexusTextSecondary)
             }
         },
         containerColor = NexusCard
@@ -523,7 +527,7 @@ private fun LocalAIChatDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text("Чат: ${config.name}", color = NexusTextPrimary)
+            Text(stringResource(R.string.localai_chat, config.name), color = NexusTextPrimary)
         },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -540,7 +544,7 @@ private fun LocalAIChatDialog(
                                 .fillMaxWidth()
                                 .menuAnchor(MenuAnchorType.PrimaryNotEditable),
                             readOnly = true,
-                            label = { Text("Модель") },
+                            label = { Text(stringResource(R.string.localai_model_label)) },
                             trailingIcon = {
                                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = modelExpanded)
                             },
@@ -573,7 +577,7 @@ private fun LocalAIChatDialog(
                     value = prompt,
                     onValueChange = { prompt = it },
                     modifier = Modifier.fillMaxWidth(),
-                    label = { Text("Промпт") },
+                    label = { Text(stringResource(R.string.localai_prompt)) },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = NexusPurple,
                         unfocusedBorderColor = NexusSurface,
@@ -617,12 +621,12 @@ private fun LocalAIChatDialog(
                 onClick = { onSend(selectedModel, prompt) },
                 enabled = selectedModel.isNotBlank() && prompt.isNotBlank() && !isGenerating
             ) {
-                Text("Отправить", color = NexusPurple)
+                Text(stringResource(R.string.localai_send), color = NexusPurple)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Закрыть", color = NexusTextSecondary)
+                Text(stringResource(R.string.localai_close), color = NexusTextSecondary)
             }
         },
         containerColor = NexusCard

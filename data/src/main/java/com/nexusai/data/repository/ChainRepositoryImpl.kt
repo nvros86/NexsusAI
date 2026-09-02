@@ -185,9 +185,14 @@ class ChainRepositoryImpl @Inject constructor(
             return@collect
         }
 
-        val aiProvider = aiProviderManager.getProvider(provider!!)
+        val currentProvider = provider
+        if (currentProvider == null) {
+            throw IllegalStateException("No AI provider available with a configured API key")
+        }
+
+        val aiProvider = aiProviderManager.getProvider(currentProvider)
         val model = step.model.ifEmpty {
-            provider!!.defaultModel.ifEmpty { provider!!.models.firstOrNull() ?: "default" }
+            currentProvider.defaultModel.ifEmpty { currentProvider.models.firstOrNull() ?: "default" }
         }
 
         val messages = listOf(

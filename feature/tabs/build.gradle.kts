@@ -45,7 +45,7 @@ dependencies {
     implementation(libs.hilt.navigation)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
-    implementation("javax.inject:javax.inject:1")
+    implementation(libs.javax.inject)
 
     testImplementation(libs.junit)
     testImplementation(libs.mockk)

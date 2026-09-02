@@ -22,9 +22,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.FragmentActivity
+import com.nexusai.app.R
 import com.nexusai.core.ui.theme.NexusBackground
 import com.nexusai.core.ui.theme.NexusPurple
 import com.nexusai.core.ui.theme.NexusTextPrimary
@@ -37,12 +39,15 @@ fun BiometricLockScreen(
     biometricHelper: BiometricHelper,
     activity: FragmentActivity
 ) {
+    val biometricTitle = stringResource(R.string.biometric_title)
+    val biometricSubtitle = stringResource(R.string.biometric_subtitle)
+
     LaunchedEffect(Unit) {
         if (biometricHelper.canAuthenticate()) {
             biometricHelper.authenticate(
                 activity = activity,
-                title = "NexusAI заблокирован",
-                subtitle = "Подтвердите личность для входа",
+                title = biometricTitle,
+                subtitle = biometricSubtitle,
                 onSuccess = { onAuthenticated() },
                 onError = { },
                 onFailed = { }
@@ -70,7 +75,7 @@ fun BiometricLockScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = "Приложение заблокировано",
+                text = stringResource(R.string.biometric_locked),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 color = NexusTextPrimary,
@@ -80,7 +85,7 @@ fun BiometricLockScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Используйте биометрию для входа",
+                text = stringResource(R.string.biometric_use_biometric),
                 fontSize = 16.sp,
                 color = NexusTextSecondary,
                 textAlign = TextAlign.Center
@@ -92,8 +97,8 @@ fun BiometricLockScreen(
                 onClick = {
                     biometricHelper.authenticate(
                         activity = activity,
-                        title = "NexusAI заблокирован",
-                        subtitle = "Подтвердите личность для входа",
+                        title = biometricTitle,
+                        subtitle = biometricSubtitle,
                         onSuccess = { onAuthenticated() },
                         onError = { },
                         onFailed = { }
@@ -104,7 +109,7 @@ fun BiometricLockScreen(
                 )
             ) {
                 Text(
-                    text = "Разблокировать",
+                    text = stringResource(R.string.biometric_unlock),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium
                 )
