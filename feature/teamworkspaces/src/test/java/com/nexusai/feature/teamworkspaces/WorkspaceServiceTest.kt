@@ -1,5 +1,6 @@
 package com.nexusai.feature.teamworkspaces
 
+import io.ktor.client.HttpClient
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -21,7 +22,7 @@ class WorkspaceServiceTest {
     @Before
     fun setUp() {
         kotlinx.coroutines.Dispatchers.setMain(testDispatcher)
-        service = WorkspaceService()
+        service = WorkspaceService(httpClient = io.mockk.mockk(relaxed = true))
     }
 
     @After
