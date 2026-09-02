@@ -4,7 +4,7 @@ import android.content.Context
 import com.nexusai.core.preferences.AppPreferences
 import com.nexusai.data.ai.AIProviderManager
 import com.nexusai.data.security.ApiKeyEncryption
-import com.nexusai.domain.preferences.AppPreferencesRepository
+import com.nexusai.core.preferences.AppPreferencesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

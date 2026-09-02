@@ -1,4 +1,4 @@
-package com.nexusai.domain.preferences
+package com.nexusai.core.preferences
 
 import kotlinx.coroutines.flow.Flow
 

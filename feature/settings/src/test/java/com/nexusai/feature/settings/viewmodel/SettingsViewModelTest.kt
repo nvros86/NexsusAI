@@ -2,7 +2,7 @@ package com.nexusai.feature.settings.viewmodel
 
 import com.nexusai.domain.model.AIProviderConfig
 import com.nexusai.domain.model.ProviderType
-import com.nexusai.domain.preferences.AppPreferencesRepository
+import com.nexusai.core.preferences.AppPreferencesRepository
 import com.nexusai.domain.repository.AIProviderRepository
 import io.mockk.coEvery
 import io.mockk.coVerify

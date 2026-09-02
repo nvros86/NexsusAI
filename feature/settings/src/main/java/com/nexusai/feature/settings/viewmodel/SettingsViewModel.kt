@@ -2,7 +2,7 @@ package com.nexusai.feature.settings.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nexusai.domain.preferences.AppPreferencesRepository
+import com.nexusai.core.preferences.AppPreferencesRepository
 import com.nexusai.domain.model.AIProviderConfig
 import com.nexusai.domain.model.ProviderType
 import com.nexusai.domain.repository.AIProviderRepository
