@@ -1,5 +1,34 @@
 # Changelog
 
+## v1.0.0-beta.9
+
+### Архитектура
+
+#### Clean Architecture fix
+- `feature:tabs` больше не зависит от `:data` модуля
+- Созданы `AIProviderFactory` и `AgentContextRepository` интерфейсы в `domain`
+- `AIProviderManager` и `AppDataManager` теперь реализуют domain-интерфейсы
+
+#### HttpClient singleton
+- Единый `HttpClient` через Hilt DI (`HttpModule`)
+- Убраны дублирующие инстанции из AIProviderManager, LocalAIService, WorkspaceService
+
+### Локализация
+- String resources для всех экранов (~200 строк RU+EN)
+- Marketplace, Image, Video, Memory, Agents, Templates, Files, Prompts, Plugins, Modules, Chains, ChainDetail, AIRouter, SplitView, VoiceMode, AIProvider, TeamWorkspaces
+
+### Тесты
+- ExportViewModelTest (21 тест)
+- AgentsViewModelTest (17 тестов)
+- MemoryViewModelTest (19 тестов)
+- HiltAndroidTest + MainActivityTest smoke test
+- LocalAIServiceTest и WorkspaceServiceTest обновлены для HttpClient injection
+
+### Экспорт
+- `toJson()` теперь использует `kotlinx.serialization.json` вместо `org.json` (JVM-совместимость)
+
+---
+
 ## v1.0.0-beta.8
 
 ### Улучшения
