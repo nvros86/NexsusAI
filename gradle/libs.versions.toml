@@ -20,7 +20,7 @@ junit-ext = "1.2.1"
 espresso = "3.6.1"
 androidx-test = "1.6.2"
 mockk = "1.13.10"
-biometric = "1.2.0-alpha06"
+biometric = "1.1.0"
 splashscreen = "1.0.1"
 javax-inject = "1"
 
