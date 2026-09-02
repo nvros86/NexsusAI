@@ -1,5 +1,6 @@
 package com.nexusai.app.ui
 
+import android.app.Application
 import com.nexusai.data.common.AppDataManager
 import com.nexusai.domain.model.MemoryEntry
 import io.mockk.coEvery
@@ -26,6 +27,7 @@ class MemoryViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
     private lateinit var appDataManager: AppDataManager
+    private lateinit var mockApplication: Application
     private lateinit var viewModel: MemoryViewModel
 
     private val entriesFlow = MutableStateFlow<List<MemoryEntry>>(emptyList())
@@ -45,9 +47,10 @@ class MemoryViewModelTest {
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
+        mockApplication = mockk(relaxed = true)
         appDataManager = mockk(relaxed = true)
         every { appDataManager.memoryEntries } returns entriesFlow
-        viewModel = MemoryViewModel(appDataManager)
+        viewModel = MemoryViewModel(mockApplication, appDataManager)
     }
 
     @After

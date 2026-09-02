@@ -5,6 +5,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import com.nexusai.app.R
 import com.nexusai.domain.model.AttachedFile
 import com.nexusai.domain.model.Message
 import com.nexusai.domain.model.MessageRole
@@ -437,7 +438,7 @@ class ExportViewModelTest {
 
     @Test
     fun `export format enum has correct properties`() {
-        assertEquals("Markdown", ExportFormat.MARKDOWN.displayName)
+        assertEquals(R.string.export_format_markdown, ExportFormat.MARKDOWN.displayNameRes)
         assertEquals(".md", ExportFormat.MARKDOWN.extension)
         assertEquals("text/markdown", ExportFormat.MARKDOWN.mimeType)
 

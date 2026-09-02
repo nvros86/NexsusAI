@@ -91,7 +91,6 @@ class VoiceModeViewModelTest {
         every { SpeechRecognizer.createSpeechRecognizer(any()) } returns mockk(relaxed = true)
         mockkConstructor(TextToSpeech::class)
         every { anyConstructed<TextToSpeech>().setOnUtteranceProgressListener(any()) } returns 0
-        every { anyConstructed<TextToSpeech>().setOnUtteranceCompletedListener(any()) } returns Unit
 
         viewModel = VoiceModeViewModel(application, providerRepository, aiProviderManager)
         testDispatcher.scheduler.advanceUntilIdle()
