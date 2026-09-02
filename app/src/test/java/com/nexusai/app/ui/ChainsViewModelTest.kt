@@ -1,5 +1,6 @@
 package com.nexusai.app.ui
 
+import android.app.Application
 import com.nexusai.domain.model.AutomationChain
 import com.nexusai.domain.model.ChainRunResult
 import com.nexusai.domain.model.ChainStep
@@ -30,6 +31,7 @@ import org.junit.Test
 class ChainsViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
+    private val mockApplication = mockk<Application>(relaxed = true)
     private lateinit var chainRepository: ChainRepository
     private lateinit var viewModel: ChainsViewModel
 
@@ -68,7 +70,7 @@ class ChainsViewModelTest {
         Dispatchers.setMain(testDispatcher)
         chainRepository = mockk(relaxed = true)
         every { chainRepository.getAllChains() } returns chainsFlow
-        viewModel = ChainsViewModel(chainRepository)
+        viewModel = ChainsViewModel(mockApplication, chainRepository)
     }
 
     @After

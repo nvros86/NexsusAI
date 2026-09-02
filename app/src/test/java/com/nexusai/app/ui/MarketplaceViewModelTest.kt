@@ -1,5 +1,6 @@
 package com.nexusai.app.ui
 
+import android.app.Application
 import com.nexusai.domain.model.MarketplaceCategory
 import com.nexusai.domain.model.MarketplaceProvider
 import com.nexusai.domain.model.ProviderCapability
@@ -34,6 +35,7 @@ class MarketplaceViewModelTest {
     private lateinit var marketplaceRepository: MarketplaceRepository
     private lateinit var aiProviderRepository: AIProviderRepository
     private lateinit var viewModel: MarketplaceViewModel
+    private val mockApplication = mockk<Application>(relaxed = true)
 
     private val presetsFlow = MutableStateFlow<List<MarketplaceProvider>>(emptyList())
 
@@ -68,7 +70,7 @@ class MarketplaceViewModelTest {
         every { marketplaceRepository.searchPresets(any()) } returns flowOf(emptyList())
         every { marketplaceRepository.getPresetsByCategory(any()) } returns flowOf(emptyList())
 
-        viewModel = MarketplaceViewModel(marketplaceRepository, aiProviderRepository)
+        viewModel = MarketplaceViewModel(mockApplication, marketplaceRepository, aiProviderRepository)
         testDispatcher.scheduler.advanceUntilIdle()
     }
 

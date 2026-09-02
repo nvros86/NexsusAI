@@ -1,5 +1,6 @@
 package com.nexusai.app.ui
 
+import android.app.Application
 import com.nexusai.data.common.AppDataManager
 import com.nexusai.domain.model.AIAgent
 import io.mockk.coEvery
@@ -26,6 +27,7 @@ import org.junit.Test
 class AgentsViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
+    private val mockApplication = mockk<Application>(relaxed = true)
     private lateinit var appDataManager: AppDataManager
     private lateinit var viewModel: AgentsViewModel
 
@@ -50,7 +52,7 @@ class AgentsViewModelTest {
         Dispatchers.setMain(testDispatcher)
         appDataManager = mockk(relaxed = true)
         every { appDataManager.agents } returns agentsFlow
-        viewModel = AgentsViewModel(appDataManager)
+        viewModel = AgentsViewModel(mockApplication, appDataManager)
     }
 
     @After

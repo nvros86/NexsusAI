@@ -1,5 +1,6 @@
 package com.nexusai.app.ui
 
+import android.app.Application
 import androidx.lifecycle.SavedStateHandle
 import com.nexusai.domain.model.AutomationChain
 import com.nexusai.domain.model.ChainRunResult
@@ -29,6 +30,7 @@ import org.junit.Test
 class ChainDetailViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
+    private val mockApplication = mockk<Application>(relaxed = true)
     private lateinit var chainRepository: ChainRepository
     private lateinit var viewModel: ChainDetailViewModel
 
@@ -73,7 +75,7 @@ class ChainDetailViewModelTest {
 
     private fun createViewModel(chainId: String = "new"): ChainDetailViewModel {
         val savedStateHandle = SavedStateHandle(mapOf("chainId" to chainId))
-        return ChainDetailViewModel(savedStateHandle, chainRepository)
+        return ChainDetailViewModel(mockApplication, savedStateHandle, chainRepository)
     }
 
     @Test
