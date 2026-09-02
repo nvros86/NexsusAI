@@ -179,4 +179,8 @@ class ImageViewModel @Inject constructor(
     fun clearImages() {
         _uiState.value = _uiState.value.copy(images = emptyList())
     }
+
+    fun dismissError() {
+        _uiState.value = _uiState.value.copy(error = null)
+    }
 }
