@@ -172,6 +172,65 @@ class TaskTemplateRepositoryImpl @Inject constructor() : TaskTemplateRepository 
                 InputPlaceholder("duration", "Длительность", "60 мин")
             ),
             outputFormat = "markdown"
+        ),
+        TaskTemplate(
+            id = "social_media_plan",
+            title = "План соцсетей",
+            description = "Контент-план на неделю для соцсетей",
+            category = TemplateCategory.CONTENT,
+            iconEmoji = "📅",
+            systemPrompt = "Ты SMM-специалист. Создай контент-план на неделю для соцсетей. На каждый день: тема поста, формат (карусель, reel, story, text), hook, основной контент, CTA, хештеги. Учитывай тренды и best practices.",
+            examplePrompt = "Контент-план для Instagram аккаунта о здоровом питании",
+            inputPlaceholders = listOf(
+                InputPlaceholder("niche", "Ниша"),
+                InputPlaceholder("platform", "Платформа", "Instagram"),
+                InputPlaceholder("goal", "Цель", "Вовлечение")
+            ),
+            outputFormat = "markdown"
+        ),
+        TaskTemplate(
+            id = "code_review",
+            title = "Code Review",
+            description = "Анализ кода и рекомендации по улучшению",
+            category = TemplateCategory.WEB_DEVELOPMENT,
+            iconEmoji = "🔍",
+            systemPrompt = "Ты senior-разработчик. Проведи code review. Оцени: архитектуру, читаемость, производительность, безопасность, тестопригодность. Дай конкретные рекомендации с примерами кода. Используй constructive feedback.",
+            examplePrompt = "Проведи code review этого Kotlin класса:\n\n```kotlin\nclass UserManager(private val db: Database) {\n    fun getUser(id: String) = db.query(\"SELECT * FROM users WHERE id=$id\")\n}\n```",
+            inputPlaceholders = listOf(
+                InputPlaceholder("language", "Язык программирования", "Kotlin"),
+                InputPlaceholder("focus", "Фокус review", "Общий")
+            ),
+            outputFormat = "markdown"
+        ),
+        TaskTemplate(
+            id = "presentation",
+            title = "Презентация",
+            description = "Структура и контент презентации",
+            category = TemplateCategory.BUSINESS,
+            iconEmoji = "📊",
+            systemPrompt = "Ты профессиональный презентатор. Создай структуру презентации на 10-15 слайдов. Каждый слайд: заголовок, ключевая мысль, визуальная рекомендация, говорящие заметки. Начни с strong opening, закончи clear CTA.",
+            examplePrompt = "Презентация нового продукта для инвесторов",
+            inputPlaceholders = listOf(
+                InputPlaceholder("topic", "Тема презентации"),
+                InputPlaceholder("audience", "Аудитория"),
+                InputPlaceholder("duration", "Длительность", "15 мин")
+            ),
+            outputFormat = "markdown"
+        ),
+        TaskTemplate(
+            id = "api_docs",
+            title = "API Documentation",
+            description = "Документация для REST API",
+            category = TemplateCategory.WEB_DEVELOPMENT,
+            iconEmoji = "📖",
+            systemPrompt = "Ты tech writer. Создай documentation для REST API. Включи: overview, authentication, endpoints (method, path, params, request/response examples, errors), rate limits, SDK examples. Формат: OpenAPI-friendly.",
+            examplePrompt = "API документация для e-commerce платформы",
+            inputPlaceholders = listOf(
+                InputPlaceholder("api_name", "Название API"),
+                InputPlaceholder("description", "Описание"),
+                InputPlaceholder("endpoints", "Основные endpoints (через запятую)")
+            ),
+            outputFormat = "markdown"
         )
     )
 
