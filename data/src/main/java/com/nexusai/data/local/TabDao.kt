@@ -33,4 +33,7 @@ interface TabDao {
 
     @Query("UPDATE tabs SET isActive = 1 WHERE id = :id")
     suspend fun setActiveTab(id: String)
+
+    @Query("SELECT * FROM tabs WHERE messagesJson LIKE '%' || :query || '%' OR title LIKE '%' || :query || '%' ORDER BY createdAt DESC")
+    fun searchTabs(query: String): Flow<List<TabEntity>>
 }

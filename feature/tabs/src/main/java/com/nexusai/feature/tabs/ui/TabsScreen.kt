@@ -20,6 +20,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Image
@@ -30,6 +32,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -57,6 +61,7 @@ import com.nexusai.core.ui.theme.NexusSurfaceVariant
 import com.nexusai.core.ui.theme.NexusTextPrimary
 import com.nexusai.core.ui.theme.NexusTextSecondary
 import com.nexusai.core.ui.theme.NexusTextTertiary
+import com.nexusai.domain.model.Tab
 import com.nexusai.feature.tabs.viewmodel.TabsViewModel
 
 @Composable
@@ -82,6 +87,34 @@ fun TabsScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = androidx.compose.foundation.layout.PaddingValues(vertical = 16.dp)
     ) {
+        // Search Bar
+        item {
+            SearchBar(
+                query = tabsState.searchQuery,
+                onQueryChange = { viewModel.setSearchQuery(it) },
+                onClear = { viewModel.clearSearch() }
+            )
+        }
+
+        if (tabsState.isSearchActive) {
+            item {
+                Text(
+                    text = "Найдено: ${tabsState.searchResults.size}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = NexusTextTertiary,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
+            items(tabsState.searchResults) { tab ->
+                SearchResultCard(
+                    tab = tab,
+                    onClick = {
+                        viewModel.setActiveTab(tab.id)
+                        viewModel.clearSearch()
+                    }
+                )
+            }
+        } else {
         // Category Tabs
         item {
             CategoryTabs()
@@ -142,6 +175,7 @@ fun TabsScreen(
         item {
             FilesSection()
         }
+        } // end else (search inactive)
     }
 
     if (showProviderSelector && selectedTabForProvider != null) {
@@ -521,6 +555,103 @@ private fun FilesSection() {
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun SearchBar(
+    query: String,
+    onQueryChange: (String) -> Unit,
+    onClear: () -> Unit
+) {
+    OutlinedTextField(
+        value = query,
+        onValueChange = onQueryChange,
+        modifier = Modifier.fillMaxWidth(),
+        placeholder = {
+            Text("Поиск по чатам...", color = NexusTextTertiary)
+        },
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = "Поиск",
+                tint = NexusTextTertiary
+            )
+        },
+        trailingIcon = {
+            if (query.isNotEmpty()) {
+                IconButton(onClick = onClear) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Очистить",
+                        tint = NexusTextTertiary
+                    )
+                }
+            }
+        },
+        singleLine = true,
+        shape = RoundedCornerShape(12.dp),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = NexusPurple,
+            unfocusedBorderColor = NexusSurfaceVariant,
+            focusedContainerColor = NexusSurface,
+            unfocusedContainerColor = NexusSurface,
+            focusedTextColor = NexusTextPrimary,
+            unfocusedTextColor = NexusTextPrimary
+        )
+    )
+}
+
+@Composable
+private fun SearchResultCard(
+    tab: Tab,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
+        colors = CardDefaults.cardColors(containerColor = NexusCard),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.SmartToy,
+                    contentDescription = null,
+                    tint = NexusPurple,
+                    modifier = Modifier.size(16.dp)
+                )
+                Text(
+                    text = tab.title,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = NexusTextPrimary,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+            if (tab.messages.isNotEmpty()) {
+                val lastMessage = tab.messages.lastOrNull()
+                if (lastMessage != null) {
+                    Text(
+                        text = lastMessage.content.take(120),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = NexusTextTertiary,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.padding(top = 4.dp)
+                    )
+                }
+            }
+            Text(
+                text = "${tab.messages.size} сообщений",
+                style = MaterialTheme.typography.labelSmall,
+                color = NexusTextTertiary,
+                modifier = Modifier.padding(top = 4.dp)
+            )
         }
     }
 }

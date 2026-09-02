@@ -22,6 +22,12 @@ class TabRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun searchTabs(query: String): Flow<List<Tab>> {
+        return dao.searchTabs(query).map { entities ->
+            entities.map { it.toDomain() }
+        }
+    }
+
     override suspend fun getTabById(id: String): Tab? {
         return dao.getTabById(id)?.toDomain()
     }

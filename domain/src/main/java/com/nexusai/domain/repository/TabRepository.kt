@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface TabRepository {
     fun getAllTabs(): Flow<List<Tab>>
+    fun searchTabs(query: String): Flow<List<Tab>>
     suspend fun getTabById(id: String): Tab?
     suspend fun createTab(tab: Tab): Tab
     suspend fun updateTab(tab: Tab)

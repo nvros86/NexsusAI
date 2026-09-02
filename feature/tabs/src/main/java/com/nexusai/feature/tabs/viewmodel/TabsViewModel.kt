@@ -25,7 +25,10 @@ data class TabsUiState(
     val isLoading: Boolean = false,
     val error: String? = null,
     val isSplitViewMode: Boolean = false,
-    val splitViewTabIds: Pair<String, String>? = null
+    val splitViewTabIds: Pair<String, String>? = null,
+    val searchQuery: String = "",
+    val searchResults: List<Tab> = emptyList(),
+    val isSearchActive: Boolean = false
 )
 
 data class ChatUiState(
@@ -333,6 +336,27 @@ class TabsViewModel @Inject constructor(
         _tabsState.value = _tabsState.value.copy(
             isSplitViewMode = false,
             splitViewTabIds = null
+        )
+    }
+
+    fun setSearchQuery(query: String) {
+        _tabsState.value = _tabsState.value.copy(searchQuery = query)
+        if (query.isBlank()) {
+            _tabsState.value = _tabsState.value.copy(searchResults = emptyList(), isSearchActive = false)
+        } else {
+            viewModelScope.launch {
+                tabRepository.searchTabs(query).collect { results ->
+                    _tabsState.value = _tabsState.value.copy(searchResults = results, isSearchActive = true)
+                }
+            }
+        }
+    }
+
+    fun clearSearch() {
+        _tabsState.value = _tabsState.value.copy(
+            searchQuery = "",
+            searchResults = emptyList(),
+            isSearchActive = false
         )
     }
 
