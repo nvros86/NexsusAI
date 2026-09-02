@@ -378,7 +378,6 @@ private fun FileGridItem(
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(file.uri)
-                    .crossfade(true)
                     .build(),
                 contentDescription = file.name,
                 contentScale = ContentScale.Crop,

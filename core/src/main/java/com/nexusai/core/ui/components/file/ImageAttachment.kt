@@ -42,7 +42,6 @@ fun ImageAttachment(
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(uri)
-                .crossfade(true)
                 .build(),
             contentDescription = contentDescription,
             contentScale = ContentScale.Fit,
