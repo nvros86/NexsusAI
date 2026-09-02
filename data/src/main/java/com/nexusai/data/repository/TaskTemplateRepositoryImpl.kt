@@ -195,7 +195,7 @@ class TaskTemplateRepositoryImpl @Inject constructor() : TaskTemplateRepository 
             category = TemplateCategory.WEB_DEVELOPMENT,
             iconEmoji = "🔍",
             systemPrompt = "Ты senior-разработчик. Проведи code review. Оцени: архитектуру, читаемость, производительность, безопасность, тестопригодность. Дай конкретные рекомендации с примерами кода. Используй constructive feedback.",
-            examplePrompt = "Проведи code review этого Kotlin класса:\n\n```kotlin\nclass UserManager(private val db: Database) {\n    fun getUser(id: String) = db.query(\"SELECT * FROM users WHERE id=$id\")\n}\n```",
+            examplePrompt = "Проведи code review этого Kotlin класса:\n\nclass UserManager(private val db: Database) {\n    fun getUser(id: String) = db.query(\"SELECT * FROM users WHERE id=\" + id)\n}",
             inputPlaceholders = listOf(
                 InputPlaceholder("language", "Язык программирования", "Kotlin"),
                 InputPlaceholder("focus", "Фокус review", "Общий")
