@@ -1,5 +1,31 @@
 # Changelog
 
+## v1.0.0-beta.10
+
+### Полный аудит проекта
+
+#### CRITICAL исправления
+- Убраны опасные `!!` операторы (ChainRepositoryImpl, ChainDetailScreen, TeamWorkspacesScreen, LocalAIScreen, TabsScreen)
+- `fallbackToDestructiveMigration` — добавлены TODO перед v1.0.0 stable
+- `exportSchema = false` — добавлен TODO
+
+#### HIGH исправления
+- `javax.inject` hardcoded версии → version catalog
+- Убран redundant `debugImplementation(compose.material.icons)`
+- ProGuard: добавлены правила для Retrofit + Coil
+- Добавлены `FOREGROUND_SERVICE` и `POST_NOTIFICATIONS` permissions
+
+#### Строки (i18n)
+- Извлечены строки из OnboardingScreen (15), BiometricLockScreen (5), AIProviderSelector (3), SettingsScreen (2), LocalAIScreen (20)
+
+#### Тесты
+- SplitViewViewModelTest (22 теста)
+- ImageViewModelTest (18 тестов)
+- ChainsViewModelTest (18 тестов)
+- Всего: ~120 unit tests
+
+---
+
 ## v1.0.0-beta.9
 
 ### Архитектура
