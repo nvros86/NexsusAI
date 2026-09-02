@@ -10,6 +10,8 @@
     <string name="label_added">Добавлен</string>
     <string name="label_add">Добавить</string>
     <string name="label_cancel">Отмена</string>
+    <string name="label_delete">Удалить</string>
+    <string name="label_share">Поделиться</string>
 
     <!-- Marketplace -->
     <string name="marketplace_title">AI Маркетплейс</string>
@@ -35,4 +37,203 @@
     <string name="export_error">Ошибка</string>
     <string name="export_done">Готово</string>
     <string name="export_done_message">Файл экспортирован. Используйте \u00abПоделиться\u00bb для отправки.</string>
+
+    <!-- Marketplace (additional) -->
+    <string name="marketplace_all">Все</string>
+    <string name="marketplace_model_tokens">%1$s \u2022 До %2$d токенов</string>
+
+    <!-- Image generation -->
+    <string name="image_title">Генерация изображений</string>
+    <string name="image_clear">Очистить</string>
+    <string name="image_empty_title">Создайте изображение</string>
+    <string name="image_empty_subtitle">Опишите, что вы хотите увидеть</string>
+    <string name="image_generating">Генерация\u2026</string>
+    <string name="image_prompt_hint">Опишите изображение\u2026</string>
+    <string name="image_generate">Генерировать</string>
+    <string name="image_favorite">Избранное</string>
+    <string name="image_delete">Удалить</string>
+
+    <!-- Video generation -->
+    <string name="video_title">Генерация видео</string>
+    <string name="video_clear">Очистить</string>
+    <string name="video_empty_title">Создайте видео</string>
+    <string name="video_empty_subtitle">Опишите сцену для видео</string>
+    <string name="video_generating">Генерация видео\u2026</string>
+    <string name="video_prompt_hint">Опишите сцену\u2026</string>
+    <string name="video_generate">Генерировать</string>
+    <string name="video_play">Воспроизвести</string>
+    <string name="video_favorite">Избранное</string>
+    <string name="video_delete">Удалить</string>
+
+    <!-- Memory -->
+    <string name="memory_title">Память AI</string>
+    <string name="memory_clear">Очистить</string>
+    <string name="memory_search_hint">Поиск в памяти\u2026</string>
+    <string name="memory_empty">Память пуста</string>
+    <string name="memory_empty_with_query">Ничего не найдено</string>
+    <string name="memory_add_hint">Добавьте информацию для AI</string>
+    <string name="memory_add_title">Добавить в память</string>
+    <string name="memory_key_hint">Ключ (например: Имя пользователя)</string>
+    <string name="memory_value_hint">Значение</string>
+    <string name="memory_important">Важное</string>
+
+    <!-- Agents -->
+    <string name="agents_title">AI Агенты</string>
+    <string name="agents_empty">Нет агентов</string>
+    <string name="agents_empty_hint">Создайте своего AI-агента</string>
+    <string name="agents_create">Создать агента</string>
+    <string name="agents_new_title">Новый агент</string>
+    <string name="agents_name_hint">Имя агента</string>
+    <string name="agents_description_hint">Описание</string>
+    <string name="agents_prompt_hint">Системный промпт</string>
+    <string name="agents_create_button">Создать</string>
+    <string name="agents_active">Активен</string>
+    <string name="agents_disabled">Отключен</string>
+
+    <!-- Templates -->
+    <string name="templates_title">Шаблоны задач</string>
+    <string name="templates_search_hint">Поиск шаблонов\u2026</string>
+    <string name="templates_all">Все</string>
+
+    <!-- Files -->
+    <string name="files_title">Файлы</string>
+    <string name="files_add">Добавить файл</string>
+    <string name="files_delete_title">Удалить файл?</string>
+    <string name="files_delete_confirm">Удалить \u00ab%1$s\u00bb?</string>
+    <string name="files_empty">Нет файлов</string>
+    <string name="files_empty_category">Нет файлов в этой категории</string>
+    <string name="files_storage">Хранилище</string>
+    <string name="files_count">%d файлов</string>
+    <string name="files_open_error">Не удалось открыть файл</string>
+    <string name="files_share_error">Не удалось поделиться</string>
+    <string name="files_filter_all">Все</string>
+    <string name="files_filter_images">Изображения</string>
+    <string name="files_filter_documents">Документы</string>
+    <string name="files_filter_code">Код</string>
+    <string name="files_filter_media">Медиа</string>
+    <string name="files_filter_other">Другие</string>
+
+    <!-- Prompts -->
+    <string name="prompts_title">Промпты</string>
+    <string name="prompts_search_hint">Поиск промптов\u2026</string>
+    <string name="prompts_favorites">\u2b50 Избранные</string>
+    <string name="prompts_all">Все</string>
+    <string name="prompts_empty_favorites">Нет избранных промптов</string>
+    <string name="prompts_empty">Нет промптов</string>
+    <string name="prompts_copied">Скопировано!</string>
+    <string name="prompts_copy">Копировать</string>
+    <string name="prompts_close">Закрыть</string>
+    <string name="prompts_usage">Использовано %1$d раз</string>
+
+    <!-- Plugins -->
+    <string name="plugins_title">Плагины</string>
+    <string name="plugins_empty">Нет плагинов</string>
+    <string name="plugins_enabled">Включён</string>
+    <string name="plugins_disabled">Выключен</string>
+    <string name="plugins_built_in">Встроенный</string>
+    <string name="plugins_result_title">Результат</string>
+    <string name="plugins_execute_title">Выполнить: %1$s</string>
+    <string name="plugins_args_hint">Аргументы (опционально)</string>
+    <string name="plugins_commands">Команды:</string>
+
+    <!-- Modules -->
+    <string name="modules_title">Модули</string>
+    <string name="modules_search_hint">Поиск модулей\u2026</string>
+    <string name="modules_all">Все</string>
+    <string name="modules_active_count">%1$d из %2$d активно</string>
+    <string name="modules_required">Обяз.</string>
+    <string name="modules_coming_soon">Скоро</string>
+
+    <!-- Chains -->
+    <string name="chains_title">Automation Chains</string>
+    <string name="chains_empty">Нет цепочек</string>
+    <string name="chains_empty_hint">Создайте цепочку автоматизации</string>
+    <string name="chains_run">Запустить</string>
+    <string name="chains_steps">%1$d шагов</string>
+    <string name="chains_runs">Запусков: %1$d</string>
+    <string name="chains_create">Создать цепочку</string>
+
+    <!-- Chain detail -->
+    <string name="chain_detail_new_title">Новая цепочка</string>
+    <string name="chain_detail_name_label">Название</string>
+    <string name="chain_detail_description_label">Описание</string>
+    <string name="chain_detail_empty">Добавьте шаги</string>
+    <string name="chain_detail_empty_hint">Нажмите + чтобы добавить шаг</string>
+    <string name="chain_detail_new_step">Новый шаг</string>
+    <string name="chain_detail_type_label">Тип</string>
+    <string name="chain_detail_step_name_hint">Имя шага</string>
+    <string name="chain_detail_step_prompt_hint">Промпт (используйте {key} для подстановки)</string>
+    <string name="chain_detail_result">Результат</string>
+    <string name="chain_detail_error">Ошибка</string>
+    <string name="chain_detail_enabled">Включён</string>
+    <string name="chain_detail_disabled">Выключен</string>
+
+    <!-- AI Router -->
+    <string name="ai_router_title">AI Router</string>
+    <string name="ai_router_refresh">Обновить</string>
+    <string name="ai_router_strategy">Стратегия маршрутизации</string>
+    <string name="ai_router_providers">Провайдеры</string>
+    <string name="ai_router_result">Результат</string>
+    <string name="ai_router_test_title">Тест маршрутизации</string>
+    <string name="ai_router_test_prompt">Введите тестовое сообщение:</string>
+    <string name="ai_router_test_hint">Напиши код на Python\u2026</string>
+    <string name="ai_router_route">Маршрутизировать</string>
+    <string name="ai_router_active">Активен</string>
+    <string name="ai_router_no_key">Нет ключа</string>
+    <string name="ai_router_failover_chain">Failover цепочка</string>
+
+    <!-- Split View -->
+    <string name="split_view_title">Split View</string>
+    <string name="split_view_comparison_mode">Режим сравнения</string>
+    <string name="split_view_providers">Провайдеры</string>
+    <string name="split_view_no_providers">Нет провайдеров с API-ключами. Добавьте в настройках.</string>
+    <string name="split_view_compare">Сравнить ответы</string>
+    <string name="split_view_comparing">Сравнение\u2026</string>
+    <string name="split_view_query_hint">Задайте вопрос для сравнения\u2026</string>
+    <string name="split_view_results">Результаты</string>
+    <string name="split_view_generating">Генерация ответа\u2026</string>
+    <string name="split_view_tokens">~%1$d токенов</string>
+    <string name="split_view_error">Ошибка: %1$s</string>
+    <string name="split_view_rating">Оценка:</string>
+
+    <!-- Voice Mode -->
+    <string name="voice_mode_title">Voice Mode</string>
+    <string name="voice_mode_press_mic">Нажмите микрофон</string>
+    <string name="voice_mode_start_talking">и начните говорить</string>
+    <string name="voice_mode_thinking">Думаю\u2026</string>
+    <string name="voice_mode_listening">Слушаю\u2026</string>
+    <string name="voice_mode_speaking">Говорю\u2026</string>
+    <string name="voice_mode_press_to_start">Нажмите для начала</string>
+    <string name="voice_mode_error_retry">Ошибка. Нажмите снова</string>
+    <string name="voice_mode_stop">Остановить</string>
+    <string name="voice_mode_start">Начать</string>
+    <string name="voice_mode_processing">Обработка</string>
+
+    <!-- AI Provider detail -->
+    <string name="ai_provider_title">AI Провайдер</string>
+    <string name="ai_provider_info">Основная информация</string>
+    <string name="ai_provider_type">Тип</string>
+    <string name="ai_provider_default_model">Модель по умолчанию</string>
+    <string name="ai_provider_not_set">Не задана</string>
+    <string name="ai_provider_max_tokens">Макс. токенов</string>
+    <string name="ai_provider_temperature">Температура</string>
+    <string name="ai_provider_available_models">Доступные модели</string>
+    <string name="ai_provider_default">По умолчанию</string>
+    <string name="ai_provider_capabilities">Возможности</string>
+    <string name="ai_provider_images">Изображения</string>
+    <string name="ai_provider_files">Файлы</string>
+    <string name="ai_provider_streaming">Streaming</string>
+    <string name="ai_provider_loading">Загрузка\u2026</string>
+
+    <!-- Team Workspaces -->
+    <string name="workspaces_title">Team Workspaces</string>
+    <string name="workspaces_empty">Нет workspace</string>
+    <string name="workspaces_empty_hint">Создайте workspace для команды</string>
+    <string name="workspaces_online_members">Участники онлайн</string>
+    <string name="workspaces_members_count">%1$d участников</string>
+    <string name="workspaces_create">Создать workspace</string>
+    <string name="workspaces_new_title">Новый workspace</string>
+    <string name="workspaces_close">Закрыть</string>
+    <string name="workspaces_message_hint">Сообщение\u2026</string>
+    <string name="workspaces_send">Отправить</string>
 </resources>

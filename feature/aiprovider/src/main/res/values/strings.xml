@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_back">Back</string>
+    <string name="prompts_favorites">\u2b50 Favorites</string>
+    <string name="ai_provider_title">AI Provider</string>
+    <string name="ai_provider_info">Basic Information</string>
+    <string name="ai_provider_type">Type</string>
+    <string name="ai_provider_default_model">Default model</string>
+    <string name="ai_provider_not_set">Not set</string>
+    <string name="ai_provider_max_tokens">Max. tokens</string>
+    <string name="ai_provider_temperature">Temperature</string>
+    <string name="ai_provider_available_models">Available Models</string>
+    <string name="ai_provider_default">Default</string>
+    <string name="ai_provider_capabilities">Capabilities</string>
+    <string name="ai_provider_images">Images</string>
+    <string name="ai_provider_files">Files</string>
+    <string name="ai_provider_streaming">Streaming</string>
+    <string name="ai_provider_loading">Loading\u2026</string>
+</resources>

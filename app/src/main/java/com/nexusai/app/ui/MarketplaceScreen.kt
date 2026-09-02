@@ -63,6 +63,8 @@ import com.nexusai.core.ui.theme.NexusTextTertiary
 import com.nexusai.domain.model.MarketplaceCategory
 import com.nexusai.domain.model.MarketplaceProvider
 import com.nexusai.domain.model.ProviderCapability
+import androidx.compose.ui.res.stringResource
+import com.nexusai.app.R
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -87,12 +89,12 @@ fun MarketplaceScreen(
             .background(NexusBackground)
     ) {
         TopAppBar(
-            title = { Text("AI Маркетплейс", color = NexusTextPrimary) },
+            title = { Text(stringResource(R.string.marketplace_title), color = NexusTextPrimary) },
             navigationIcon = {
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Назад",
+                        contentDescription = stringResource(R.string.action_back),
                         tint = NexusTextPrimary
                     )
                 }
@@ -104,7 +106,7 @@ fun MarketplaceScreen(
             OutlinedTextField(
                 value = uiState.searchQuery,
                 onValueChange = { viewModel.search(it) },
-                placeholder = { Text("Поиск AI провайдеров...", color = NexusTextTertiary) },
+                placeholder = { Text(stringResource(R.string.marketplace_search), color = NexusTextTertiary) },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Search,
@@ -130,7 +132,7 @@ fun MarketplaceScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 CategoryChip(
-                    label = "Все",
+                    label = stringResource(R.string.marketplace_all),
                     selected = uiState.selectedCategory == null,
                     onClick = { viewModel.selectCategory(null) }
                 )
@@ -155,7 +157,7 @@ fun MarketplaceScreen(
                     Text("🔍", style = MaterialTheme.typography.displayLarge)
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Ничего не найдено",
+                        text = stringResource(R.string.marketplace_no_results),
                         color = NexusTextSecondary,
                         style = MaterialTheme.typography.bodyLarge
                     )
@@ -188,7 +190,7 @@ fun MarketplaceScreen(
             onDismissRequest = { showAddDialog = null },
             title = {
                 Text(
-                    text = "Добавить ${provider.name}?",
+                    text = stringResource(R.string.marketplace_add_provider, provider.name),
                     color = NexusTextPrimary,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -202,7 +204,7 @@ fun MarketplaceScreen(
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = "Модель: ${provider.defaultModel}",
+                        text = stringResource(R.string.marketplace_model_label, provider.defaultModel),
                         color = NexusTextTertiary,
                         style = MaterialTheme.typography.bodySmall
                     )
@@ -229,12 +231,12 @@ fun MarketplaceScreen(
                     viewModel.addProvider(provider, apiKeyInput)
                     showAddDialog = null
                 }) {
-                    Text("Добавить", color = NexusPurple)
+                    Text(stringResource(R.string.label_add), color = NexusPurple)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showAddDialog = null }) {
-                    Text("Отмена", color = NexusTextSecondary)
+                    Text(stringResource(R.string.label_cancel), color = NexusTextSecondary)
                 }
             },
             containerColor = NexusCard
@@ -252,7 +254,7 @@ fun MarketplaceScreen(
                 containerColor = NexusPurple,
                 contentColor = NexusTextPrimary
             ) {
-                Text("✅ $name добавлен в Настройки")
+                Text("✅ ${stringResource(R.string.marketplace_added_snackbar, name)}")
             }
         }
     }
@@ -338,7 +340,7 @@ private fun MarketplaceCard(
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
-                                text = "Добавлен",
+                                text = stringResource(R.string.label_added),
                                 color = NexusPurple,
                                 style = MaterialTheme.typography.labelSmall
                             )
@@ -361,7 +363,7 @@ private fun MarketplaceCard(
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
-                                text = "Добавить",
+                                text = stringResource(R.string.label_add),
                                 color = NexusTextPrimary,
                                 style = MaterialTheme.typography.labelSmall
                             )
@@ -418,7 +420,7 @@ private fun MarketplaceCard(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Модель: ${provider.defaultModel} • До ${provider.maxTokens} токенов",
+                text = stringResource(R.string.marketplace_model_tokens, provider.defaultModel, provider.maxTokens),
                 style = MaterialTheme.typography.labelSmall,
                 color = NexusTextTertiary
             )

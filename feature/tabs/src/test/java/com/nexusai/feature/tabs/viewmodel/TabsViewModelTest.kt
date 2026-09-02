@@ -1,7 +1,7 @@
 package com.nexusai.feature.tabs.viewmodel
 
-import com.nexusai.data.ai.AIProviderManager
-import com.nexusai.data.common.AppDataManager
+import com.nexusai.domain.ai.AIProviderFactory
+import com.nexusai.domain.repository.AgentContextRepository
 import com.nexusai.domain.model.AIProviderConfig
 import com.nexusai.domain.model.Tab
 import com.nexusai.domain.repository.AIProviderRepository
@@ -32,8 +32,8 @@ class TabsViewModelTest {
     private val testDispatcher = StandardTestDispatcher()
     private lateinit var tabRepository: TabRepository
     private lateinit var aiProviderRepository: AIProviderRepository
-    private lateinit var aiProviderManager: AIProviderManager
-    private lateinit var appDataManager: AppDataManager
+    private lateinit var aiProviderFactory: AIProviderFactory
+    private lateinit var agentContextRepository: AgentContextRepository
     private lateinit var viewModel: TabsViewModel
 
     private val tabsFlow = MutableStateFlow<List<Tab>>(emptyList())
@@ -50,20 +50,20 @@ class TabsViewModelTest {
         Dispatchers.setMain(testDispatcher)
         tabRepository = mockk(relaxed = true)
         aiProviderRepository = mockk(relaxed = true)
-        aiProviderManager = mockk(relaxed = true)
+        aiProviderFactory = mockk(relaxed = true)
 
         val fakeAgentDao = mockk<com.nexusai.data.local.AgentDao>(relaxed = true)
         every { fakeAgentDao.getAllAgents() } returns flowOf(emptyList())
         val fakeMemoryDao = mockk<com.nexusai.data.local.MemoryEntryDao>(relaxed = true)
         every { fakeMemoryDao.getAllEntries() } returns flowOf(emptyList())
-        appDataManager = AppDataManager(fakeAgentDao, fakeMemoryDao)
+        agentContextRepository = com.nexusai.data.common.AppDataManager(fakeAgentDao, fakeMemoryDao)
 
         every { tabRepository.getAllTabs() } returns tabsFlow
         every { aiProviderRepository.getAllProviders() } returns providersFlow
         coEvery { tabRepository.createTab(any()) } returns createTab()
         coEvery { tabRepository.getTabById(any()) } returns createTab()
 
-        viewModel = TabsViewModel(tabRepository, aiProviderRepository, aiProviderManager, appDataManager)
+        viewModel = TabsViewModel(tabRepository, aiProviderRepository, aiProviderFactory, agentContextRepository)
     }
 
     @After

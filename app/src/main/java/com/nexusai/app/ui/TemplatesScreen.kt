@@ -40,6 +40,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import com.nexusai.app.R
 import com.nexusai.domain.model.TemplateCategory
 import com.nexusai.domain.model.TaskTemplate
 import com.nexusai.domain.repository.TaskTemplateRepository
@@ -75,12 +77,12 @@ fun TemplatesScreen(
             .background(NexusBackground)
     ) {
         TopAppBar(
-            title = { Text("Шаблоны задач", color = NexusTextPrimary) },
+            title = { Text(stringResource(R.string.templates_title), color = NexusTextPrimary) },
             navigationIcon = {
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Назад",
+                        contentDescription = stringResource(R.string.action_back),
                         tint = NexusTextPrimary
                     )
                 }
@@ -96,7 +98,7 @@ fun TemplatesScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            placeholder = { Text("Поиск шаблонов...", color = NexusTextTertiary) },
+            placeholder = { Text(stringResource(R.string.templates_search_hint), color = NexusTextTertiary) },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Search,
@@ -121,7 +123,7 @@ fun TemplatesScreen(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             CategoryChip(
-                label = "Все",
+                label = stringResource(R.string.templates_all),
                 selected = selectedCategory == null,
                 onClick = { selectedCategory = null }
             )

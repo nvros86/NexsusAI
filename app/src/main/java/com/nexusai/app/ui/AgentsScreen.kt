@@ -48,6 +48,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import com.nexusai.app.R
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nexusai.core.ui.theme.NexusBackground
 import com.nexusai.core.ui.theme.NexusCard
@@ -74,7 +76,7 @@ fun AgentsScreen(
     ) {
         TopAppBar(
             title = {
-                Text("AI Агенты", color = NexusTextPrimary)
+                Text(stringResource(R.string.agents_title), color = NexusTextPrimary)
             },
             colors = TopAppBarDefaults.topAppBarColors(containerColor = NexusBackground)
         )
@@ -93,13 +95,13 @@ fun AgentsScreen(
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = "Нет агентов",
+                        text = stringResource(R.string.agents_empty),
                         style = MaterialTheme.typography.titleMedium,
                         color = NexusTextSecondary
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "Создайте своего AI-агента",
+                        text = stringResource(R.string.agents_empty_hint),
                         style = MaterialTheme.typography.bodyMedium,
                         color = NexusTextTertiary
                     )
@@ -135,7 +137,7 @@ fun AgentsScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Создать агента"
+                    contentDescription = stringResource(R.string.agents_create)
                 )
             }
         }
@@ -211,7 +213,7 @@ private fun AgentCard(
             IconButton(onClick = onToggle, modifier = Modifier.size(32.dp)) {
                 Icon(
                     imageVector = if (agent.isActive) Icons.Default.Check else Icons.Default.Close,
-                    contentDescription = if (agent.isActive) "Активен" else "Отключен",
+                    contentDescription = if (agent.isActive) stringResource(R.string.agents_active) else stringResource(R.string.agents_disabled),
                     tint = if (agent.isActive) NexusPurple else NexusTextTertiary,
                     modifier = Modifier.size(18.dp)
                 )
@@ -220,7 +222,7 @@ private fun AgentCard(
             IconButton(onClick = onDelete, modifier = Modifier.size(32.dp)) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = "Удалить",
+                    contentDescription = stringResource(R.string.label_delete),
                     tint = NexusTextTertiary,
                     modifier = Modifier.size(18.dp)
                 )
@@ -243,7 +245,7 @@ private fun CreateAgentDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text("Новый агент", color = NexusTextPrimary)
+            Text(stringResource(R.string.agents_new_title), color = NexusTextPrimary)
         },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -251,7 +253,7 @@ private fun CreateAgentDialog(
                     value = name,
                     onValueChange = onNameChange,
                     modifier = Modifier.fillMaxWidth(),
-                    placeholder = { Text("Имя агента", color = NexusTextTertiary) },
+                    placeholder = { Text(stringResource(R.string.agents_name_hint), color = NexusTextTertiary) },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = NexusPurple,
                         unfocusedBorderColor = NexusSurface,
@@ -265,7 +267,7 @@ private fun CreateAgentDialog(
                     value = description,
                     onValueChange = onDescriptionChange,
                     modifier = Modifier.fillMaxWidth(),
-                    placeholder = { Text("Описание", color = NexusTextTertiary) },
+                    placeholder = { Text(stringResource(R.string.agents_description_hint), color = NexusTextTertiary) },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = NexusPurple,
                         unfocusedBorderColor = NexusSurface,
@@ -279,7 +281,7 @@ private fun CreateAgentDialog(
                     value = prompt,
                     onValueChange = onPromptChange,
                     modifier = Modifier.fillMaxWidth(),
-                    placeholder = { Text("Системный промпт", color = NexusTextTertiary) },
+                    placeholder = { Text(stringResource(R.string.agents_prompt_hint), color = NexusTextTertiary) },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = NexusPurple,
                         unfocusedBorderColor = NexusSurface,
@@ -296,12 +298,12 @@ private fun CreateAgentDialog(
                 onClick = onCreate,
                 enabled = name.isNotBlank() && prompt.isNotBlank()
             ) {
-                Text("Создать", color = NexusPurple)
+                Text(stringResource(R.string.agents_create_button), color = NexusPurple)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Отмена", color = NexusTextSecondary)
+                Text(stringResource(R.string.label_cancel), color = NexusTextSecondary)
             }
         },
         containerColor = NexusCard

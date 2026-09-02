@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_back">Назад</string>
+    <string name="label_cancel">Отмена</string>
+    <string name="prompts_close">Закрыть</string>
+    <string name="ai_router_refresh">Обновить</string>
+    <string name="chain_detail_name_label">Название</string>
+    <string name="chain_detail_description_label">Описание</string>
+    <string name="agents_create_button">Создать</string>
+    <string name="workspaces_title">Team Workspaces</string>
+    <string name="workspaces_empty">Нет workspace</string>
+    <string name="workspaces_empty_hint">Создайте workspace для команды</string>
+    <string name="workspaces_online_members">Участники онлайн</string>
+    <string name="workspaces_members_count">%1$d участников</string>
+    <string name="workspaces_create">Создать workspace</string>
+    <string name="workspaces_new_title">Новый workspace</string>
+    <string name="workspaces_message_hint">Сообщение\u2026</string>
+    <string name="workspaces_send">Отправить</string>
+</resources>

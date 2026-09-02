@@ -66,6 +66,8 @@ import com.nexusai.core.ui.theme.NexusTextSecondary
 import com.nexusai.core.ui.theme.NexusTextTertiary
 import com.nexusai.domain.model.Prompt
 import com.nexusai.domain.model.PromptCategory
+import androidx.compose.ui.res.stringResource
+import com.nexusai.app.R
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -91,12 +93,12 @@ fun PromptsScreen(
             .background(NexusBackground)
     ) {
         TopAppBar(
-            title = { Text("Промпты", color = NexusTextPrimary) },
+            title = { Text(stringResource(R.string.prompts_title), color = NexusTextPrimary) },
             navigationIcon = {
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Назад",
+                        contentDescription = stringResource(R.string.action_back),
                         tint = NexusTextPrimary
                     )
                 }
@@ -108,7 +110,7 @@ fun PromptsScreen(
             OutlinedTextField(
                 value = uiState.searchQuery,
                 onValueChange = { viewModel.search(it) },
-                placeholder = { Text("Поиск промптов...", color = NexusTextTertiary) },
+                placeholder = { Text(stringResource(R.string.prompts_search_hint), color = NexusTextTertiary) },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Search,
@@ -134,12 +136,12 @@ fun PromptsScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 CategoryChip(
-                    label = "⭐ Избранные",
+                    label = stringResource(R.string.prompts_favorites),
                     selected = uiState.showFavoritesOnly,
                     onClick = { viewModel.toggleFavoritesOnly() }
                 )
                 CategoryChip(
-                    label = "Все",
+                    label = stringResource(R.string.prompts_all),
                     selected = uiState.selectedCategory == null && !uiState.showFavoritesOnly,
                     onClick = { viewModel.selectCategory(null) }
                 )
@@ -164,7 +166,7 @@ fun PromptsScreen(
                     Text("📝", style = MaterialTheme.typography.displayLarge)
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = if (uiState.showFavoritesOnly) "Нет избранных промптов" else "Нет промптов",
+                        text = if (uiState.showFavoritesOnly) stringResource(R.string.prompts_empty_favorites) else stringResource(R.string.prompts_empty),
                         color = NexusTextSecondary,
                         style = MaterialTheme.typography.bodyLarge
                     )
@@ -187,7 +189,7 @@ fun PromptsScreen(
                                 val clip = ClipData.newPlainText(prompt.title, prompt.content)
                                 clipboard.setPrimaryClip(clip)
                                 viewModel.copyPrompt(prompt.id)
-                                Toast.makeText(context, "Скопировано!", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, context.getString(R.string.prompts_copied), Toast.LENGTH_SHORT).show()
                             }
                         },
                         onDetail = { showDetailPrompt = prompt }
@@ -235,14 +237,14 @@ fun PromptsScreen(
                         viewModel.copyPrompt(prompt.id)
                     }
                     showDetailPrompt = null
-                    Toast.makeText(context, "Скопировано!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.prompts_copied), Toast.LENGTH_SHORT).show()
                 }) {
-                    Text("Копировать", color = NexusPurple)
+                    Text(stringResource(R.string.prompts_copy), color = NexusPurple)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDetailPrompt = null }) {
-                    Text("Закрыть", color = NexusTextSecondary)
+                    Text(stringResource(R.string.prompts_close), color = NexusTextSecondary)
                 }
             },
             containerColor = NexusCard
@@ -310,7 +312,7 @@ private fun PromptCard(
                 IconButton(onClick = onToggleFavorite, modifier = Modifier.size(32.dp)) {
                     Icon(
                         imageVector = if (prompt.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                        contentDescription = "Избранное",
+                        contentDescription = stringResource(R.string.prompts_favorites),
                         tint = if (prompt.isFavorite) NexusPurple else NexusTextTertiary,
                         modifier = Modifier.size(18.dp)
                     )
@@ -318,7 +320,7 @@ private fun PromptCard(
                 IconButton(onClick = onCopy, modifier = Modifier.size(32.dp)) {
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
-                        contentDescription = "Копировать",
+                        contentDescription = stringResource(R.string.prompts_copy),
                         tint = NexusPurple,
                         modifier = Modifier.size(18.dp)
                     )
@@ -360,7 +362,7 @@ private fun PromptCard(
             if (prompt.usageCount > 0) {
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "Использовано ${prompt.usageCount} раз",
+                    text = stringResource(R.string.prompts_usage, prompt.usageCount),
                     style = MaterialTheme.typography.labelSmall,
                     color = NexusTextTertiary
                 )

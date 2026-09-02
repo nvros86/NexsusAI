@@ -65,6 +65,8 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import androidx.compose.ui.res.stringResource
+import com.nexusai.app.R
 import com.nexusai.core.ui.components.file.FileHelper
 import com.nexusai.core.ui.theme.NexusBackground
 import com.nexusai.core.ui.theme.NexusCard
@@ -84,13 +86,22 @@ data class ManagedFile(
     val addedAt: Long = System.currentTimeMillis()
 )
 
-enum class FileFilter(val displayName: String, val emoji: String) {
-    ALL("Все", "📁"),
-    IMAGES("Изображения", "🖼️"),
-    DOCUMENTS("Документы", "📄"),
-    CODE("Код", "💻"),
-    MEDIA("Медиа", "🎬"),
-    OTHER("Другие", "📎")
+enum class FileFilter(val emoji: String) {
+    ALL("📁"),
+    IMAGES("🖼️"),
+    DOCUMENTS("📄"),
+    CODE("💻"),
+    MEDIA("🎬"),
+    OTHER("📎");
+
+    fun displayNameRes(): Int = when (this) {
+        ALL -> R.string.files_filter_all
+        IMAGES -> R.string.files_filter_images
+        DOCUMENTS -> R.string.files_filter_documents
+        CODE -> R.string.files_filter_code
+        MEDIA -> R.string.files_filter_media
+        OTHER -> R.string.files_filter_other
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -158,12 +169,12 @@ fun FilesScreen(
             .background(NexusBackground)
     ) {
         TopAppBar(
-            title = { Text("Файлы", color = NexusTextPrimary) },
+            title = { Text(stringResource(R.string.files_title), color = NexusTextPrimary) },
             navigationIcon = {
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Назад",
+                        contentDescription = stringResource(R.string.action_back),
                         tint = NexusTextPrimary
                     )
                 }
@@ -183,9 +194,9 @@ fun FilesScreen(
             FlowRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                FileFilter.entries.forEach { filter ->
+                    FileFilter.entries.forEach { filter ->
                     FilterChip(
-                        label = "${filter.emoji} ${filter.displayName}",
+                        label = "${filter.emoji} ${stringResource(filter.displayNameRes())}",
                         selected = selectedFilter == filter,
                         onClick = { selectedFilter = filter }
                     )
@@ -204,7 +215,7 @@ fun FilesScreen(
                     Text("📂", style = MaterialTheme.typography.displayLarge)
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = if (files.isEmpty()) "Нет файлов" else "Нет файлов в этой категории",
+                        text = if (files.isEmpty()) stringResource(R.string.files_empty) else stringResource(R.string.files_empty_category),
                         color = NexusTextSecondary,
                         style = MaterialTheme.typography.bodyLarge
                     )
@@ -254,7 +265,7 @@ fun FilesScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Добавить файл"
+                    contentDescription = stringResource(R.string.files_add)
                 )
             }
         }
@@ -263,19 +274,19 @@ fun FilesScreen(
     showDeleteDialog?.let { file ->
         AlertDialog(
             onDismissRequest = { showDeleteDialog = null },
-            title = { Text("Удалить файл?", color = NexusTextPrimary) },
-            text = { Text("Удалить \"${file.name}\"?", color = NexusTextSecondary) },
+            title = { Text(stringResource(R.string.files_delete_title), color = NexusTextPrimary) },
+            text = { Text(stringResource(R.string.files_delete_confirm, file.name), color = NexusTextSecondary) },
             confirmButton = {
                 TextButton(onClick = {
                     files.removeAll { it.id == file.id }
                     showDeleteDialog = null
                 }) {
-                    Text("Удалить", color = NexusPurple)
+                    Text(stringResource(R.string.label_delete), color = NexusPurple)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteDialog = null }) {
-                    Text("Отмена", color = NexusTextSecondary)
+                    Text(stringResource(R.string.label_cancel), color = NexusTextSecondary)
                 }
             },
             containerColor = NexusCard
@@ -300,13 +311,13 @@ private fun StorageBar(usedBytes: Long, maxBytes: Long, fileCount: Int) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Хранилище",
+                text = stringResource(R.string.files_storage),
                 color = NexusTextPrimary,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
             Text(
-                text = "$fileCount файлов",
+                text = stringResource(R.string.files_count, fileCount),
                 color = NexusTextTertiary,
                 style = MaterialTheme.typography.bodySmall
             )
@@ -416,7 +427,7 @@ private fun FileGridItem(
             IconButton(onClick = onShare, modifier = Modifier.size(24.dp)) {
                 Icon(
                     imageVector = Icons.Default.Share,
-                    contentDescription = "Поделиться",
+                    contentDescription = stringResource(R.string.label_share),
                     modifier = Modifier.size(14.dp),
                     tint = NexusTextTertiary
                 )
@@ -424,7 +435,7 @@ private fun FileGridItem(
             IconButton(onClick = onDelete, modifier = Modifier.size(24.dp)) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = "Удалить",
+                    contentDescription = stringResource(R.string.label_delete),
                     modifier = Modifier.size(14.dp),
                     tint = NexusTextTertiary
                 )
@@ -450,7 +461,7 @@ private fun showFilePreview(context: android.content.Context, file: ManagedFile)
         }
         context.startActivity(intent)
     } catch (e: Exception) {
-        Toast.makeText(context, "Не удалось открыть файл", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, context.getString(R.string.files_open_error), Toast.LENGTH_SHORT).show()
     }
 }
 
@@ -461,8 +472,8 @@ private fun shareFile(context: android.content.Context, file: ManagedFile) {
             putExtra(Intent.EXTRA_STREAM, file.uri)
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
-        context.startActivity(Intent.createChooser(intent, "Поделиться файлом"))
+        context.startActivity(Intent.createChooser(intent, context.getString(R.string.label_share)))
     } catch (e: Exception) {
-        Toast.makeText(context, "Не удалось поделиться", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, context.getString(R.string.files_share_error), Toast.LENGTH_SHORT).show()
     }
 }

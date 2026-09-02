@@ -4,32 +4,21 @@ import com.nexusai.data.ai.anthropic.AnthropicProvider
 import com.nexusai.data.ai.openai.OpenAIProvider
 import com.nexusai.data.security.ApiKeyEncryption
 import com.nexusai.domain.ai.AIProvider
+import com.nexusai.domain.ai.AIProviderFactory
 import com.nexusai.domain.model.AIProviderConfig
 import com.nexusai.domain.model.ProviderType
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.okhttp.OkHttp
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.json.Json
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class AIProviderManager @Inject constructor(
-    private val encryption: ApiKeyEncryption
-) {
+    private val encryption: ApiKeyEncryption,
+    private val httpClient: HttpClient
+) : AIProviderFactory {
     private val providers = mutableMapOf<String, AIProvider>()
 
-    private val httpClient = HttpClient(OkHttp) {
-        install(ContentNegotiation) {
-            json(Json {
-                ignoreUnknownKeys = true
-                isLenient = true
-            })
-        }
-    }
-
-    fun getProvider(config: AIProviderConfig): AIProvider {
+    override fun getProvider(config: AIProviderConfig): AIProvider {
         return providers[config.id] ?: createProvider(config).also {
             providers[config.id] = it
         }

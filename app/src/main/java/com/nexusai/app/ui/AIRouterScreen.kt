@@ -61,6 +61,8 @@ import com.nexusai.core.ui.theme.NexusSurfaceVariant
 import com.nexusai.core.ui.theme.NexusTextPrimary
 import com.nexusai.core.ui.theme.NexusTextSecondary
 import com.nexusai.core.ui.theme.NexusTextTertiary
+import androidx.compose.ui.res.stringResource
+import com.nexusai.app.R
 import com.nexusai.domain.model.RoutingStrategy
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -78,12 +80,12 @@ fun AIRouterScreen(
             .background(NexusBackground)
     ) {
         TopAppBar(
-            title = { Text("AI Router", color = NexusTextPrimary) },
+            title = { Text(stringResource(R.string.ai_router_title), color = NexusTextPrimary) },
             navigationIcon = {
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Назад",
+                        contentDescription = stringResource(R.string.action_back),
                         tint = NexusTextPrimary
                     )
                 }
@@ -92,7 +94,7 @@ fun AIRouterScreen(
                 IconButton(onClick = { viewModel.runRouting() }) {
                     Icon(
                         imageVector = Icons.Default.Refresh,
-                        contentDescription = "Обновить",
+                        contentDescription = stringResource(R.string.ai_router_refresh),
                         tint = NexusPurple
                     )
                 }
@@ -108,7 +110,7 @@ fun AIRouterScreen(
         ) {
             item {
                 Text(
-                    text = "Стратегия маршрутизации",
+                    text = stringResource(R.string.ai_router_strategy),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = NexusTextPrimary
@@ -126,7 +128,7 @@ fun AIRouterScreen(
             item {
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "Провайдеры",
+                    text = stringResource(R.string.ai_router_providers),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = NexusTextPrimary
@@ -141,7 +143,7 @@ fun AIRouterScreen(
                 item {
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "Результат",
+                        text = stringResource(R.string.ai_router_result),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = NexusTextPrimary
@@ -155,7 +157,7 @@ fun AIRouterScreen(
                 if (result.failoverChain.isNotEmpty()) {
                     item {
                         Text(
-                            text = "Failover цепочка",
+                            text = stringResource(R.string.ai_router_failover_chain),
                             style = MaterialTheme.typography.titleSmall,
                             color = NexusTextSecondary
                         )
@@ -173,7 +175,7 @@ fun AIRouterScreen(
                     onClick = { showTestDialog = true },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Тестировать маршрутизацию", color = NexusPurple)
+                    Text(stringResource(R.string.ai_router_test_title), color = NexusPurple)
                 }
                 Spacer(modifier = Modifier.height(32.dp))
             }
@@ -285,7 +287,7 @@ private fun ProviderStatusCard(provider: com.nexusai.domain.model.AIProviderConf
             }
 
             Text(
-                text = if (hasKey) "Активен" else "Нет ключа",
+                text = if (hasKey) stringResource(R.string.ai_router_active) else stringResource(R.string.ai_router_no_key),
                 style = MaterialTheme.typography.labelSmall,
                 color = if (hasKey) NexusPurple else NexusTextTertiary
             )
@@ -367,12 +369,12 @@ private fun TestRouteDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text("Тест маршрутизации", color = NexusTextPrimary)
+            Text(stringResource(R.string.ai_router_test_title), color = NexusTextPrimary)
         },
         text = {
             Column {
                 Text(
-                    text = "Введите тестовое сообщение:",
+                    text = stringResource(R.string.ai_router_test_prompt),
                     style = MaterialTheme.typography.bodyMedium,
                     color = NexusTextSecondary
                 )
@@ -380,7 +382,7 @@ private fun TestRouteDialog(
                 OutlinedTextField(
                     value = message,
                     onValueChange = onMessageChange,
-                    placeholder = { Text("Напиши код на Python...", color = NexusTextTertiary) },
+                    placeholder = { Text(stringResource(R.string.ai_router_test_hint), color = NexusTextTertiary) },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(8.dp),
                     colors = OutlinedTextFieldDefaults.colors(
@@ -394,12 +396,12 @@ private fun TestRouteDialog(
         },
         confirmButton = {
             TextButton(onClick = onTest) {
-                Text("Маршрутизировать", color = NexusPurple)
+                Text(stringResource(R.string.ai_router_route), color = NexusPurple)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Отмена", color = NexusTextSecondary)
+                Text(stringResource(R.string.label_cancel), color = NexusTextSecondary)
             }
         },
         containerColor = NexusCard

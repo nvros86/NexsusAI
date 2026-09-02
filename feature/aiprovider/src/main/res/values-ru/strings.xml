@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_back">Назад</string>
+    <string name="prompts_favorites">\u2b50 Избранные</string>
+    <string name="ai_provider_title">AI Провайдер</string>
+    <string name="ai_provider_info">Основная информация</string>
+    <string name="ai_provider_type">Тип</string>
+    <string name="ai_provider_default_model">Модель по умолчанию</string>
+    <string name="ai_provider_not_set">Не задана</string>
+    <string name="ai_provider_max_tokens">Макс. токенов</string>
+    <string name="ai_provider_temperature">Температура</string>
+    <string name="ai_provider_available_models">Доступные модели</string>
+    <string name="ai_provider_default">По умолчанию</string>
+    <string name="ai_provider_capabilities">Возможности</string>
+    <string name="ai_provider_images">Изображения</string>
+    <string name="ai_provider_files">Файлы</string>
+    <string name="ai_provider_streaming">Streaming</string>
+    <string name="ai_provider_loading">Загрузка\u2026</string>
+</resources>

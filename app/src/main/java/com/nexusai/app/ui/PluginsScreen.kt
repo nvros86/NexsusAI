@@ -60,6 +60,8 @@ import com.nexusai.core.ui.theme.NexusTextPrimary
 import com.nexusai.core.ui.theme.NexusTextSecondary
 import com.nexusai.core.ui.theme.NexusTextTertiary
 import com.nexusai.domain.model.NexsusPlugin
+import androidx.compose.ui.res.stringResource
+import com.nexusai.app.R
 import com.nexusai.domain.model.PluginCommand
 
 data class PluginsUiState(
@@ -88,7 +90,7 @@ fun PluginsScreen(
     ) {
         TopAppBar(
             title = {
-                Text("Плагины", color = NexusTextPrimary)
+                Text(stringResource(R.string.plugins_title), color = NexusTextPrimary)
             },
             colors = TopAppBarDefaults.topAppBarColors(containerColor = NexusBackground)
         )
@@ -107,7 +109,7 @@ fun PluginsScreen(
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = "Нет плагинов",
+                        text = stringResource(R.string.plugins_empty),
                         style = MaterialTheme.typography.titleMedium,
                         color = NexusTextSecondary
                     )
@@ -156,7 +158,7 @@ fun PluginsScreen(
     state.lastResult?.let { result ->
         AlertDialog(
             onDismissRequest = { viewModel.clearLastResult() },
-            title = { Text("Результат", color = NexusTextPrimary) },
+            title = { Text(stringResource(R.string.plugins_result_title), color = NexusTextPrimary) },
             text = {
                 Text(
                     text = result,
@@ -248,7 +250,7 @@ private fun PluginCard(
             ) {
                 if (plugin.isBuiltIn) {
                     Text(
-                        text = "Встроенный",
+                        text = stringResource(R.string.plugins_built_in),
                         style = MaterialTheme.typography.labelSmall,
                         color = NexusTextTertiary
                     )
@@ -258,7 +260,7 @@ private fun PluginCard(
                 IconButton(onClick = onExecute, modifier = Modifier.size(32.dp)) {
                     Icon(
                         imageVector = Icons.Default.PlayCircle,
-                        contentDescription = "Выполнить",
+                        contentDescription = stringResource(R.string.plugins_execute_title, ""),
                         tint = if (plugin.isEnabled) NexusPurple else NexusTextTertiary,
                         modifier = Modifier.size(20.dp)
                     )
@@ -267,7 +269,7 @@ private fun PluginCard(
                 IconButton(onClick = onToggle, modifier = Modifier.size(32.dp)) {
                     Icon(
                         imageVector = if (plugin.isEnabled) Icons.Default.Check else Icons.Default.Close,
-                        contentDescription = if (plugin.isEnabled) "Включён" else "Выключен",
+                        contentDescription = if (plugin.isEnabled) stringResource(R.string.plugins_enabled) else stringResource(R.string.plugins_disabled),
                         tint = if (plugin.isEnabled) NexusPurple else NexusTextTertiary,
                         modifier = Modifier.size(18.dp)
                     )
@@ -290,7 +292,7 @@ private fun ExecutePluginDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text("Выполнить: $pluginName", color = NexusTextPrimary)
+            Text(stringResource(R.string.plugins_execute_title, pluginName), color = NexusTextPrimary)
         },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -298,7 +300,7 @@ private fun ExecutePluginDialog(
                     value = args,
                     onValueChange = onArgsChange,
                     modifier = Modifier.fillMaxWidth(),
-                    placeholder = { Text("Аргументы (опционально)", color = NexusTextTertiary) },
+                    placeholder = { Text(stringResource(R.string.plugins_args_hint), color = NexusTextTertiary) },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = NexusPurple,
                         unfocusedBorderColor = NexusSurface,
@@ -310,7 +312,7 @@ private fun ExecutePluginDialog(
                 )
 
                 Text(
-                    text = "Команды:",
+                    text = stringResource(R.string.plugins_commands),
                     style = MaterialTheme.typography.labelMedium,
                     color = NexusTextSecondary
                 )
@@ -343,7 +345,7 @@ private fun ExecutePluginDialog(
         confirmButton = {},
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Закрыть", color = NexusTextSecondary)
+                Text(stringResource(R.string.prompts_close), color = NexusTextSecondary)
             }
         },
         containerColor = NexusCard

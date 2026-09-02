@@ -49,6 +49,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.ui.res.stringResource
+import com.nexusai.feature.teamworkspaces.R
 import com.nexusai.core.ui.theme.NexusBackground
 import com.nexusai.core.ui.theme.NexusCard
 import com.nexusai.core.ui.theme.NexusPurple
@@ -79,13 +81,13 @@ fun TeamWorkspacesScreen(
     ) {
         TopAppBar(
             title = {
-                Text("Team Workspaces", color = NexusTextPrimary)
+                Text(stringResource(R.string.workspaces_title), color = NexusTextPrimary)
             },
             navigationIcon = {
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = "Назад",
+                        contentDescription = stringResource(R.string.action_back),
                         tint = NexusTextPrimary
                     )
                 }
@@ -94,7 +96,7 @@ fun TeamWorkspacesScreen(
                 IconButton(onClick = { viewModel.refresh() }) {
                     Icon(
                         imageVector = Icons.Default.Refresh,
-                        contentDescription = "Обновить",
+                        contentDescription = stringResource(R.string.ai_router_refresh),
                         tint = NexusTextPrimary
                     )
                 }
@@ -116,13 +118,13 @@ fun TeamWorkspacesScreen(
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = "Нет workspace",
+                        text = stringResource(R.string.workspaces_empty),
                         style = MaterialTheme.typography.titleMedium,
                         color = NexusTextSecondary
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "Создайте workspace для команды",
+                        text = stringResource(R.string.workspaces_empty_hint),
                         style = MaterialTheme.typography.bodyMedium,
                         color = NexusTextTertiary
                     )
@@ -149,7 +151,7 @@ fun TeamWorkspacesScreen(
                 if (state.members.isNotEmpty()) {
                     item {
                         Text(
-                            text = "Участники онлайн",
+                            text = stringResource(R.string.workspaces_online_members),
                             style = MaterialTheme.typography.titleMedium,
                             color = NexusTextPrimary,
                             modifier = Modifier.padding(vertical = 8.dp)
@@ -175,7 +177,7 @@ fun TeamWorkspacesScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Создать workspace"
+                    contentDescription = stringResource(R.string.workspaces_create)
                 )
             }
         }
@@ -240,7 +242,7 @@ private fun WorkspaceCard(
                 }
 
                 Text(
-                    text = "${workspace.members.size} участников",
+                    text = stringResource(R.string.workspaces_members_count, workspace.members.size),
                     style = MaterialTheme.typography.labelSmall,
                     color = NexusPurple
                 )
@@ -335,7 +337,7 @@ private fun CreateWorkspaceDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text("Новый workspace", color = NexusTextPrimary)
+            Text(stringResource(R.string.workspaces_new_title), color = NexusTextPrimary)
         },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -343,7 +345,7 @@ private fun CreateWorkspaceDialog(
                     value = name,
                     onValueChange = { name = it },
                     modifier = Modifier.fillMaxWidth(),
-                    label = { Text("Название") },
+                    label = { Text(stringResource(R.string.chain_detail_name_label)) },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = NexusPurple,
                         unfocusedBorderColor = NexusSurface,
@@ -357,7 +359,7 @@ private fun CreateWorkspaceDialog(
                     value = description,
                     onValueChange = { description = it },
                     modifier = Modifier.fillMaxWidth(),
-                    label = { Text("Описание") },
+                    label = { Text(stringResource(R.string.chain_detail_description_label)) },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = NexusPurple,
                         unfocusedBorderColor = NexusSurface,
@@ -374,12 +376,12 @@ private fun CreateWorkspaceDialog(
                 onClick = { onCreate(name, description) },
                 enabled = name.isNotBlank()
             ) {
-                Text("Создать", color = NexusPurple)
+                Text(stringResource(R.string.agents_create_button), color = NexusPurple)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Отмена", color = NexusTextSecondary)
+                Text(stringResource(R.string.label_cancel), color = NexusTextSecondary)
             }
         },
         containerColor = NexusCard
@@ -423,7 +425,7 @@ private fun WorkspaceChatDialog(
                         value = input,
                         onValueChange = { input = it },
                         modifier = Modifier.weight(1f),
-                        placeholder = { Text("Сообщение...", color = NexusTextTertiary) },
+                        placeholder = { Text(stringResource(R.string.workspaces_message_hint), color = NexusTextTertiary) },
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = NexusPurple,
                             unfocusedBorderColor = NexusSurface,
@@ -442,7 +444,7 @@ private fun WorkspaceChatDialog(
                     }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.Send,
-                            contentDescription = "Отправить",
+                            contentDescription = stringResource(R.string.workspaces_send),
                             tint = NexusPurple
                         )
                     }
@@ -452,7 +454,7 @@ private fun WorkspaceChatDialog(
         confirmButton = {},
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Закрыть", color = NexusTextSecondary)
+                Text(stringResource(R.string.prompts_close), color = NexusTextSecondary)
             }
         },
         containerColor = NexusCard

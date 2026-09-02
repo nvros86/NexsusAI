@@ -54,6 +54,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.ui.res.stringResource
+import com.nexusai.app.R
 import com.nexusai.domain.model.ModuleType
 import com.nexusai.domain.model.NexusModule
 import com.nexusai.core.ui.theme.NexusBackground
@@ -79,12 +81,12 @@ fun ModulesScreen(
             .background(NexusBackground)
     ) {
         TopAppBar(
-            title = { Text("Модули", color = NexusTextPrimary) },
+            title = { Text(stringResource(R.string.modules_title), color = NexusTextPrimary) },
             navigationIcon = {
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Назад",
+                        contentDescription = stringResource(R.string.action_back),
                         tint = NexusTextPrimary
                     )
                 }
@@ -96,7 +98,7 @@ fun ModulesScreen(
             OutlinedTextField(
                 value = uiState.searchQuery,
                 onValueChange = { viewModel.search(it) },
-                placeholder = { Text("Поиск модулей...", color = NexusTextTertiary) },
+                placeholder = { Text(stringResource(R.string.modules_search_hint), color = NexusTextTertiary) },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Search,
@@ -122,7 +124,7 @@ fun ModulesScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 FilterChip(
-                    label = "Все",
+                    label = stringResource(R.string.modules_all),
                     selected = uiState.selectedType == null,
                     onClick = { viewModel.selectType(null) }
                 )
@@ -140,7 +142,7 @@ fun ModulesScreen(
 
         val enabledCount = uiState.modules.count { it.isEnabled }
         Text(
-            text = "$enabledCount из ${uiState.modules.size} активно",
+            text = stringResource(R.string.modules_active_count, enabledCount, uiState.modules.size),
             style = MaterialTheme.typography.labelMedium,
             color = NexusTextTertiary,
             modifier = Modifier.padding(horizontal = 16.dp)
@@ -221,7 +223,7 @@ private fun ModuleCard(module: NexusModule, onToggle: (Boolean) -> Unit) {
                                 .padding(horizontal = 6.dp, vertical = 2.dp)
                         ) {
                             Text(
-                                text = "Обяз.",
+                                text = stringResource(R.string.modules_required),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = NexusPurple
                             )
@@ -251,7 +253,7 @@ private fun ModuleCard(module: NexusModule, onToggle: (Boolean) -> Unit) {
                                 .padding(horizontal = 6.dp, vertical = 2.dp)
                         ) {
                             Text(
-                                text = "Скоро",
+                                text = stringResource(R.string.modules_coming_soon),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = NexusPurple
                             )

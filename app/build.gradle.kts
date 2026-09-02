@@ -16,6 +16,11 @@ android {
         targetSdk = 35
         versionCode = 9
         versionName = "1.0.0-beta.8"
+        testInstrumentationRunner = "com.nexusai.app.HiltTestRunner"
+    }
+
+    testOptions {
+        unitTests.isReturnDefaultValues = true
     }
 
     signingConfigs {
@@ -98,6 +103,11 @@ dependencies {
     debugImplementation(libs.compose.material.icons)
 
     testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.coroutines.test)
     androidTestImplementation(libs.junit.ext)
     androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.hilt.android.testing)
+    kspAndroidTest(libs.hilt.compiler)
 }

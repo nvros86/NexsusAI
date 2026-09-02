@@ -57,6 +57,8 @@ import com.nexusai.core.ui.theme.NexusSurfaceVariant
 import com.nexusai.core.ui.theme.NexusTextPrimary
 import com.nexusai.core.ui.theme.NexusTextSecondary
 import com.nexusai.core.ui.theme.NexusTextTertiary
+import androidx.compose.ui.res.stringResource
+import com.nexusai.app.R
 import com.nexusai.domain.model.ComparisonMode
 import com.nexusai.domain.model.SplitResult
 
@@ -74,12 +76,12 @@ fun SplitViewScreen(
             .background(NexusBackground)
     ) {
         TopAppBar(
-            title = { Text("Split View", color = NexusTextPrimary) },
+            title = { Text(stringResource(R.string.split_view_title), color = NexusTextPrimary) },
             navigationIcon = {
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Назад",
+                        contentDescription = stringResource(R.string.action_back),
                         tint = NexusTextPrimary
                     )
                 }
@@ -95,7 +97,7 @@ fun SplitViewScreen(
         ) {
             item {
                 Text(
-                    text = "Режим сравнения",
+                    text = stringResource(R.string.split_view_comparison_mode),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = NexusTextSecondary
@@ -116,7 +118,7 @@ fun SplitViewScreen(
 
             item {
                 Text(
-                    text = "Провайдеры",
+                    text = stringResource(R.string.split_view_providers),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = NexusTextSecondary
@@ -138,7 +140,7 @@ fun SplitViewScreen(
                 }
                 if (uiState.availableProviders.isEmpty()) {
                     Text(
-                        text = "Нет провайдеров с API-ключами. Добавьте в настройках.",
+                        text = stringResource(R.string.split_view_no_providers),
                         style = MaterialTheme.typography.bodySmall,
                         color = NexusTextTertiary
                     )
@@ -149,7 +151,7 @@ fun SplitViewScreen(
                 OutlinedTextField(
                     value = uiState.query,
                     onValueChange = { viewModel.setQuery(it) },
-                    placeholder = { Text("Задайте вопрос для сравнения...", color = NexusTextTertiary) },
+                    placeholder = { Text(stringResource(R.string.split_view_query_hint), color = NexusTextTertiary) },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(
@@ -181,7 +183,7 @@ fun SplitViewScreen(
                                 strokeWidth = 2.dp
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("Сравнение...", color = NexusPurple)
+                            Text(stringResource(R.string.split_view_comparing), color = NexusPurple)
                         } else {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.Send,
@@ -190,7 +192,7 @@ fun SplitViewScreen(
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = "Сравнить ответы",
+                                text = stringResource(R.string.split_view_compare),
                                 color = NexusPurple,
                                 fontWeight = FontWeight.SemiBold
                             )
@@ -202,7 +204,7 @@ fun SplitViewScreen(
             if (uiState.results.isNotEmpty()) {
                 item {
                     Text(
-                        text = "Результаты",
+                        text = stringResource(R.string.split_view_results),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = NexusTextSecondary
@@ -368,14 +370,15 @@ private fun ResultCard(result: SplitResult, onRate: (Int) -> Unit) {
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Генерация ответа...",
+                        text = stringResource(R.string.split_view_generating),
                         style = MaterialTheme.typography.bodySmall,
                         color = NexusTextTertiary
                     )
                 }
                 result.error != null -> {
+                    val errorMsg = result.error!!
                     Text(
-                        text = "Ошибка: ${result.error}",
+                        text = stringResource(R.string.split_view_error, errorMsg),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.error
                     )
@@ -390,7 +393,7 @@ private fun ResultCard(result: SplitResult, onRate: (Int) -> Unit) {
                     if (result.tokensUsed > 0) {
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = "~${result.tokensUsed} токенов",
+                            text = stringResource(R.string.split_view_tokens, result.tokensUsed),
                             style = MaterialTheme.typography.labelSmall,
                             color = NexusTextTertiary
                         )
@@ -399,7 +402,7 @@ private fun ResultCard(result: SplitResult, onRate: (Int) -> Unit) {
                     Spacer(modifier = Modifier.height(8.dp))
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
-                            text = "Оценка:",
+                            text = stringResource(R.string.split_view_rating),
                             style = MaterialTheme.typography.labelSmall,
                             color = NexusTextTertiary
                         )

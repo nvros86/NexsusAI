@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_back">Back</string>
+    <string name="label_cancel">Cancel</string>
+    <string name="prompts_close">Close</string>
+    <string name="ai_router_refresh">Refresh</string>
+    <string name="chain_detail_name_label">Name</string>
+    <string name="chain_detail_description_label">Description</string>
+    <string name="agents_create_button">Create</string>
+    <string name="workspaces_title">Team Workspaces</string>
+    <string name="workspaces_empty">No workspaces</string>
+    <string name="workspaces_empty_hint">Create a workspace for the team</string>
+    <string name="workspaces_online_members">Online Members</string>
+    <string name="workspaces_members_count">%1$d members</string>
+    <string name="workspaces_create">Create workspace</string>
+    <string name="workspaces_new_title">New workspace</string>
+    <string name="workspaces_message_hint">Message\u2026</string>
+    <string name="workspaces_send">Send</string>
+</resources>

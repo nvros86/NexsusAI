@@ -6,13 +6,14 @@ import com.nexusai.data.local.MemoryEntryDao
 import com.nexusai.data.local.MemoryEntryEntity
 import com.nexusai.domain.model.AIAgent
 import com.nexusai.domain.model.MemoryEntry
+import com.nexusai.domain.repository.AgentContextRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class AppDataManager(
     private val agentDao: AgentDao,
     private val memoryEntryDao: MemoryEntryDao
-) {
+) : AgentContextRepository {
     val agents: Flow<List<AIAgent>> = agentDao.getAllAgents().map { entities ->
         entities.map { it.toDomain() }
     }
@@ -21,7 +22,7 @@ class AppDataManager(
         entities.map { it.toDomain() }
     }
 
-    suspend fun getActiveAgentSystemPrompt(): String? {
+    override suspend fun getActiveAgentSystemPrompt(): String? {
         val result = mutableListOf<AgentEntity>()
         agentDao.getAllAgents().collect { list -> result.addAll(list.filter { it.isActive }) }
         if (result.isEmpty()) return null
@@ -30,7 +31,7 @@ class AppDataManager(
         }
     }
 
-    suspend fun getMemoryContext(): String? {
+    override suspend fun getMemoryContext(): String? {
         val entries = mutableListOf<MemoryEntryEntity>()
         memoryEntryDao.getAllEntries().collect { entries.addAll(it) }
         if (entries.isEmpty()) return null

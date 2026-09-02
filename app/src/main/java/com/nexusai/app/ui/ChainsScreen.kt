@@ -42,6 +42,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import com.nexusai.app.R
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nexusai.core.ui.theme.NexusBackground
 import com.nexusai.core.ui.theme.NexusCard
@@ -75,7 +77,7 @@ fun ChainsScreen(
     ) {
         TopAppBar(
             title = {
-                Text("Automation Chains", color = NexusTextPrimary)
+                Text(stringResource(R.string.chains_title), color = NexusTextPrimary)
             },
             colors = TopAppBarDefaults.topAppBarColors(containerColor = NexusBackground)
         )
@@ -114,13 +116,13 @@ fun ChainsScreen(
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = "Нет цепочек",
+                        text = stringResource(R.string.chains_empty),
                         style = MaterialTheme.typography.titleMedium,
                         color = NexusTextSecondary
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "Создайте цепочку автоматизации",
+                        text = stringResource(R.string.chains_empty_hint),
                         style = MaterialTheme.typography.bodyMedium,
                         color = NexusTextTertiary
                     )
@@ -158,7 +160,7 @@ fun ChainsScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Создать цепочку"
+                    contentDescription = stringResource(R.string.chains_create)
                 )
             }
         }
@@ -213,7 +215,7 @@ private fun ChainCard(
                     IconButton(onClick = onRun, modifier = Modifier.size(32.dp)) {
                         Icon(
                             imageVector = Icons.Default.PlayCircle,
-                            contentDescription = "Запустить",
+                            contentDescription = stringResource(R.string.chains_run),
                             tint = NexusPurple,
                             modifier = Modifier.size(24.dp)
                         )
@@ -223,7 +225,7 @@ private fun ChainCard(
                 IconButton(onClick = onDelete, modifier = Modifier.size(32.dp)) {
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = "Удалить",
+                        contentDescription = stringResource(R.string.label_delete),
                         tint = NexusTextTertiary,
                         modifier = Modifier.size(18.dp)
                     )
@@ -237,7 +239,7 @@ private fun ChainCard(
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(
-                    text = "${chain.steps.size} шагов",
+                    text = stringResource(R.string.chains_steps, chain.steps.size),
                     style = MaterialTheme.typography.labelSmall,
                     color = NexusPurple,
                     modifier = Modifier
@@ -246,7 +248,7 @@ private fun ChainCard(
                         .padding(horizontal = 6.dp, vertical = 2.dp)
                 )
                 Text(
-                    text = "Запусков: ${chain.runCount}",
+                    text = stringResource(R.string.chains_runs, chain.runCount),
                     style = MaterialTheme.typography.labelSmall,
                     color = NexusTextTertiary
                 )

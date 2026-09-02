@@ -10,6 +10,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import io.ktor.client.HttpClient
 import javax.inject.Singleton
 
 @Module
@@ -24,8 +25,8 @@ object AIModule {
 
     @Provides
     @Singleton
-    fun provideAIProviderManager(encryption: ApiKeyEncryption): AIProviderManager {
-        return AIProviderManager(encryption)
+    fun provideAIProviderManager(encryption: ApiKeyEncryption, httpClient: HttpClient): AIProviderManager {
+        return AIProviderManager(encryption, httpClient)
     }
 
     @Provides

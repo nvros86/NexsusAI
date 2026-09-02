@@ -40,6 +40,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.ui.res.stringResource
+import com.nexusai.feature.aiprovider.R
 import com.nexusai.core.ui.components.AIProviderIcon
 import com.nexusai.core.ui.theme.NexusBackground
 import com.nexusai.core.ui.theme.NexusCard
@@ -67,7 +69,7 @@ fun AIProviderScreen(
         TopAppBar(
             title = {
                 Text(
-                    text = state.provider?.name ?: "AI Провайдер",
+                    text = state.provider?.name ?: stringResource(R.string.ai_provider_title),
                     color = NexusTextPrimary
                 )
             },
@@ -75,7 +77,7 @@ fun AIProviderScreen(
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Назад",
+                        contentDescription = stringResource(R.string.action_back),
                         tint = NexusTextPrimary
                     )
                 }
@@ -103,13 +105,13 @@ fun AIProviderScreen(
 
                 item {
                     InfoSection(
-                        title = "Основная информация",
+                        title = stringResource(R.string.ai_provider_info),
                         items = listOf(
-                            "Тип" to provider.type.name,
+                            stringResource(R.string.ai_provider_type) to provider.type.name,
                             "Base URL" to provider.baseUrl,
-                            "Модель по умолчанию" to (provider.defaultModel.ifEmpty { "Не задана" }),
-                            "Макс. токенов" to provider.maxTokens.toString(),
-                            "Температура" to provider.temperature.toString()
+                            stringResource(R.string.ai_provider_default_model) to (provider.defaultModel.ifEmpty { stringResource(R.string.ai_provider_not_set) }),
+                            stringResource(R.string.ai_provider_max_tokens) to provider.maxTokens.toString(),
+                            stringResource(R.string.ai_provider_temperature) to provider.temperature.toString()
                         )
                     )
                 }
@@ -117,7 +119,7 @@ fun AIProviderScreen(
                 if (provider.models.isNotEmpty()) {
                     item {
                         Text(
-                            text = "Доступные модели",
+                            text = stringResource(R.string.ai_provider_available_models),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = NexusTextPrimary
@@ -145,7 +147,7 @@ fun AIProviderScreen(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Загрузка...",
+                text = stringResource(R.string.ai_provider_loading),
                 color = NexusTextTertiary
             )
         }
@@ -183,7 +185,7 @@ private fun ProviderHeader(
         if (isFavorite) {
             Icon(
                 imageVector = Icons.Default.Star,
-                contentDescription = "Избранное",
+                contentDescription = stringResource(R.string.prompts_favorites),
                 tint = NexusPurple,
                 modifier = Modifier.size(24.dp)
             )
@@ -257,7 +259,7 @@ private fun ModelCard(
             )
             if (isDefault) {
                 Text(
-                    text = "По умолчанию",
+                    text = stringResource(R.string.ai_provider_default),
                     style = MaterialTheme.typography.labelSmall,
                     color = NexusPurple,
                     fontWeight = FontWeight.Medium
@@ -279,15 +281,15 @@ private fun CapabilitiesSection(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Возможности",
+                text = stringResource(R.string.ai_provider_capabilities),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = NexusTextPrimary
             )
             Spacer(modifier = Modifier.height(12.dp))
-            CapabilityRow("Изображения", supportsImages)
-            CapabilityRow("Файлы", supportsFiles)
-            CapabilityRow("Streaming", supportsStreaming)
+            CapabilityRow(stringResource(R.string.ai_provider_images), supportsImages)
+            CapabilityRow(stringResource(R.string.ai_provider_files), supportsFiles)
+            CapabilityRow(stringResource(R.string.ai_provider_streaming), supportsStreaming)
         }
     }
 }

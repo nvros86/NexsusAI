@@ -63,6 +63,8 @@ import com.nexusai.core.ui.theme.NexusSurface
 import com.nexusai.core.ui.theme.NexusTextPrimary
 import com.nexusai.core.ui.theme.NexusTextSecondary
 import com.nexusai.core.ui.theme.NexusTextTertiary
+import androidx.compose.ui.res.stringResource
+import com.nexusai.app.R
 import com.nexusai.domain.model.ChainStep
 import com.nexusai.domain.model.ChainStepType
 
@@ -96,7 +98,7 @@ fun ChainDetailScreen(
         TopAppBar(
             title = {
                 Text(
-                    text = if (chainId == "new") "Новая цепочка" else state.chainName,
+                    text = if (chainId == "new") stringResource(R.string.chain_detail_new_title) else state.chainName,
                     color = NexusTextPrimary
                 )
             },
@@ -104,7 +106,7 @@ fun ChainDetailScreen(
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Назад",
+                        contentDescription = stringResource(R.string.action_back),
                         tint = NexusTextPrimary
                     )
                 }
@@ -114,7 +116,7 @@ fun ChainDetailScreen(
                     IconButton(onClick = { viewModel.runChain() }) {
                         Icon(
                             imageVector = Icons.Default.PlayCircle,
-                            contentDescription = "Запустить",
+                            contentDescription = stringResource(R.string.chains_run),
                             tint = if (state.isRunning) NexusTextTertiary else NexusPurple
                         )
                     }
@@ -134,7 +136,7 @@ fun ChainDetailScreen(
                     value = state.chainName,
                     onValueChange = { viewModel.setChainName(it) },
                     modifier = Modifier.fillMaxWidth(),
-                    label = { Text("Название") },
+                    label = { Text(stringResource(R.string.chain_detail_name_label)) },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = NexusPurple,
                         unfocusedBorderColor = NexusSurface,
@@ -148,7 +150,7 @@ fun ChainDetailScreen(
                     value = state.chainDescription,
                     onValueChange = { viewModel.setChainDescription(it) },
                     modifier = Modifier.fillMaxWidth(),
-                    label = { Text("Описание") },
+                    label = { Text(stringResource(R.string.chain_detail_description_label)) },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = NexusPurple,
                         unfocusedBorderColor = NexusSurface,
@@ -167,13 +169,13 @@ fun ChainDetailScreen(
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            text = "Добавьте шаги",
+                            text = stringResource(R.string.chain_detail_empty),
                             style = MaterialTheme.typography.titleMedium,
                             color = NexusTextSecondary
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = "Нажмите + чтобы добавить шаг",
+                            text = stringResource(R.string.chain_detail_empty_hint),
                             style = MaterialTheme.typography.bodyMedium,
                             color = NexusTextTertiary
                         )
@@ -210,7 +212,7 @@ fun ChainDetailScreen(
             ) {
                 Column(modifier = Modifier.padding(12.dp)) {
                     Text(
-                        text = if (state.lastResult!!.isError) "Ошибка" else "Результат",
+                        text = if (state.lastResult!!.isError) stringResource(R.string.chain_detail_error) else stringResource(R.string.chain_detail_result),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = NexusTextPrimary
@@ -240,7 +242,7 @@ fun ChainDetailScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
-                        contentDescription = "Добавить шаг"
+                        contentDescription = stringResource(R.string.label_add)
                     )
                 }
             }
@@ -307,7 +309,7 @@ private fun StepCard(
             IconButton(onClick = onToggle, modifier = Modifier.size(32.dp)) {
                 Icon(
                     imageVector = if (step.isEnabled) Icons.Default.Check else Icons.Default.Close,
-                    contentDescription = if (step.isEnabled) "Включён" else "Выключен",
+                    contentDescription = if (step.isEnabled) stringResource(R.string.chain_detail_enabled) else stringResource(R.string.chain_detail_disabled),
                     tint = if (step.isEnabled) NexusPurple else NexusTextTertiary,
                     modifier = Modifier.size(18.dp)
                 )
@@ -316,7 +318,7 @@ private fun StepCard(
             IconButton(onClick = onDelete, modifier = Modifier.size(32.dp)) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = "Удалить",
+                    contentDescription = stringResource(R.string.label_delete),
                     tint = NexusTextTertiary,
                     modifier = Modifier.size(18.dp)
                 )
@@ -342,7 +344,7 @@ private fun AddStepDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text("Новый шаг", color = NexusTextPrimary)
+            Text(stringResource(R.string.chain_detail_new_step), color = NexusTextPrimary)
         },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -357,7 +359,7 @@ private fun AddStepDialog(
                             .fillMaxWidth()
                             .menuAnchor(MenuAnchorType.PrimaryNotEditable),
                         readOnly = true,
-                        label = { Text("Тип") },
+                        label = { Text(stringResource(R.string.chain_detail_type_label)) },
                         trailingIcon = {
                             ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                         },
@@ -389,7 +391,7 @@ private fun AddStepDialog(
                     value = name,
                     onValueChange = onNameChange,
                     modifier = Modifier.fillMaxWidth(),
-                    placeholder = { Text("Имя шага", color = NexusTextTertiary) },
+                    placeholder = { Text(stringResource(R.string.chain_detail_step_name_hint), color = NexusTextTertiary) },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = NexusPurple,
                         unfocusedBorderColor = NexusSurface,
@@ -404,7 +406,7 @@ private fun AddStepDialog(
                     value = prompt,
                     onValueChange = onPromptChange,
                     modifier = Modifier.fillMaxWidth(),
-                    placeholder = { Text("Промпт (используйте {key} для подстановки)", color = NexusTextTertiary) },
+                    placeholder = { Text(stringResource(R.string.chain_detail_step_prompt_hint), color = NexusTextTertiary) },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = NexusPurple,
                         unfocusedBorderColor = NexusSurface,
@@ -421,12 +423,12 @@ private fun AddStepDialog(
                 onClick = onAdd,
                 enabled = name.isNotBlank() && prompt.isNotBlank()
             ) {
-                Text("Добавить", color = NexusPurple)
+                Text(stringResource(R.string.label_add), color = NexusPurple)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Отмена", color = NexusTextSecondary)
+                Text(stringResource(R.string.label_cancel), color = NexusTextSecondary)
             }
         },
         containerColor = NexusCard

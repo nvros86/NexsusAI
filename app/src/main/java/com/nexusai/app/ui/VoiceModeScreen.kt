@@ -52,6 +52,8 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.ui.res.stringResource
+import com.nexusai.app.R
 import com.nexusai.core.ui.components.VoiceState
 import com.nexusai.core.ui.theme.NexusBackground
 import com.nexusai.core.ui.theme.NexusCard
@@ -83,12 +85,12 @@ fun VoiceModeScreen(
             .background(NexusBackground)
     ) {
         TopAppBar(
-            title = { Text("Voice Mode", color = NexusTextPrimary) },
+            title = { Text(stringResource(R.string.voice_mode_title), color = NexusTextPrimary) },
             navigationIcon = {
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Назад",
+                        contentDescription = stringResource(R.string.action_back),
                         tint = NexusTextPrimary
                     )
                 }
@@ -104,8 +106,8 @@ fun VoiceModeScreen(
                 IconButton(onClick = { viewModel.clearMessages() }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = "Очистить",
-                        tint = NexusTextTertiary
+                    contentDescription = stringResource(R.string.image_clear),
+                    tint = NexusTextTertiary
                     )
                 }
             },
@@ -126,12 +128,12 @@ fun VoiceModeScreen(
                     Text("🎤", style = MaterialTheme.typography.displayLarge)
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = "Нажмите микрофон",
+                        text = stringResource(R.string.voice_mode_press_mic),
                         style = MaterialTheme.typography.titleMedium,
                         color = NexusTextSecondary
                     )
                     Text(
-                        text = "и начните говорить",
+                        text = stringResource(R.string.voice_mode_start_talking),
                         style = MaterialTheme.typography.bodyMedium,
                         color = NexusTextTertiary
                     )
@@ -161,7 +163,7 @@ fun VoiceModeScreen(
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
-                                    text = "Думаю...",
+                                    text = stringResource(R.string.voice_mode_thinking),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = NexusTextTertiary
                                 )
@@ -237,10 +239,10 @@ fun VoiceModeScreen(
                             else -> Icons.Default.Mic
                         },
                         contentDescription = when (uiState.voiceState) {
-                            VoiceState.LISTENING -> "Остановить"
-                            VoiceState.THINKING -> "Обработка"
-                            VoiceState.SPEAKING -> "Остановить"
-                            else -> "Начать"
+                            VoiceState.LISTENING -> stringResource(R.string.voice_mode_stop)
+                            VoiceState.THINKING -> stringResource(R.string.voice_mode_processing)
+                            VoiceState.SPEAKING -> stringResource(R.string.voice_mode_stop)
+                            else -> stringResource(R.string.voice_mode_start)
                         },
                         tint = NexusTextPrimary,
                         modifier = Modifier.size(32.dp)
@@ -252,11 +254,11 @@ fun VoiceModeScreen(
 
             Text(
                 text = when (uiState.voiceState) {
-                    VoiceState.IDLE -> "Нажмите для начала"
-                    VoiceState.LISTENING -> "Слушаю..."
-                    VoiceState.THINKING -> "Думаю..."
-                    VoiceState.SPEAKING -> "Говорю..."
-                    VoiceState.ERROR -> "Ошибка. Нажмите снова"
+                    VoiceState.IDLE -> stringResource(R.string.voice_mode_press_to_start)
+                    VoiceState.LISTENING -> stringResource(R.string.voice_mode_listening)
+                    VoiceState.THINKING -> stringResource(R.string.voice_mode_thinking)
+                    VoiceState.SPEAKING -> stringResource(R.string.voice_mode_speaking)
+                    VoiceState.ERROR -> stringResource(R.string.voice_mode_error_retry)
                 },
                 style = MaterialTheme.typography.bodyMedium,
                 color = NexusTextSecondary

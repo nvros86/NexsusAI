@@ -51,6 +51,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.ui.res.stringResource
+import com.nexusai.app.R
 import coil.compose.AsyncImage
 import com.nexusai.core.ui.theme.NexusBackground
 import com.nexusai.core.ui.theme.NexusCard
@@ -91,13 +93,13 @@ fun ImageScreen(
     ) {
         TopAppBar(
             title = {
-                Text("Генерация изображений", color = NexusTextPrimary)
+                Text(stringResource(R.string.image_title), color = NexusTextPrimary)
             },
             actions = {
                 IconButton(onClick = { viewModel.clearImages() }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = "Очистить",
+                        contentDescription = stringResource(R.string.image_clear),
                         tint = NexusTextTertiary
                     )
                 }
@@ -139,13 +141,13 @@ fun ImageScreen(
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = "Создайте изображение",
+                        text = stringResource(R.string.image_empty_title),
                         style = MaterialTheme.typography.titleMedium,
                         color = NexusTextSecondary
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "Опишите, что вы хотите увидеть",
+                        text = stringResource(R.string.image_empty_subtitle),
                         style = MaterialTheme.typography.bodyMedium,
                         color = NexusTextTertiary
                     )
@@ -187,7 +189,7 @@ fun ImageScreen(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Генерация...",
+                        text = stringResource(R.string.image_generating),
                         color = NexusTextSecondary,
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -200,7 +202,7 @@ fun ImageScreen(
                 onValueChange = { viewModel.setPrompt(it) },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
-                    Text("Опишите изображение...", color = NexusTextTertiary)
+                    Text(stringResource(R.string.image_prompt_hint), color = NexusTextTertiary)
                 },
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = NexusPurple,
@@ -222,7 +224,7 @@ fun ImageScreen(
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.Send,
-                    contentDescription = "Генерировать"
+                    contentDescription = stringResource(R.string.image_generate)
                 )
             }
         }
@@ -278,7 +280,7 @@ private fun GeneratedImageCard(
                 IconButton(onClick = onFavorite, modifier = Modifier.size(32.dp)) {
                     Icon(
                         imageVector = Icons.Default.Star,
-                        contentDescription = "Избранное",
+                        contentDescription = stringResource(R.string.image_favorite),
                         tint = if (image.isFavorite) NexusPurple else NexusTextTertiary,
                         modifier = Modifier.size(18.dp)
                     )
@@ -286,7 +288,7 @@ private fun GeneratedImageCard(
                 IconButton(onClick = onDelete, modifier = Modifier.size(32.dp)) {
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = "Удалить",
+                        contentDescription = stringResource(R.string.image_delete),
                         tint = NexusTextTertiary,
                         modifier = Modifier.size(18.dp)
                     )

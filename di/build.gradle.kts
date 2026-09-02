@@ -31,4 +31,10 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.room.runtime)
+
+    implementation(libs.ktor.client)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.content)
+    implementation(libs.ktor.serialization)
+    implementation(libs.serialization.json)
 }

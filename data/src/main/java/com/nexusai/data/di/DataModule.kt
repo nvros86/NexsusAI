@@ -29,6 +29,8 @@ import com.nexusai.domain.repository.PromptRepository
 import com.nexusai.domain.repository.SplitViewRepository
 import com.nexusai.domain.repository.TabRepository
 import com.nexusai.domain.repository.TaskTemplateRepository
+import com.nexusai.domain.ai.AIProviderFactory
+import com.nexusai.domain.repository.AgentContextRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -135,4 +137,17 @@ object RepositoryModule {
     fun providePluginRepository(): PluginRepository {
         return PluginRepositoryImpl()
     }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object BindingModule {
+
+    @Provides
+    @Singleton
+    fun provideAIProviderFactory(impl: AIProviderManager): AIProviderFactory = impl
+
+    @Provides
+    @Singleton
+    fun provideAgentContextRepository(impl: AppDataManager): AgentContextRepository = impl
 }

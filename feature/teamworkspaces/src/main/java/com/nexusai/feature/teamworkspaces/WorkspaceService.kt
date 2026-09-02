@@ -1,14 +1,10 @@
 package com.nexusai.feature.teamworkspaces
 
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.okhttp.OkHttp
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -19,16 +15,9 @@ private data class WebSocketMessage(
 )
 
 @Singleton
-class WorkspaceService @Inject constructor() {
-
-    private val httpClient = HttpClient(OkHttp) {
-        install(ContentNegotiation) {
-            json(Json {
-                ignoreUnknownKeys = true
-                isLenient = true
-            })
-        }
-    }
+class WorkspaceService @Inject constructor(
+    private val httpClient: HttpClient
+) {
 
     private val _messages = MutableStateFlow<List<WorkspaceMessage>>(emptyList())
     val messages: StateFlow<List<WorkspaceMessage>> = _messages.asStateFlow()

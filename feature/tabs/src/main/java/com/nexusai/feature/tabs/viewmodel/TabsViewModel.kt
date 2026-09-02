@@ -2,7 +2,7 @@ package com.nexusai.feature.tabs.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nexusai.data.ai.AIProviderManager
+import com.nexusai.domain.ai.AIProviderFactory
 import com.nexusai.domain.model.AIProviderConfig
 import com.nexusai.domain.model.AttachedFile
 import com.nexusai.domain.ai.ChatMessage
@@ -11,7 +11,7 @@ import com.nexusai.domain.model.MessageRole
 import com.nexusai.domain.model.Tab
 import com.nexusai.domain.repository.AIProviderRepository
 import com.nexusai.domain.repository.TabRepository
-import com.nexusai.data.common.AppDataManager
+import com.nexusai.domain.repository.AgentContextRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -44,8 +44,8 @@ data class ChatUiState(
 class TabsViewModel @Inject constructor(
     private val tabRepository: TabRepository,
     private val aiProviderRepository: AIProviderRepository,
-    private val aiProviderManager: AIProviderManager,
-    private val appDataManager: AppDataManager
+    private val aiProviderFactory: AIProviderFactory,
+    private val agentContextRepository: AgentContextRepository
 ) : ViewModel() {
 
     private val _tabsState = MutableStateFlow(TabsUiState())
@@ -199,17 +199,17 @@ class TabsViewModel @Inject constructor(
             }
 
             try {
-                val provider = aiProviderManager.getProvider(providerConfig)
+                val provider = aiProviderFactory.getProvider(providerConfig)
                 val tab = tabRepository.getTabById(tabId)
 
                 val systemPromptParts = mutableListOf<String>()
 
-                val agentPrompt = appDataManager.getActiveAgentSystemPrompt()
+                val agentPrompt = agentContextRepository.getActiveAgentSystemPrompt()
                 if (agentPrompt != null) {
                     systemPromptParts.add("System Instructions:\n$agentPrompt")
                 }
 
-                val memoryContext = appDataManager.getMemoryContext()
+                val memoryContext = agentContextRepository.getMemoryContext()
                 if (memoryContext != null) {
                     systemPromptParts.add("User Context (from memory):\n$memoryContext")
                 }

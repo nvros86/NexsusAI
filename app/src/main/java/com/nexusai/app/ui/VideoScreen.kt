@@ -41,6 +41,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import com.nexusai.app.R
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nexusai.core.ui.theme.NexusBackground
 import com.nexusai.core.ui.theme.NexusCard
@@ -81,13 +83,13 @@ fun VideoScreen(
     ) {
         TopAppBar(
             title = {
-                Text("Генерация видео", color = NexusTextPrimary)
+                Text(stringResource(R.string.video_title), color = NexusTextPrimary)
             },
             actions = {
                 IconButton(onClick = { viewModel.clearVideos() }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = "Очистить",
+                        contentDescription = stringResource(R.string.video_clear),
                         tint = NexusTextTertiary
                     )
                 }
@@ -129,13 +131,13 @@ fun VideoScreen(
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = "Создайте видео",
+                        text = stringResource(R.string.video_empty_title),
                         style = MaterialTheme.typography.titleMedium,
                         color = NexusTextSecondary
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "Опишите сцену для видео",
+                        text = stringResource(R.string.video_empty_subtitle),
                         style = MaterialTheme.typography.bodyMedium,
                         color = NexusTextTertiary
                     )
@@ -177,7 +179,7 @@ fun VideoScreen(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Генерация видео...",
+                        text = stringResource(R.string.video_generating),
                         color = NexusTextSecondary,
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -190,7 +192,7 @@ fun VideoScreen(
                 onValueChange = { viewModel.setPrompt(it) },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
-                    Text("Опишите сцену...", color = NexusTextTertiary)
+                    Text(stringResource(R.string.video_prompt_hint), color = NexusTextTertiary)
                 },
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = NexusPurple,
@@ -212,7 +214,7 @@ fun VideoScreen(
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.Send,
-                    contentDescription = "Генерировать"
+                    contentDescription = stringResource(R.string.video_generate)
                 )
             }
         }
@@ -240,7 +242,7 @@ private fun VideoCard(
                 if (video.url != null) {
                     Icon(
                         imageVector = Icons.Default.PlayCircle,
-                        contentDescription = "Воспроизвести",
+                        contentDescription = stringResource(R.string.video_play),
                         modifier = Modifier.size(48.dp),
                         tint = NexusPurple
                     )
@@ -278,7 +280,7 @@ private fun VideoCard(
                 IconButton(onClick = onFavorite, modifier = Modifier.size(32.dp)) {
                     Icon(
                         imageVector = Icons.Default.Star,
-                        contentDescription = "Избранное",
+                        contentDescription = stringResource(R.string.video_favorite),
                         tint = if (video.isFavorite) NexusPurple else NexusTextTertiary,
                         modifier = Modifier.size(18.dp)
                     )
@@ -286,7 +288,7 @@ private fun VideoCard(
                 IconButton(onClick = onDelete, modifier = Modifier.size(32.dp)) {
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = "Удалить",
+                        contentDescription = stringResource(R.string.video_delete),
                         tint = NexusTextTertiary,
                         modifier = Modifier.size(18.dp)
                     )

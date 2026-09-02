@@ -47,6 +47,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import com.nexusai.app.R
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nexusai.core.ui.theme.NexusBackground
 import com.nexusai.core.ui.theme.NexusCard
@@ -81,13 +83,13 @@ fun MemoryScreen(
     ) {
         TopAppBar(
             title = {
-                Text("Память AI", color = NexusTextPrimary)
+                Text(stringResource(R.string.memory_title), color = NexusTextPrimary)
             },
             actions = {
                 IconButton(onClick = { viewModel.clearAll() }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = "Очистить",
+                        contentDescription = stringResource(R.string.memory_clear),
                         tint = NexusTextTertiary
                     )
                 }
@@ -102,7 +104,7 @@ fun MemoryScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             placeholder = {
-                Text("Поиск в памяти...", color = NexusTextTertiary)
+                Text(stringResource(R.string.memory_search_hint), color = NexusTextTertiary)
             },
             leadingIcon = {
                 Icon(
@@ -137,13 +139,13 @@ fun MemoryScreen(
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = if (state.searchQuery.isBlank()) "Память пуста" else "Ничего не найдено",
+                        text = if (state.searchQuery.isBlank()) stringResource(R.string.memory_empty) else stringResource(R.string.memory_empty_with_query),
                         style = MaterialTheme.typography.titleMedium,
                         color = NexusTextSecondary
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "Добавьте информацию для AI",
+                        text = stringResource(R.string.memory_add_hint),
                         style = MaterialTheme.typography.bodyMedium,
                         color = NexusTextTertiary
                     )
@@ -179,7 +181,7 @@ fun MemoryScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Добавить"
+                    contentDescription = stringResource(R.string.label_add)
                 )
             }
         }
@@ -237,7 +239,7 @@ private fun MemoryCard(
             IconButton(onClick = onToggleImportant, modifier = Modifier.size(32.dp)) {
                 Icon(
                     imageVector = Icons.Default.Star,
-                    contentDescription = "Важное",
+                    contentDescription = stringResource(R.string.memory_important),
                     tint = if (entry.isImportant) NexusPurple else NexusTextTertiary,
                     modifier = Modifier.size(18.dp)
                 )
@@ -246,7 +248,7 @@ private fun MemoryCard(
             IconButton(onClick = onDelete, modifier = Modifier.size(32.dp)) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = "Удалить",
+                    contentDescription = stringResource(R.string.label_delete),
                     tint = NexusTextTertiary,
                     modifier = Modifier.size(18.dp)
                 )
@@ -267,7 +269,7 @@ private fun AddMemoryDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text("Добавить в память", color = NexusTextPrimary)
+            Text(stringResource(R.string.memory_add_title), color = NexusTextPrimary)
         },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -275,7 +277,7 @@ private fun AddMemoryDialog(
                     value = key,
                     onValueChange = onKeyChange,
                     modifier = Modifier.fillMaxWidth(),
-                    placeholder = { Text("Ключ (например: Имя пользователя)", color = NexusTextTertiary) },
+                    placeholder = { Text(stringResource(R.string.memory_key_hint), color = NexusTextTertiary) },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = NexusPurple,
                         unfocusedBorderColor = NexusSurface,
@@ -289,7 +291,7 @@ private fun AddMemoryDialog(
                     value = value,
                     onValueChange = onValueChange,
                     modifier = Modifier.fillMaxWidth(),
-                    placeholder = { Text("Значение", color = NexusTextTertiary) },
+                    placeholder = { Text(stringResource(R.string.memory_value_hint), color = NexusTextTertiary) },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = NexusPurple,
                         unfocusedBorderColor = NexusSurface,
@@ -306,12 +308,12 @@ private fun AddMemoryDialog(
                 onClick = onAdd,
                 enabled = key.isNotBlank() && value.isNotBlank()
             ) {
-                Text("Добавить", color = NexusPurple)
+                Text(stringResource(R.string.label_add), color = NexusPurple)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Отмена", color = NexusTextSecondary)
+                Text(stringResource(R.string.label_cancel), color = NexusTextSecondary)
             }
         },
         containerColor = NexusCard
