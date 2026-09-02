@@ -258,7 +258,7 @@ class TabsViewModel @Inject constructor(
 
                 updateChatState(tabId) {
                     it.copy(
-                        messages = it.messages + userMessage + streamingMessage,
+                        messages = it.messages + streamingMessage,
                         isGenerating = true
                     )
                 }
@@ -285,10 +285,8 @@ class TabsViewModel @Inject constructor(
                     role = MessageRole.ASSISTANT
                 )
 
-                val updatedMessages = chatState.messages + userMessage + assistantMessage
                 updateChatState(tabId) {
                     it.copy(
-                        messages = updatedMessages,
                         isGenerating = false
                     )
                 }
@@ -296,7 +294,10 @@ class TabsViewModel @Inject constructor(
                 // Save messages to database
                 val currentTab = tabRepository.getTabById(tabId)
                 if (currentTab != null) {
-                    tabRepository.updateTab(currentTab.copy(messages = updatedMessages))
+                    val finalMessages = currentTab.messages.map { msg ->
+                        if (msg.id == assistantMessageId) assistantMessage else msg
+                    }
+                    tabRepository.updateTab(currentTab.copy(messages = finalMessages))
                 }
             } catch (e: Exception) {
                 val errorMessage = Message(
@@ -304,10 +305,9 @@ class TabsViewModel @Inject constructor(
                     content = "Error: ${e.message}",
                     role = MessageRole.ASSISTANT
                 )
-                val updatedMessages = chatState.messages + userMessage + errorMessage
                 updateChatState(tabId) {
                     it.copy(
-                        messages = updatedMessages,
+                        messages = it.messages + errorMessage,
                         isGenerating = false
                     )
                 }
@@ -315,7 +315,8 @@ class TabsViewModel @Inject constructor(
                 // Save messages to database even on error
                 val errorTab = tabRepository.getTabById(tabId)
                 if (errorTab != null) {
-                    tabRepository.updateTab(errorTab.copy(messages = updatedMessages))
+                    val errorMessages = errorTab.messages + errorMessage
+                    tabRepository.updateTab(errorTab.copy(messages = errorMessages))
                 }
             }
         }

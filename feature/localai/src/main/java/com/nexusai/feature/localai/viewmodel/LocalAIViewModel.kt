@@ -20,7 +20,8 @@ data class LocalAIUiState(
     val status: LocalAIStatus = LocalAIStatus(),
     val selectedConfig: LocalAIConfig? = null,
     val isGenerating: Boolean = false,
-    val lastResponse: String? = null
+    val lastResponse: String? = null,
+    val error: String? = null
 )
 
 @HiltViewModel
@@ -71,29 +72,39 @@ class LocalAIViewModel @Inject constructor(
 
     fun testConnection(config: LocalAIConfig) {
         viewModelScope.launch {
-            val isConnected = localAIService.checkConnection(config.baseUrl)
-            _uiState.value = _uiState.value.copy(
-                configs = _uiState.value.configs.map {
-                    if (it.id == config.id) it.copy(isConnected = isConnected) else it
-                }
-            )
-
-            if (isConnected) {
-                val models = localAIService.getModels(config.baseUrl)
+            try {
+                val isConnected = localAIService.checkConnection(config.baseUrl)
                 _uiState.value = _uiState.value.copy(
-                    models = models,
-                    status = LocalAIStatus(
-                        isRunning = true,
-                        serverType = config.type,
-                        url = config.baseUrl,
-                        modelsCount = models.size
-                    )
+                    configs = _uiState.value.configs.map {
+                        if (it.id == config.id) it.copy(isConnected = isConnected) else it
+                    }
                 )
-            } else {
+
+                if (isConnected) {
+                    val models = localAIService.getModels(config.baseUrl)
+                    _uiState.value = _uiState.value.copy(
+                        models = models,
+                        status = LocalAIStatus(
+                            isRunning = true,
+                            serverType = config.type,
+                            url = config.baseUrl,
+                            modelsCount = models.size
+                        )
+                    )
+                } else {
+                    _uiState.value = _uiState.value.copy(
+                        status = LocalAIStatus(
+                            isRunning = false,
+                            error = "Не удалось подключиться"
+                        )
+                    )
+                }
+            } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
+                    error = "Ошибка подключения: ${e.message}",
                     status = LocalAIStatus(
                         isRunning = false,
-                        error = "Не удалось подключиться"
+                        error = "Ошибка: ${e.message}"
                     )
                 )
             }
@@ -137,8 +148,12 @@ class LocalAIViewModel @Inject constructor(
         val config = _uiState.value.configs.firstOrNull { it.isConnected } ?: return
 
         viewModelScope.launch {
-            localAIService.pullModel(config.baseUrl, modelName)
-            testConnection(config)
+            try {
+                localAIService.pullModel(config.baseUrl, modelName)
+                testConnection(config)
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(error = "Ошибка загрузки модели: ${e.message}")
+            }
         }
     }
 
@@ -146,9 +161,17 @@ class LocalAIViewModel @Inject constructor(
         val config = _uiState.value.configs.firstOrNull { it.isConnected } ?: return
 
         viewModelScope.launch {
-            localAIService.deleteModel(config.baseUrl, modelName)
-            testConnection(config)
+            try {
+                localAIService.deleteModel(config.baseUrl, modelName)
+                testConnection(config)
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(error = "Ошибка удаления модели: ${e.message}")
+            }
         }
+    }
+
+    fun clearError() {
+        _uiState.value = _uiState.value.copy(error = null)
     }
 
     fun refresh() {

@@ -15,7 +15,8 @@ data class AgentsUiState(
     val agents: List<AIAgent> = emptyList(),
     val newAgentName: String = "",
     val newAgentDescription: String = "",
-    val newAgentPrompt: String = ""
+    val newAgentPrompt: String = "",
+    val error: String? = null
 )
 
 @HiltViewModel
@@ -51,31 +52,47 @@ class AgentsViewModel @Inject constructor(
         if (state.newAgentName.isBlank() || state.newAgentPrompt.isBlank()) return
 
         viewModelScope.launch {
-            val agent = AIAgent(
-                id = System.currentTimeMillis().toString(),
-                name = state.newAgentName,
-                description = state.newAgentDescription,
-                systemPrompt = state.newAgentPrompt
-            )
-            appDataManager.addAgent(agent)
-            _uiState.value = _uiState.value.copy(
-                newAgentName = "",
-                newAgentDescription = "",
-                newAgentPrompt = ""
-            )
+            try {
+                val agent = AIAgent(
+                    id = System.currentTimeMillis().toString(),
+                    name = state.newAgentName,
+                    description = state.newAgentDescription,
+                    systemPrompt = state.newAgentPrompt
+                )
+                appDataManager.addAgent(agent)
+                _uiState.value = _uiState.value.copy(
+                    newAgentName = "",
+                    newAgentDescription = "",
+                    newAgentPrompt = ""
+                )
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(error = "Ошибка создания агента: ${e.message}")
+            }
         }
     }
 
     fun toggleAgent(id: String) {
         val agent = _uiState.value.agents.find { it.id == id } ?: return
         viewModelScope.launch {
-            appDataManager.updateAgent(agent.copy(isActive = !agent.isActive))
+            try {
+                appDataManager.updateAgent(agent.copy(isActive = !agent.isActive))
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(error = "Ошибка обновления агента: ${e.message}")
+            }
         }
     }
 
     fun deleteAgent(id: String) {
         viewModelScope.launch {
-            appDataManager.removeAgent(id)
+            try {
+                appDataManager.removeAgent(id)
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(error = "Ошибка удаления агента: ${e.message}")
+            }
         }
+    }
+
+    fun clearError() {
+        _uiState.value = _uiState.value.copy(error = null)
     }
 }

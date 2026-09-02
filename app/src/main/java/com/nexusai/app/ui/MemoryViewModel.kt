@@ -15,7 +15,8 @@ data class MemoryUiState(
     val entries: List<MemoryEntry> = emptyList(),
     val searchQuery: String = "",
     val newKey: String = "",
-    val newValue: String = ""
+    val newValue: String = "",
+    val error: String? = null
 )
 
 @HiltViewModel
@@ -51,32 +52,52 @@ class MemoryViewModel @Inject constructor(
         if (state.newKey.isBlank() || state.newValue.isBlank()) return
 
         viewModelScope.launch {
-            val entry = MemoryEntry(
-                id = System.currentTimeMillis().toString(),
-                key = state.newKey,
-                value = state.newValue
-            )
-            appDataManager.addMemoryEntry(entry)
-            _uiState.value = _uiState.value.copy(newKey = "", newValue = "")
+            try {
+                val entry = MemoryEntry(
+                    id = System.currentTimeMillis().toString(),
+                    key = state.newKey,
+                    value = state.newValue
+                )
+                appDataManager.addMemoryEntry(entry)
+                _uiState.value = _uiState.value.copy(newKey = "", newValue = "")
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(error = "Ошибка добавления записи: ${e.message}")
+            }
         }
     }
 
     fun toggleImportant(id: String) {
         val entry = _uiState.value.entries.find { it.id == id } ?: return
         viewModelScope.launch {
-            appDataManager.updateMemoryEntry(entry.copy(isImportant = !entry.isImportant))
+            try {
+                appDataManager.updateMemoryEntry(entry.copy(isImportant = !entry.isImportant))
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(error = "Ошибка обновления записи: ${e.message}")
+            }
         }
     }
 
     fun deleteEntry(id: String) {
         viewModelScope.launch {
-            appDataManager.removeMemoryEntry(id)
+            try {
+                appDataManager.removeMemoryEntry(id)
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(error = "Ошибка удаления записи: ${e.message}")
+            }
         }
     }
 
     fun clearAll() {
         viewModelScope.launch {
-            appDataManager.clearMemory()
+            try {
+                appDataManager.clearMemory()
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(error = "Ошибка очистки памяти: ${e.message}")
+            }
         }
+    }
+
+    fun clearError() {
+        _uiState.value = _uiState.value.copy(error = null)
     }
 }

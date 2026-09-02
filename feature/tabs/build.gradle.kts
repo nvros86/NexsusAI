@@ -35,7 +35,7 @@ android {
 dependencies {
     implementation(project(":core"))
     implementation(project(":domain"))
-    implementation(project(":data"))
+    implementation(project(":data")) // TODO: Remove. Create AIProviderFactory and AgentContextRepository interfaces in :domain to replace AIProviderManager and AppDataManager direct usage.
 
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)

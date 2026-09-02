@@ -48,6 +48,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -211,6 +212,7 @@ fun MarketplaceScreen(
                         onValueChange = { apiKeyInput = it },
                         modifier = Modifier.fillMaxWidth(),
                         placeholder = { Text("API Key", color = NexusTextTertiary) },
+                        visualTransformation = PasswordVisualTransformation(),
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = NexusPurple,
                             unfocusedBorderColor = NexusSurface,

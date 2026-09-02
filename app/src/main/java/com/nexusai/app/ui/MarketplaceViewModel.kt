@@ -19,7 +19,8 @@ data class MarketplaceUiState(
     val searchQuery: String = "",
     val selectedCategory: String? = null,
     val isSearching: Boolean = false,
-    val addedProviderName: String? = null
+    val addedProviderName: String? = null,
+    val error: String? = null
 )
 
 @HiltViewModel
@@ -73,27 +74,35 @@ class MarketplaceViewModel @Inject constructor(
 
     fun addProvider(preset: MarketplaceProvider, apiKey: String = "") {
         viewModelScope.launch {
-            val provider = AIProviderConfig(
-                id = UUID.randomUUID().toString(),
-                name = preset.name,
-                type = preset.type,
-                baseUrl = preset.baseUrl,
-                apiKey = apiKey,
-                models = preset.models,
-                defaultModel = preset.defaultModel,
-                maxTokens = preset.maxTokens,
-                temperature = preset.temperature,
-                supportsImages = preset.capabilities.contains(
-                    com.nexusai.domain.model.ProviderCapability.VISION
-                ),
-                supportsStreaming = preset.capabilities.contains(
-                    com.nexusai.domain.model.ProviderCapability.STREAMING
+            try {
+                val provider = AIProviderConfig(
+                    id = UUID.randomUUID().toString(),
+                    name = preset.name,
+                    type = preset.type,
+                    baseUrl = preset.baseUrl,
+                    apiKey = apiKey,
+                    models = preset.models,
+                    defaultModel = preset.defaultModel,
+                    maxTokens = preset.maxTokens,
+                    temperature = preset.temperature,
+                    supportsImages = preset.capabilities.contains(
+                        com.nexusai.domain.model.ProviderCapability.VISION
+                    ),
+                    supportsStreaming = preset.capabilities.contains(
+                        com.nexusai.domain.model.ProviderCapability.STREAMING
+                    )
                 )
-            )
-            aiProviderRepository.addProvider(provider)
-            marketplaceRepository.markAsAdded(preset.id)
-            _uiState.value = _uiState.value.copy(addedProviderName = preset.name)
+                aiProviderRepository.addProvider(provider)
+                marketplaceRepository.markAsAdded(preset.id)
+                _uiState.value = _uiState.value.copy(addedProviderName = preset.name)
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(error = "Ошибка добавления провайдера: ${e.message}")
+            }
         }
+    }
+
+    fun clearError() {
+        _uiState.value = _uiState.value.copy(error = null)
     }
 
     fun dismissAddedMessage() {
