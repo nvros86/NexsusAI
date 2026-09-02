@@ -1,5 +1,8 @@
 package com.nexusai.domain.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Tab(
     val id: String,
     val title: String,
@@ -12,6 +15,7 @@ data class Tab(
     val accentColor: Long = 0xFF6750A4
 )
 
+@Serializable
 data class Message(
     val id: String,
     val content: String,
@@ -21,6 +25,7 @@ data class Message(
     val isStreaming: Boolean = false
 )
 
+@Serializable
 data class AttachedFile(
     val id: String,
     val name: String,

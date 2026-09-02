@@ -125,7 +125,9 @@ class TabRepositoryImplTest {
 
         val result = repository.createTab(tab)
 
-        coVerify { dao.insertTab(any()) }
+        coVerify { dao.insertTab(match {
+            it.id == "new-1" && it.title == "New Tab"
+        }) }
         assertEquals("new-1", result.id)
         assertEquals("New Tab", result.title)
     }
@@ -136,7 +138,9 @@ class TabRepositoryImplTest {
 
         repository.updateTab(tab)
 
-        coVerify { dao.updateTab(any()) }
+        coVerify { dao.updateTab(match {
+            it.id == "1" && it.title == "Updated Tab"
+        }) }
     }
 
     @Test
