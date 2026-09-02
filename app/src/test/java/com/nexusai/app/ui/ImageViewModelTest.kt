@@ -175,13 +175,15 @@ class ImageViewModelTest {
         viewModel.generate()
         testDispatcher.scheduler.advanceUntilIdle()
 
-        assertEquals(2, viewModel.uiState.value.images.size)
+        val imagesBefore = viewModel.uiState.value.images
+        assertEquals(2, imagesBefore.size)
 
-        val idToDelete = viewModel.uiState.value.images[0].id
+        val idToDelete = imagesBefore[0].id
         viewModel.deleteImage(idToDelete)
 
-        assertEquals(1, viewModel.uiState.value.images.size)
-        assertFalse(viewModel.uiState.value.images.any { it.id == idToDelete })
+        val imagesAfter = viewModel.uiState.value.images
+        assertEquals(1, imagesAfter.size)
+        assertFalse(imagesAfter.any { it.id == idToDelete })
     }
 
     @Test
