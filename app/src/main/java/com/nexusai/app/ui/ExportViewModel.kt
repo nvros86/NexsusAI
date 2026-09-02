@@ -122,6 +122,35 @@ class ExportViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(exportedFileUri = null)
     }
 
+    fun copyToClipboard(context: Context) {
+        val state = _uiState.value
+        val tab = state.tabs.find { it.id == state.selectedTabId } ?: return
+
+        viewModelScope.launch {
+            try {
+                val content = when (state.selectedFormat) {
+                    ExportFormat.MARKDOWN -> toMarkdown(tab)
+                    ExportFormat.TXT -> toPlainText(tab)
+                    ExportFormat.JSON -> toJson(tab)
+                    ExportFormat.HTML -> toHtml(tab)
+                }
+
+                val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+                val clip = android.content.ClipData.newPlainText(tab.title, content)
+                clipboard.setPrimaryClip(clip)
+            } catch (_: Exception) {}
+        }
+    }
+
+    fun openInBrowser(context: Context) {
+        val uri = _uiState.value.exportedFileUri ?: return
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            setDataAndType(uri, "text/html")
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        context.startActivity(intent)
+    }
+
     private fun toMarkdown(tab: Tab): String = buildString {
         appendLine("# ${tab.title}")
         appendLine()

@@ -227,40 +227,100 @@ fun ExportScreen(
                                 )
                             }
                         } else if (uiState.exportedFileUri != null) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
-                                Box(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .clip(RoundedCornerShape(12.dp))
-                                        .background(NexusPurple)
-                                        .clickable {
-                                            viewModel.share(context)
-                                        }
-                                        .padding(16.dp),
-                                    contentAlignment = Alignment.Center
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.spacedBy(12.dp)
                                 ) {
-                                    Row(verticalAlignment = Alignment.CenterVertically) {
-                                        Icon(
-                                            imageVector = Icons.Default.Share,
-                                            contentDescription = null,
-                                            tint = NexusTextPrimary,
-                                            modifier = Modifier.size(20.dp)
-                                        )
-                                        Spacer(modifier = Modifier.width(8.dp))
-                                        Text(
-                                            text = "Поделиться",
-                                            color = NexusTextPrimary,
-                                            style = MaterialTheme.typography.bodyMedium
-                                        )
+                                    Box(
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .clip(RoundedCornerShape(12.dp))
+                                            .background(NexusPurple)
+                                            .clickable {
+                                                viewModel.share(context)
+                                            }
+                                            .padding(16.dp),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                            Icon(
+                                                imageVector = Icons.Default.Share,
+                                                contentDescription = null,
+                                                tint = NexusTextPrimary,
+                                                modifier = Modifier.size(20.dp)
+                                            )
+                                            Spacer(modifier = Modifier.width(8.dp))
+                                            Text(
+                                                text = "Поделиться",
+                                                color = NexusTextPrimary,
+                                                style = MaterialTheme.typography.bodyMedium
+                                            )
+                                        }
+                                    }
+
+                                    Box(
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .clip(RoundedCornerShape(12.dp))
+                                            .background(NexusSurface)
+                                            .clickable {
+                                                viewModel.copyToClipboard(context)
+                                            }
+                                            .padding(16.dp),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                            Icon(
+                                                imageVector = Icons.Default.Description,
+                                                contentDescription = null,
+                                                tint = NexusTextSecondary,
+                                                modifier = Modifier.size(20.dp)
+                                            )
+                                            Spacer(modifier = Modifier.width(8.dp))
+                                            Text(
+                                                text = "Копировать",
+                                                color = NexusTextSecondary,
+                                                style = MaterialTheme.typography.bodyMedium
+                                            )
+                                        }
+                                    }
+                                }
+
+                                if (uiState.selectedFormat == ExportFormat.HTML) {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .clip(RoundedCornerShape(12.dp))
+                                            .background(NexusSurface)
+                                            .clickable {
+                                                viewModel.openInBrowser(context)
+                                            }
+                                            .padding(16.dp),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                            Icon(
+                                                imageVector = Icons.Default.OpenInBrowser,
+                                                contentDescription = null,
+                                                tint = NexusTextSecondary,
+                                                modifier = Modifier.size(20.dp)
+                                            )
+                                            Spacer(modifier = Modifier.width(8.dp))
+                                            Text(
+                                                text = "Открыть в браузере",
+                                                color = NexusTextSecondary,
+                                                style = MaterialTheme.typography.bodyMedium
+                                            )
+                                        }
                                     }
                                 }
 
                                 Box(
                                     modifier = Modifier
-                                        .weight(1f)
+                                        .fillMaxWidth()
                                         .clip(RoundedCornerShape(12.dp))
                                         .background(NexusSurface)
                                         .clickable { viewModel.clearExport() }
