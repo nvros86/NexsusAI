@@ -40,6 +40,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -51,6 +52,7 @@ import com.nexusai.core.ui.theme.NexusSurfaceVariant
 import com.nexusai.core.ui.theme.NexusTextPrimary
 import com.nexusai.core.ui.theme.NexusTextTertiary
 import com.nexusai.domain.model.Tab
+import com.nexusai.feature.tabs.R
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -79,7 +81,13 @@ fun TabBar(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
+        val activeSuffix = stringResource(R.string.tab_active_suffix)
+        val tabTitleFormat = stringResource(R.string.tab_title_format)
         tabs.forEach { tab ->
+            val tabContentDescription = tabTitleFormat.format(
+                tab.title,
+                if (tab.id == activeTabId) activeSuffix else ""
+            )
             val dismissState = rememberSwipeToDismissBoxState(
                 confirmValueChange = { dismissValue ->
                     if (dismissValue == SwipeToDismissBoxValue.StartToEnd || 
@@ -136,9 +144,7 @@ fun TabBar(
                                     NexusCard
                             )
                             .semantics {
-                                contentDescription = "Вкладка: ${tab.title}${
-                                    if (tab.id == activeTabId) ", активная" else ""
-                                }"
+                                contentDescription = tabContentDescription
                             }
                             .combinedClickable(
                                 onClick = { onTabClick(tab.id) },
@@ -181,7 +187,7 @@ fun TabBar(
                         containerColor = NexusSurface
                     ) {
                         DropdownMenuItem(
-                            text = { Text("Переименовать", color = NexusTextPrimary) },
+                            text = { Text(stringResource(R.string.action_rename), color = NexusTextPrimary) },
                             onClick = {
                                 renameText = tab.title
                                 showRenameDialog = true
@@ -189,14 +195,14 @@ fun TabBar(
                             }
                         )
                         DropdownMenuItem(
-                            text = { Text("Дублировать", color = NexusTextPrimary) },
+                            text = { Text(stringResource(R.string.action_duplicate), color = NexusTextPrimary) },
                             onClick = {
                                 onDuplicate(tab.id)
                                 contextMenuTabId = null
                             }
                         )
                         DropdownMenuItem(
-                            text = { Text("Закрыть", color = NexusTextPrimary) },
+                            text = { Text(stringResource(R.string.action_close), color = NexusTextPrimary) },
                             onClick = {
                                 onTabClose(tab.id)
                                 contextMenuTabId = null
@@ -204,7 +210,7 @@ fun TabBar(
                         )
                         if (tabs.size > 1) {
                             DropdownMenuItem(
-                                text = { Text("Закрыть все", color = Color.Red) },
+                                text = { Text(stringResource(R.string.action_close_all), color = Color.Red) },
                                 onClick = {
                                     onCloseAll()
                                     contextMenuTabId = null

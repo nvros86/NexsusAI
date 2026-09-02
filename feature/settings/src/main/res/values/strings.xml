@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Common actions (duplicated from core for module independence) -->
+    <string name="action_save">Save</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_back">Back</string>
+    <string name="action_ok">OK</string>
+    <string name="label_api_key">API Key</string>
+    <string name="label_base_url">Base URL</string>
+    <string name="label_model">Model</string>
+    <string name="label_name">Name</string>
+
+    <string name="settings_title">Model settings</string>
+
+    <!-- Privacy & Security -->
+    <string name="settings_privacy_section">Privacy and security</string>
+    <string name="settings_incognito">Incognito mode</string>
+    <string name="settings_incognito_desc">Don\'t save chat history</string>
+    <string name="settings_haptic">Haptic feedback</string>
+    <string name="settings_haptic_desc">Vibration on send and taps</string>
+    <string name="settings_app_lock">App lock</string>
+    <string name="settings_app_lock_desc">Require PIN or biometrics</string>
+
+    <!-- Accessibility -->
+    <string name="settings_accessibility_section">Accessibility</string>
+    <string name="settings_font_size">Font size</string>
+    <string name="settings_font_size_desc">Select text size in the app</string>
+    <string name="settings_font_small">Small</string>
+    <string name="settings_font_standard">Standard</string>
+    <string name="settings_font_large">Large</string>
+    <string name="settings_font_very_large">Very large</string>
+    <string name="settings_dark_theme">Dark theme</string>
+    <string name="settings_dark_theme_desc">Dark interface by default</string>
+    <string name="settings_high_contrast">High contrast</string>
+    <string name="settings_high_contrast_desc">Increased text and element contrast</string>
+
+    <!-- AI Providers -->
+    <string name="settings_providers_section">AI Providers</string>
+    <string name="settings_no_providers">No AI providers configured</string>
+    <string name="settings_no_providers_hint">Tap + to add</string>
+    <string name="settings_max_tokens">Max tokens</string>
+    <string name="settings_temperature">Temperature</string>
+
+    <!-- Add/Edit dialog -->
+    <string name="settings_edit_provider">Edit model</string>
+    <string name="settings_add_provider">Add model</string>
+    <string name="settings_provider_label">Provider: %s</string>
+    <string name="settings_system_prompt">System prompt: You are a helpful AI assistant NexusAI.</string>
+</resources>

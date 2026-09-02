@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Common actions -->
+    <string name="action_save">Сохранить</string>
+    <string name="action_cancel">Отмена</string>
+    <string name="action_back">Назад</string>
+    <string name="action_ok">OK</string>
+    <string name="label_api_key">API Key</string>
+    <string name="label_base_url">Base URL</string>
+    <string name="label_model">Модель</string>
+    <string name="label_name">Название</string>
+
+    <string name="settings_title">Настройки модели</string>
+
+    <!-- Privacy & Security -->
+    <string name="settings_privacy_section">Приватность и безопасность</string>
+    <string name="settings_incognito">Режим инкогнито</string>
+    <string name="settings_incognito_desc">Не сохранять историю чатов</string>
+    <string name="settings_haptic">Тактильная отдача</string>
+    <string name="settings_haptic_desc">Вибрация при отправке и нажатиях</string>
+    <string name="settings_app_lock">Блокировка приложения</string>
+    <string name="settings_app_lock_desc">Требовать PIN или биометрию</string>
+
+    <!-- Accessibility -->
+    <string name="settings_accessibility_section">Доступность</string>
+    <string name="settings_font_size">Размер шрифта</string>
+    <string name="settings_font_size_desc">Выберите размер текста в приложении</string>
+    <string name="settings_font_small">Маленький</string>
+    <string name="settings_font_standard">Стандартный</string>
+    <string name="settings_font_large">Большой</string>
+    <string name="settings_font_very_large">Очень большой</string>
+    <string name="settings_dark_theme">Тёмная тема</string>
+    <string name="settings_dark_theme_desc">Тёмный интерфейс по умолчанию</string>
+    <string name="settings_high_contrast">Высокий контраст</string>
+    <string name="settings_high_contrast_desc">Увеличенная контрастность текста и элементов</string>
+
+    <!-- AI Providers -->
+    <string name="settings_providers_section">AI Провайдеры</string>
+    <string name="settings_no_providers">Нет настроенных AI провайдеров</string>
+    <string name="settings_no_providers_hint">Нажмите + чтобы добавить</string>
+    <string name="settings_max_tokens">Max токены</string>
+    <string name="settings_temperature">Температура</string>
+
+    <!-- Add/Edit dialog -->
+    <string name="settings_edit_provider">Редактировать модель</string>
+    <string name="settings_add_provider">Добавить модель</string>
+    <string name="settings_provider_label">Провайдер: %s</string>
+    <string name="settings_system_prompt">Системный промпт: Вы — полезный AI-ассистент NexusAI.</string>
+</resources>

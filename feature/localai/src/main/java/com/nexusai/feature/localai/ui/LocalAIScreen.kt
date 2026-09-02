@@ -147,7 +147,7 @@ fun LocalAIScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 contentPadding = androidx.compose.foundation.layout.PaddingValues(vertical = 16.dp)
             ) {
-                items(state.configs) { config ->
+                items(state.configs, key = { it.id }) { config ->
                     ServerCard(
                         config = config,
                         onTest = { viewModel.testConnection(config) },
@@ -169,7 +169,7 @@ fun LocalAIScreen(
                         )
                     }
 
-                    items(state.models) { model ->
+                    items(state.models, key = { it.id }) { model ->
                         ModelCard(
                             model = model,
                             onPull = { viewModel.pullModel(model.name) },

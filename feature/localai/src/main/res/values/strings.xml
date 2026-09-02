@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="localai_title">Local AI</string>
+    <string name="localai_refresh">Refresh</string>
+    <string name="localai_no_connections">No connections</string>
+    <string name="localai_add_server_hint">Add a local AI server</string>
+    <string name="localai_add_server">Add server</string>
+    <string name="localai_server_running">Server running</string>
+    <string name="localai_server_stopped">Server stopped</string>
+    <string name="localai_models_count">%d models</string>
+    <string name="localai_no_loaded_model">No loaded model</string>
+    <string name="localai_available_models">Available models</string>
+    <string name="localai_server_type">Server type</string>
+    <string name="localai_chat">Chat: %s</string>
+    <string name="localai_prompt">Prompt</string>
+    <string name="localai_test">Test</string>
+</resources>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TabsScreen sections -->
+    <string name="tabs_multi_tabs">Multi-tabs</string>
+    <string name="tabs_multi_tabs_subtitle">Work with different AIs and tasks simultaneously</string>
+    <string name="tabs_recent_chats">Recent chats</string>
+    <string name="tabs_quick_actions">Quick actions</string>
+    <string name="tabs_files_projects">Files and projects</string>
+    <string name="tabs_show_all">All &gt;</string>
+    <string name="tabs_new_tab">New tab</string>
+    <string name="tabs_found_count">Found: %d</string>
+    <string name="tabs_messages">%d messages</string>
+
+    <!-- Common actions (duplicated from core for module independence) -->
+    <string name="action_search">Search</string>
+    <string name="action_clear">Clear</string>
+    <string name="action_duplicate">Duplicate</string>
+    <string name="action_close">Close</string>
+    <string name="action_close_all">Close all</string>
+    <string name="action_rename">Rename</string>
+    <string name="label_messages_count">%d messages</string>
+
+    <!-- Category tabs -->
+    <string name="category_chat">Chat</string>
+    <string name="category_code">Code</string>
+    <string name="category_image">Image</string>
+    <string name="category_video">Video</string>
+    <string name="category_agents">Agents</string>
+
+    <!-- Quick actions -->
+    <string name="quick_action_new_chat">New chat</string>
+    <string name="quick_action_new_chat_desc">Start a dialog with AI</string>
+    <string name="quick_action_write_code">Write code</string>
+    <string name="quick_action_write_code_desc">Create or debug code</string>
+    <string name="quick_action_create_image">Create image</string>
+    <string name="quick_action_create_image_desc">Image generation</string>
+    <string name="quick_action_run_agent">Run agent</string>
+    <string name="quick_action_run_agent_desc">Task automation</string>
+
+    <!-- Search -->
+    <string name="search_placeholder">Search chats…</string>
+
+    <!-- ChatScreen -->
+    <string name="chat_empty_title">How can I help?</string>
+    <string name="chat_empty_subtitle">Choose a model and start a dialog</string>
+    <string name="chat_generating">Thinking…</string>
+    <string name="chat_input_placeholder">Message NexsusAI…</string>
+    <string name="chat_user_message">Your message</string>
+    <string name="chat_ai_answer">AI answer: %s</string>
+
+    <!-- TabBar -->
+    <string name="tab_title_format">Tab: %1$s%2$s</string>
+    <string name="tab_active_suffix">, active</string>
+</resources>

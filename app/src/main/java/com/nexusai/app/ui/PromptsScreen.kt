@@ -177,7 +177,7 @@ fun PromptsScreen(
                     .padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                items(uiState.prompts) { prompt ->
+                items(uiState.prompts, key = { it.id }) { prompt ->
                     PromptCard(
                         prompt = prompt,
                         onToggleFavorite = { viewModel.toggleFavorite(prompt.id) },

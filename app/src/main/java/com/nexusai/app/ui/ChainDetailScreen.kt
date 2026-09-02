@@ -187,7 +187,7 @@ fun ChainDetailScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     contentPadding = androidx.compose.foundation.layout.PaddingValues(vertical = 16.dp)
                 ) {
-                    items(state.steps) { step ->
+                    items(state.steps, key = { it.id }) { step ->
                         StepCard(
                             step = step,
                             onToggle = { viewModel.toggleStep(step.id) },

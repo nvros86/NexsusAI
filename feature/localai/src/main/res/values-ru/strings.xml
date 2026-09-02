@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="localai_title">Local AI</string>
+    <string name="localai_refresh">Обновить</string>
+    <string name="localai_no_connections">Нет подключений</string>
+    <string name="localai_add_server_hint">Добавьте локальный AI сервер</string>
+    <string name="localai_add_server">Добавить сервер</string>
+    <string name="localai_server_running">Сервер запущен</string>
+    <string name="localai_server_stopped">Сервер остановлен</string>
+    <string name="localai_models_count">%d моделей</string>
+    <string name="localai_no_loaded_model">Нет загруженной модели</string>
+    <string name="localai_available_models">Доступные модели</string>
+    <string name="localai_server_type">Тип сервера</string>
+    <string name="localai_chat">Чат: %s</string>
+    <string name="localai_prompt">Промпт</string>
+    <string name="localai_test">Тест</string>
+</resources>

@@ -40,8 +40,10 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import com.nexusai.core.ui.components.MarkdownText
+import com.nexusai.feature.tabs.R
 import com.nexusai.core.ui.theme.NexusBackground
 import com.nexusai.core.ui.theme.NexusCard
 import com.nexusai.core.ui.theme.NexusPurple
@@ -130,13 +132,13 @@ private fun EmptyState() {
                 )
             }
             Text(
-                text = "Чем могу помочь?",
+                text = stringResource(R.string.chat_empty_title),
                 style = MaterialTheme.typography.headlineSmall,
                 color = NexusTextPrimary,
                 fontWeight = FontWeight.Medium
             )
             Text(
-                text = "Выберите модель и начните диалог",
+                text = stringResource(R.string.chat_empty_subtitle),
                 style = MaterialTheme.typography.bodyMedium,
                 color = NexusTextTertiary
             )
@@ -151,6 +153,9 @@ private fun MessageBubble(
     onCopy: () -> Unit = {}
 ) {
     val isUser = message.role == MessageRole.USER
+
+    val userMessageDesc = stringResource(R.string.chat_user_message)
+    val aiAnswerDesc = stringResource(R.string.chat_ai_answer, providerName)
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -189,7 +194,7 @@ private fun MessageBubble(
             modifier = Modifier
                 .widthIn(max = 320.dp)
                 .semantics {
-                    contentDescription = if (isUser) "Ваше сообщение" else "Ответ AI: $providerName"
+                    contentDescription = if (isUser) userMessageDesc else aiAnswerDesc
                 },
             shape = RoundedCornerShape(
                 topStart = if (isUser) 16.dp else 4.dp,
@@ -321,7 +326,7 @@ private fun GeneratingIndicator() {
         }
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = "Думаю...",
+            text = stringResource(R.string.chat_generating),
             style = MaterialTheme.typography.bodySmall,
             color = NexusTextTertiary
         )

@@ -168,7 +168,7 @@ fun MarketplaceScreen(
                     .padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                items(uiState.providers) { provider ->
+                items(uiState.providers, key = { it.id }) { provider ->
                     MarketplaceCard(
                         provider = provider,
                         onAdd = { showAddDialog = provider }

@@ -157,7 +157,7 @@ fun MemoryScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 contentPadding = androidx.compose.foundation.layout.PaddingValues(vertical = 16.dp)
             ) {
-                items(filteredEntries) { entry ->
+                items(filteredEntries, key = { it.id }) { entry ->
                     MemoryCard(
                         entry = entry,
                         onToggleImportant = { viewModel.toggleImportant(entry.id) },

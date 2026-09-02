@@ -21,12 +21,6 @@ data class Message(
     val isStreaming: Boolean = false
 )
 
-enum class MessageRole {
-    USER,
-    ASSISTANT,
-    SYSTEM
-}
-
 data class AttachedFile(
     val id: String,
     val name: String,

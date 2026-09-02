@@ -7,6 +7,7 @@ import com.nexusai.data.ai.AIProviderManager
 import com.nexusai.data.common.AppDataManager
 import com.nexusai.data.local.AgentDao
 import com.nexusai.data.local.AIProviderDao
+import com.nexusai.data.local.ALL_MIGRATIONS
 import com.nexusai.data.local.AppDatabase
 import com.nexusai.data.local.MemoryEntryDao
 import com.nexusai.data.local.TabDao
@@ -46,7 +47,13 @@ object DatabaseModule {
             context,
             AppDatabase::class.java,
             AppConstants.DATABASE_NAME
-        ).fallbackToDestructiveMigration().build()
+        )
+            .addMigrations(*ALL_MIGRATIONS)
+            // TODO: Remove fallbackToDestructiveMigration before v1.0.0 stable release
+            // Currently kept for beta — users expect data loss on schema changes.
+            // After v1.0.0, only use .addMigrations() and remove the line below.
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Provides

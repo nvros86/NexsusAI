@@ -2,7 +2,7 @@ package com.nexusai.data.repository
 
 import com.nexusai.data.ai.AIProviderManager
 import com.nexusai.domain.ai.ChatMessage
-import com.nexusai.domain.ai.MessageRole
+import com.nexusai.domain.model.MessageRole
 import com.nexusai.domain.model.AutomationChain
 import com.nexusai.domain.model.ChainRunResult
 import com.nexusai.domain.model.ChainStep

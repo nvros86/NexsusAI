@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Common actions -->
+    <string name="action_save">Сохранить</string>
+    <string name="action_cancel">Отмена</string>
+    <string name="action_add">Добавить</string>
+    <string name="action_delete">Удалить</string>
+    <string name="action_close">Закрыть</string>
+    <string name="action_close_all">Закрыть все</string>
+    <string name="action_rename">Переименовать</string>
+    <string name="action_duplicate">Дублировать</string>
+    <string name="action_search">Поиск</string>
+    <string name="action_clear">Очистить</string>
+    <string name="action_send">Отправить</string>
+    <string name="action_back">Назад</string>
+    <string name="action_ok">OK</string>
+
+    <!-- Common labels -->
+    <string name="label_api_key">API Key</string>
+    <string name="label_base_url">Base URL</string>
+    <string name="label_model">Модель</string>
+    <string name="label_name">Название</string>
+    <string name="label_added">Добавлен</string>
+    <string name="label_all">Все</string>
+    <string name="label_selected">Выбрано</string>
+    <string name="label_file">Файл</string>
+    <string name="label_messages_count">%d сообщений</string>
+</resources>

@@ -142,7 +142,7 @@ fun TemplatesScreen(
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(templates) { template ->
+            items(templates, key = { it.id }) { template ->
                 TemplateCard(
                     template = template,
                     onClick = { onTemplateClick(template) }

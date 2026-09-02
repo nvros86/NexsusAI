@@ -136,7 +136,7 @@ fun TeamWorkspacesScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 contentPadding = androidx.compose.foundation.layout.PaddingValues(vertical = 16.dp)
             ) {
-                items(state.workspaces) { workspace ->
+                items(state.workspaces, key = { it.id }) { workspace ->
                     WorkspaceCard(
                         workspace = workspace,
                         onOpen = {
@@ -156,7 +156,7 @@ fun TeamWorkspacesScreen(
                         )
                     }
 
-                    items(state.members.filter { it.isOnline }) { member ->
+                    items(state.members.filter { it.isOnline }, key = { it.id }) { member ->
                         MemberCard(member = member)
                     }
                 }
@@ -408,7 +408,7 @@ private fun WorkspaceChatDialog(
                         .height(300.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(messages) { message ->
+                    items(messages, key = { it.id }) { message ->
                         ChatMessageItem(message = message)
                     }
                 }

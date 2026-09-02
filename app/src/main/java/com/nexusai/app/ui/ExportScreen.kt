@@ -44,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -54,6 +55,7 @@ import com.nexusai.core.ui.theme.NexusSurface
 import com.nexusai.core.ui.theme.NexusTextPrimary
 import com.nexusai.core.ui.theme.NexusTextSecondary
 import com.nexusai.core.ui.theme.NexusTextTertiary
+import com.nexusai.app.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,12 +73,12 @@ fun ExportScreen(
             .background(NexusBackground)
     ) {
         TopAppBar(
-            title = { Text("Экспорт", color = NexusTextPrimary) },
+            title = { Text(stringResource(R.string.export_title), color = NexusTextPrimary) },
             navigationIcon = {
                 IconButton(onClick = onBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Назад",
+                        contentDescription = stringResource(R.string.action_back),
                         tint = NexusTextPrimary
                     )
                 }
@@ -93,7 +95,7 @@ fun ExportScreen(
                     Text("📭", style = MaterialTheme.typography.displayLarge)
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Нет чатов для экспорта",
+                        text = stringResource(R.string.export_no_chats),
                         color = NexusTextSecondary,
                         style = MaterialTheme.typography.bodyLarge
                     )
@@ -108,14 +110,14 @@ fun ExportScreen(
             ) {
                 item {
                     Text(
-                        text = "Выберите чат",
+                        text = stringResource(R.string.export_select_chat),
                         color = NexusTextPrimary,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold
                     )
                 }
 
-                items(uiState.tabs) { tab ->
+                items(uiState.tabs, key = { it.id }) { tab ->
                     val isSelected = tab.id == uiState.selectedTabId
                     val messageCount = tab.messages.size
 
@@ -136,7 +138,7 @@ fun ExportScreen(
                                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
                             )
                             Text(
-                                text = "$messageCount сообщений",
+                                text = stringResource(R.string.label_messages_count, messageCount),
                                 color = NexusTextTertiary,
                                 style = MaterialTheme.typography.bodySmall
                             )
@@ -156,14 +158,14 @@ fun ExportScreen(
                     item {
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = "Формат экспорта",
+                            text = stringResource(R.string.export_format),
                             color = NexusTextPrimary,
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold
                         )
                     }
 
-                    items(ExportFormat.entries) { format ->
+                    items(ExportFormat.entries, key = { it.name }) { format ->
                         val isSelected = format == uiState.selectedFormat
                         val icon = when (format) {
                             ExportFormat.MARKDOWN -> Icons.Default.Description
@@ -195,7 +197,7 @@ fun ExportScreen(
                                     style = MaterialTheme.typography.bodyLarge
                                 )
                                 Text(
-                                    text = "Файл${format.extension}",
+                                    text = stringResource(R.string.export_file_extension, format.extension),
                                     color = NexusTextTertiary,
                                     style = MaterialTheme.typography.bodySmall
                                 )
@@ -203,7 +205,7 @@ fun ExportScreen(
                             if (isSelected) {
                                 Icon(
                                     imageVector = Icons.Default.CheckCircle,
-                                    contentDescription = "Выбрано",
+                                    contentDescription = stringResource(R.string.label_selected),
                                     tint = NexusPurple,
                                     modifier = Modifier.size(20.dp)
                                 )
@@ -222,7 +224,7 @@ fun ExportScreen(
                                 CircularProgressIndicator(color = NexusPurple)
                                 Spacer(modifier = Modifier.height(8.dp))
                                 Text(
-                                    text = "Экспорт...",
+                                    text = stringResource(R.string.exporting),
                                     color = NexusTextSecondary
                                 )
                             }
@@ -254,7 +256,7 @@ fun ExportScreen(
                                             )
                                             Spacer(modifier = Modifier.width(8.dp))
                                             Text(
-                                                text = "Поделиться",
+                                                text = stringResource(R.string.export_share),
                                                 color = NexusTextPrimary,
                                                 style = MaterialTheme.typography.bodyMedium
                                             )
@@ -281,7 +283,7 @@ fun ExportScreen(
                                             )
                                             Spacer(modifier = Modifier.width(8.dp))
                                             Text(
-                                                text = "Копировать",
+                                                text = stringResource(R.string.export_copy),
                                                 color = NexusTextSecondary,
                                                 style = MaterialTheme.typography.bodyMedium
                                             )
@@ -310,7 +312,7 @@ fun ExportScreen(
                                             )
                                             Spacer(modifier = Modifier.width(8.dp))
                                             Text(
-                                                text = "Открыть в браузере",
+                                                text = stringResource(R.string.export_open_in_browser),
                                                 color = NexusTextSecondary,
                                                 style = MaterialTheme.typography.bodyMedium
                                             )
@@ -328,7 +330,7 @@ fun ExportScreen(
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Text(
-                                        text = "Новый экспорт",
+                                        text = stringResource(R.string.export_new),
                                         color = NexusTextSecondary,
                                         style = MaterialTheme.typography.bodyMedium
                                     )
@@ -353,7 +355,7 @@ fun ExportScreen(
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(
-                                        text = "Экспортировать",
+                                        text = stringResource(R.string.export_button),
                                         color = NexusTextPrimary,
                                         style = MaterialTheme.typography.bodyMedium,
                                         fontWeight = FontWeight.SemiBold
@@ -374,11 +376,11 @@ fun ExportScreen(
     uiState.error?.let { error ->
         AlertDialog(
             onDismissRequest = { },
-            title = { Text("Ошибка", color = NexusTextPrimary) },
+            title = { Text(stringResource(R.string.export_error), color = NexusTextPrimary) },
             text = { Text(error, color = NexusTextSecondary) },
             confirmButton = {
                 TextButton(onClick = { }) {
-                    Text("OK", color = NexusPurple)
+                    Text(stringResource(R.string.action_ok), color = NexusPurple)
                 }
             },
             containerColor = NexusCard
@@ -388,11 +390,11 @@ fun ExportScreen(
     if (showSuccessDialog) {
         AlertDialog(
             onDismissRequest = { showSuccessDialog = false },
-            title = { Text("Готово", color = NexusTextPrimary) },
-            text = { Text("Файл экспортирован. Используйте «Поделиться» для отправки.", color = NexusTextSecondary) },
+            title = { Text(stringResource(R.string.export_done), color = NexusTextPrimary) },
+            text = { Text(stringResource(R.string.export_done_message), color = NexusTextSecondary) },
             confirmButton = {
                 TextButton(onClick = { showSuccessDialog = false }) {
-                    Text("OK", color = NexusPurple)
+                    Text(stringResource(R.string.action_ok), color = NexusPurple)
                 }
             },
             containerColor = NexusCard

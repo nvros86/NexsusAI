@@ -124,7 +124,7 @@ fun AIProviderScreen(
                         )
                     }
 
-                    items(provider.models) { model ->
+                    items(provider.models, key = { it }) { model ->
                         ModelCard(
                             name = model,
                             isDefault = model == provider.defaultModel

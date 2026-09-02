@@ -154,7 +154,7 @@ fun ModulesScreen(
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(uiState.modules) { module ->
+            items(uiState.modules, key = { it.id }) { module ->
                 ModuleCard(
                     module = module,
                     onToggle = { enabled ->

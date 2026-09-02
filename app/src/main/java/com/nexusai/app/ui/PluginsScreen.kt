@@ -121,7 +121,7 @@ fun PluginsScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 contentPadding = androidx.compose.foundation.layout.PaddingValues(vertical = 16.dp)
             ) {
-                items(state.plugins) { plugin ->
+                items(state.plugins, key = { it.id }) { plugin ->
                     PluginCard(
                         plugin = plugin,
                         onToggle = { viewModel.togglePlugin(plugin.id) },

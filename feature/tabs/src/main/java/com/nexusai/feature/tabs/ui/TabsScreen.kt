@@ -49,8 +49,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.nexusai.feature.tabs.R
 import com.nexusai.core.ui.theme.NexusBackground
 import com.nexusai.core.ui.theme.NexusCard
 import com.nexusai.core.ui.theme.NexusCardHover
@@ -99,13 +101,13 @@ fun TabsScreen(
         if (tabsState.isSearchActive) {
             item {
                 Text(
-                    text = "Найдено: ${tabsState.searchResults.size}",
+                    text = stringResource(R.string.tabs_found_count, tabsState.searchResults.size),
                     style = MaterialTheme.typography.bodySmall,
                     color = NexusTextTertiary,
                     modifier = Modifier.padding(top = 8.dp)
                 )
             }
-            items(tabsState.searchResults) { tab ->
+            items(tabsState.searchResults, key = { it.id }) { tab ->
                 SearchResultCard(
                     tab = tab,
                     onClick = {
@@ -123,8 +125,8 @@ fun TabsScreen(
         // Multi-Tab Section
         item {
             SectionHeader(
-                title = "Мульти-вкладки",
-                subtitle = "Работайте с разными AI и задачами одновременно",
+                title = stringResource(R.string.tabs_multi_tabs),
+                subtitle = stringResource(R.string.tabs_multi_tabs_subtitle),
                 showAll = true
             )
         }
@@ -141,7 +143,7 @@ fun TabsScreen(
         // Recent Chats
         item {
             SectionHeader(
-                title = "Недавние чаты",
+                title = stringResource(R.string.tabs_recent_chats),
                 showAll = true
             )
         }
@@ -153,7 +155,7 @@ fun TabsScreen(
         // Quick Actions
         item {
             SectionHeader(
-                title = "Быстрые действия",
+                title = stringResource(R.string.tabs_quick_actions),
                 showAll = false
             )
         }
@@ -167,7 +169,7 @@ fun TabsScreen(
         // Files and Projects
         item {
             SectionHeader(
-                title = "Файлы и проекты",
+                title = stringResource(R.string.tabs_files_projects),
                 showAll = true
             )
         }
@@ -193,20 +195,21 @@ fun TabsScreen(
 
 @Composable
 private fun CategoryTabs() {
+    val chatLabel = stringResource(R.string.category_chat)
     val categories = listOf(
-        "Чат" to Icons.Default.SmartToy,
-        "Код" to Icons.Default.Code,
-        "Изображение" to Icons.Default.Image,
-        "Видео" to Icons.Default.PlayCircle,
-        "Агенты" to Icons.Default.SmartToy
+        chatLabel to Icons.Default.SmartToy,
+        stringResource(R.string.category_code) to Icons.Default.Code,
+        stringResource(R.string.category_image) to Icons.Default.Image,
+        stringResource(R.string.category_video) to Icons.Default.PlayCircle,
+        stringResource(R.string.category_agents) to Icons.Default.SmartToy
     )
 
-    var selectedCategory by remember { mutableStateOf("Чат") }
+    var selectedCategory by remember { mutableStateOf(chatLabel) }
 
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(categories) { (name, icon) ->
+        items(categories, key = { it.first }) { (name, icon) ->
             val isSelected = name == selectedCategory
             Surface(
                 shape = RoundedCornerShape(20.dp),
@@ -270,7 +273,7 @@ private fun SectionHeader(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Все >",
+                    text = stringResource(R.string.tabs_show_all),
                     style = MaterialTheme.typography.labelMedium,
                     color = NexusPurple
                 )
@@ -289,7 +292,7 @@ private fun MultiTabCards(
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        items(tabs.take(5)) { tab ->
+        items(tabs.take(5), key = { it.id }) { tab ->
             Card(
                 modifier = Modifier
                     .width(120.dp)
@@ -325,7 +328,7 @@ private fun MultiTabCards(
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
-                        text = "Чат",
+                        text = stringResource(R.string.category_chat),
                         style = MaterialTheme.typography.bodySmall,
                         color = NexusTextTertiary
                     )
@@ -364,7 +367,7 @@ private fun MultiTabCards(
                         )
                     }
                     Text(
-                        text = "Новая вкладка",
+                        text = stringResource(R.string.tabs_new_tab),
                         style = MaterialTheme.typography.labelMedium,
                         color = NexusTextTertiary,
                         maxLines = 1
@@ -444,16 +447,16 @@ private fun QuickActionsSection(
     onNewChat: () -> Unit
 ) {
     val actions = listOf(
-        Triple("Новый чат", "Начать диалог с AI", Icons.Default.SmartToy) to onNewChat,
-        Triple("Написать код", "Создать или отладить код", Icons.Default.Code) to { },
-        Triple("Создать изображение", "Генерация изображений", Icons.Default.Image) to { },
-        Triple("Запустить агента", "Автоматизация задач", Icons.Default.SmartToy) to { }
+        Triple(stringResource(R.string.quick_action_new_chat), stringResource(R.string.quick_action_new_chat_desc), Icons.Default.SmartToy) to onNewChat,
+        Triple(stringResource(R.string.quick_action_write_code), stringResource(R.string.quick_action_write_code_desc), Icons.Default.Code) to { },
+        Triple(stringResource(R.string.quick_action_create_image), stringResource(R.string.quick_action_create_image_desc), Icons.Default.Image) to { },
+        Triple(stringResource(R.string.quick_action_run_agent), stringResource(R.string.quick_action_run_agent_desc), Icons.Default.SmartToy) to { }
     )
 
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        items(actions) { (action, onClick) ->
+        items(actions, key = { it.first.first }) { (action, onClick) ->
             val (title, subtitle, icon) = action
             Card(
                 modifier = Modifier
@@ -511,7 +514,7 @@ private fun FilesSection() {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        items(files) { (name, size, type) ->
+        items(files, key = { it.first }) { (name, size, type) ->
             Card(
                 modifier = Modifier.width(120.dp),
                 shape = RoundedCornerShape(16.dp),
@@ -570,12 +573,12 @@ private fun SearchBar(
         onValueChange = onQueryChange,
         modifier = Modifier.fillMaxWidth(),
         placeholder = {
-            Text("Поиск по чатам...", color = NexusTextTertiary)
+            Text(stringResource(R.string.search_placeholder), color = NexusTextTertiary)
         },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
-                contentDescription = "Поиск",
+                contentDescription = stringResource(R.string.action_search),
                 tint = NexusTextTertiary
             )
         },
@@ -584,7 +587,7 @@ private fun SearchBar(
                 IconButton(onClick = onClear) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = "Очистить",
+                        contentDescription = stringResource(R.string.action_clear),
                         tint = NexusTextTertiary
                     )
                 }
@@ -647,7 +650,7 @@ private fun SearchResultCard(
                 }
             }
             Text(
-                text = "${tab.messages.size} сообщений",
+                text = stringResource(R.string.tabs_messages, tab.messages.size),
                 style = MaterialTheme.typography.labelSmall,
                 color = NexusTextTertiary,
                 modifier = Modifier.padding(top = 4.dp)

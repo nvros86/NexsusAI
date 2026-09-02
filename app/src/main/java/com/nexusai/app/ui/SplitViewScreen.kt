@@ -209,7 +209,7 @@ fun SplitViewScreen(
                     )
                 }
 
-                items(uiState.results) { result ->
+                items(uiState.results, key = { it.providerId }) { result ->
                     ResultCard(
                         result = result,
                         onRate = { rating -> viewModel.rateResult(result.providerId, rating) }

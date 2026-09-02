@@ -113,7 +113,7 @@ fun AgentsScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 contentPadding = androidx.compose.foundation.layout.PaddingValues(vertical = 16.dp)
             ) {
-                items(state.agents) { agent ->
+                items(state.agents, key = { it.id }) { agent ->
                     AgentCard(
                         agent = agent,
                         onToggle = { viewModel.toggleAgent(agent.id) },

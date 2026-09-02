@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TabsScreen sections -->
+    <string name="tabs_multi_tabs">Мульти-вкладки</string>
+    <string name="tabs_multi_tabs_subtitle">Работайте с разными AI и задачами одновременно</string>
+    <string name="tabs_recent_chats">Недавние чаты</string>
+    <string name="tabs_quick_actions">Быстрые действия</string>
+    <string name="tabs_files_projects">Файлы и проекты</string>
+    <string name="tabs_show_all">Все &gt;</string>
+    <string name="tabs_new_tab">Новая вкладка</string>
+    <string name="tabs_found_count">Найдено: %d</string>
+    <string name="tabs_messages">%d сообщений</string>
+
+    <!-- Common actions -->
+    <string name="action_search">Поиск</string>
+    <string name="action_clear">Очистить</string>
+    <string name="action_duplicate">Дублировать</string>
+    <string name="action_close">Закрыть</string>
+    <string name="action_close_all">Закрыть все</string>
+    <string name="action_rename">Переименовать</string>
+    <string name="label_messages_count">%d сообщений</string>
+
+    <!-- Category tabs -->
+    <string name="category_chat">Чат</string>
+    <string name="category_code">Код</string>
+    <string name="category_image">Изображение</string>
+    <string name="category_video">Видео</string>
+    <string name="category_agents">Агенты</string>
+
+    <!-- Quick actions -->
+    <string name="quick_action_new_chat">Новый чат</string>
+    <string name="quick_action_new_chat_desc">Начать диалог с AI</string>
+    <string name="quick_action_write_code">Написать код</string>
+    <string name="quick_action_write_code_desc">Создать или отладить код</string>
+    <string name="quick_action_create_image">Создать изображение</string>
+    <string name="quick_action_create_image_desc">Генерация изображений</string>
+    <string name="quick_action_run_agent">Запустить агента</string>
+    <string name="quick_action_run_agent_desc">Автоматизация задач</string>
+
+    <!-- Search -->
+    <string name="search_placeholder">Поиск по чатам…</string>
+
+    <!-- ChatScreen -->
+    <string name="chat_empty_title">Чем могу помочь?</string>
+    <string name="chat_empty_subtitle">Выберите модель и начните диалог</string>
+    <string name="chat_generating">Думаю…</string>
+    <string name="chat_input_placeholder">Сообщение NexusAI…</string>
+    <string name="chat_user_message">Ваше сообщение</string>
+    <string name="chat_ai_answer">Ответ AI: %s</string>
+
+    <!-- TabBar -->
+    <string name="tab_title_format">Вкладка: %1$s%2$s</string>
+    <string name="tab_active_suffix">, активная</string>
+</resources>

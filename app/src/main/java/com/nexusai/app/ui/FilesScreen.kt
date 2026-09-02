@@ -219,7 +219,7 @@ fun FilesScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(filteredFiles) { file ->
+                items(filteredFiles, key = { it.id }) { file ->
                     FileGridItem(
                         file = file,
                         onClick = { showFilePreview(context, file) },

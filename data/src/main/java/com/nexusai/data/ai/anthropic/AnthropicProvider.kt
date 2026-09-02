@@ -3,7 +3,7 @@ package com.nexusai.data.ai.anthropic
 import com.nexusai.domain.ai.AIProvider
 import com.nexusai.domain.ai.AIResponse
 import com.nexusai.domain.ai.ChatMessage
-import com.nexusai.domain.ai.MessageRole
+import com.nexusai.domain.model.MessageRole
 import com.nexusai.domain.ai.TokenUsage
 import io.ktor.client.HttpClient
 import io.ktor.client.request.header

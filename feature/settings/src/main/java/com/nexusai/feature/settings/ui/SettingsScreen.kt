@@ -57,10 +57,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nexusai.core.ui.components.AIProviderIcon
+import com.nexusai.feature.settings.R
 import com.nexusai.core.ui.theme.NexusBackground
 import com.nexusai.core.ui.theme.NexusCard
 import com.nexusai.core.ui.theme.NexusPurple
@@ -87,7 +89,7 @@ fun SettingsScreen(
             TopAppBar(
                 title = {
                     Text(
-                        "Настройки модели",
+                        stringResource(R.string.settings_title),
                         fontWeight = FontWeight.SemiBold
                     )
                 },
@@ -128,7 +130,7 @@ fun SettingsScreen(
         ) {
             item {
                 Text(
-                    text = "Приватность и безопасность",
+                    text = stringResource(R.string.settings_privacy_section),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = NexusTextPrimary,
@@ -138,8 +140,8 @@ fun SettingsScreen(
 
             item {
                 PrivacyToggle(
-                    title = "Режим инкогнито",
-                    subtitle = "Не сохранять историю чатов",
+                    title = stringResource(R.string.settings_incognito),
+                    subtitle = stringResource(R.string.settings_incognito_desc),
                     icon = "🕶️",
                     checked = state.incognitoMode,
                     onCheckedChange = { viewModel.toggleIncognito() }
@@ -148,8 +150,8 @@ fun SettingsScreen(
 
             item {
                 PrivacyToggle(
-                    title = "Тактильная отдача",
-                    subtitle = "Вибрация при отправке и нажатиях",
+                    title = stringResource(R.string.settings_haptic),
+                    subtitle = stringResource(R.string.settings_haptic_desc),
                     icon = "📳",
                     checked = state.hapticFeedback,
                     onCheckedChange = { viewModel.toggleHaptic() }
@@ -158,8 +160,8 @@ fun SettingsScreen(
 
             item {
                 PrivacyToggle(
-                    title = "Блокировка приложения",
-                    subtitle = "Требовать PIN или биометрию",
+                    title = stringResource(R.string.settings_app_lock),
+                    subtitle = stringResource(R.string.settings_app_lock_desc),
                     icon = "🔒",
                     checked = state.appLock,
                     onCheckedChange = { viewModel.toggleAppLock() }
@@ -169,7 +171,7 @@ fun SettingsScreen(
             item {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Доступность",
+                    text = stringResource(R.string.settings_accessibility_section),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = NexusTextPrimary,
@@ -186,8 +188,8 @@ fun SettingsScreen(
 
             item {
                 PrivacyToggle(
-                    title = "Тёмная тема",
-                    subtitle = "Тёмный интерфейс по умолчанию",
+                    title = stringResource(R.string.settings_dark_theme),
+                    subtitle = stringResource(R.string.settings_dark_theme_desc),
                     icon = "🌙",
                     checked = state.darkMode,
                     onCheckedChange = { viewModel.toggleDarkMode() }
@@ -196,8 +198,8 @@ fun SettingsScreen(
 
             item {
                 PrivacyToggle(
-                    title = "Высокий контраст",
-                    subtitle = "Увеличенная контрастность текста и элементов",
+                    title = stringResource(R.string.settings_high_contrast),
+                    subtitle = stringResource(R.string.settings_high_contrast_desc),
                     icon = "🔲",
                     checked = state.highContrast,
                     onCheckedChange = { viewModel.toggleHighContrast() }
@@ -207,7 +209,7 @@ fun SettingsScreen(
             item {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "AI Провайдеры",
+                    text = stringResource(R.string.settings_providers_section),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = NexusTextPrimary,
@@ -215,7 +217,7 @@ fun SettingsScreen(
                 )
             }
 
-            items(state.providers) { provider ->
+            items(state.providers, key = { it.id }) { provider ->
                 ProviderCard(
                     provider = provider,
                     onEdit = { viewModel.showEditDialog(provider) },
@@ -247,12 +249,12 @@ fun SettingsScreen(
                                 tint = NexusTextTertiary
                             )
                             Text(
-                                text = "Нет настроенных AI провайдеров",
+                                text = stringResource(R.string.settings_no_providers),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = NexusTextSecondary
                             )
                             Text(
-                                text = "Нажмите + чтобы добавить",
+                                text = stringResource(R.string.settings_no_providers_hint),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = NexusTextTertiary
                             )
@@ -387,7 +389,7 @@ private fun ProviderCard(
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "Модель",
+                        text = stringResource(R.string.label_model),
                         style = MaterialTheme.typography.bodySmall,
                         color = NexusTextTertiary
                     )
@@ -399,7 +401,7 @@ private fun ProviderCard(
                 }
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "Max токены",
+                        text = stringResource(R.string.settings_max_tokens),
                         style = MaterialTheme.typography.bodySmall,
                         color = NexusTextTertiary
                     )
@@ -411,7 +413,7 @@ private fun ProviderCard(
                 }
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "Температура",
+                        text = stringResource(R.string.settings_temperature),
                         style = MaterialTheme.typography.bodySmall,
                         color = NexusTextTertiary
                     )
@@ -449,7 +451,7 @@ private fun AddEditProviderDialog(
         containerColor = NexusSurface,
         title = {
             Text(
-                text = if (provider != null) "Редактировать модель" else "Добавить модель",
+                text = if (provider != null) stringResource(R.string.settings_edit_provider) else stringResource(R.string.settings_add_provider),
                 fontWeight = FontWeight.SemiBold,
                 color = NexusTextPrimary
             )
@@ -461,7 +463,7 @@ private fun AddEditProviderDialog(
                 OutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = { Text("Название") },
+                    label = { Text(stringResource(R.string.label_name)) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedBorderColor = NexusSurfaceVariant,
@@ -473,7 +475,7 @@ private fun AddEditProviderDialog(
                 )
 
                 Text(
-                    text = "Провайдер: ${selectedType.name}",
+                    text = stringResource(R.string.settings_provider_label, selectedType.name),
                     style = MaterialTheme.typography.bodyMedium,
                     color = NexusTextSecondary
                 )
@@ -491,7 +493,7 @@ private fun AddEditProviderDialog(
                 OutlinedTextField(
                     value = apiKey,
                     onValueChange = { apiKey = it },
-                    label = { Text("API Key") },
+                    label = { Text(stringResource(R.string.label_api_key)) },
                     visualTransformation = PasswordVisualTransformation(),
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
@@ -506,7 +508,7 @@ private fun AddEditProviderDialog(
                 OutlinedTextField(
                     value = baseUrl,
                     onValueChange = { baseUrl = it },
-                    label = { Text("Base URL") },
+                    label = { Text(stringResource(R.string.label_base_url)) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedBorderColor = NexusSurfaceVariant,
@@ -520,7 +522,7 @@ private fun AddEditProviderDialog(
                 OutlinedTextField(
                     value = model,
                     onValueChange = { model = it },
-                    label = { Text("Модель") },
+                    label = { Text(stringResource(R.string.label_model)) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedBorderColor = NexusSurfaceVariant,
@@ -533,7 +535,7 @@ private fun AddEditProviderDialog(
 
                 Column {
                     Text(
-                        text = "Max токены: ${maxTokens.toInt()}",
+                        text = "${stringResource(R.string.settings_max_tokens)}: ${maxTokens.toInt()}",
                         color = NexusTextSecondary
                     )
                     Slider(
@@ -550,7 +552,7 @@ private fun AddEditProviderDialog(
 
                 Column {
                     Text(
-                        text = "Температура: %.1f".format(temperature),
+                        text = "${stringResource(R.string.settings_temperature)}: %.1f".format(temperature),
                         color = NexusTextSecondary
                     )
                     Slider(
@@ -566,7 +568,7 @@ private fun AddEditProviderDialog(
                 }
 
                 Text(
-                    text = "Системный промпт: Вы — полезный AI-ассистент NexusAI.",
+                    text = stringResource(R.string.settings_system_prompt),
                     style = MaterialTheme.typography.bodySmall,
                     color = NexusTextTertiary
                 )
@@ -579,12 +581,12 @@ private fun AddEditProviderDialog(
                 },
                 enabled = name.isNotBlank() && apiKey.isNotBlank()
             ) {
-                Text("Сохранить", color = NexusPurple)
+                Text(stringResource(R.string.action_save), color = NexusPurple)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Отмена", color = NexusTextTertiary)
+                Text(stringResource(R.string.action_cancel), color = NexusTextTertiary)
             }
         }
     )
@@ -596,10 +598,10 @@ private fun FontScaleSelector(
     onScaleSelected: (Int) -> Unit
 ) {
     val scales = listOf(
-        0 to "Маленький",
-        1 to "Стандартный",
-        2 to "Большой",
-        3 to "Очень большой"
+        0 to stringResource(R.string.settings_font_small),
+        1 to stringResource(R.string.settings_font_standard),
+        2 to stringResource(R.string.settings_font_large),
+        3 to stringResource(R.string.settings_font_very_large)
     )
 
     Card(
@@ -609,12 +611,12 @@ private fun FontScaleSelector(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "📐 Размер шрифта",
+                text = "📐 ${stringResource(R.string.settings_font_size)}",
                 style = MaterialTheme.typography.headlineSmall
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "Выберите размер текста в приложении",
+                text = stringResource(R.string.settings_font_size_desc),
                 style = MaterialTheme.typography.bodySmall,
                 color = NexusTextTertiary
             )

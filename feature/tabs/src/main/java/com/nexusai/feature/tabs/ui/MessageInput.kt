@@ -24,7 +24,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.nexusai.feature.tabs.R
 import com.nexusai.core.ui.theme.NexusBackground
 import com.nexusai.core.ui.theme.NexusCard
 import com.nexusai.core.ui.theme.NexusPurple
@@ -98,7 +100,7 @@ fun MessageInput(
                 modifier = Modifier.weight(1f),
                 placeholder = {
                     Text(
-                        "Сообщение NexusAI...",
+                        stringResource(R.string.chat_input_placeholder),
                         color = NexusTextTertiary
                     )
                 },

@@ -149,7 +149,7 @@ fun VideoScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 contentPadding = androidx.compose.foundation.layout.PaddingValues(vertical = 16.dp)
             ) {
-                items(state.videos.reversed()) { video ->
+                items(state.videos.reversed(), key = { it.id }) { video ->
                     VideoCard(
                         video = video,
                         onFavorite = { viewModel.toggleFavorite(video.id) },

@@ -1,5 +1,6 @@
 package com.nexusai.domain.ai
 
+import com.nexusai.domain.model.MessageRole
 import kotlinx.coroutines.flow.Flow
 
 interface AIProvider {
@@ -29,12 +30,6 @@ data class ChatMessage(
     val role: MessageRole,
     val content: String
 )
-
-enum class MessageRole {
-    SYSTEM,
-    USER,
-    ASSISTANT
-}
 
 data class AIResponse(
     val content: String,

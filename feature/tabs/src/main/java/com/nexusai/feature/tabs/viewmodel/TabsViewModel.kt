@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.nexusai.data.ai.AIProviderManager
 import com.nexusai.domain.model.AIProviderConfig
 import com.nexusai.domain.model.AttachedFile
+import com.nexusai.domain.ai.ChatMessage
 import com.nexusai.domain.model.Message
 import com.nexusai.domain.model.MessageRole
 import com.nexusai.domain.model.Tab
@@ -220,31 +221,27 @@ class TabsViewModel @Inject constructor(
 
                 val fullSystemPrompt = systemPromptParts.joinToString("\n\n")
 
-                val chatMessages = mutableListOf<com.nexusai.domain.ai.ChatMessage>()
+                val chatMessages = mutableListOf<ChatMessage>()
 
                 if (fullSystemPrompt.isNotBlank()) {
                     chatMessages.add(
-                        com.nexusai.domain.ai.ChatMessage(
-                            role = com.nexusai.domain.ai.MessageRole.SYSTEM,
+                        ChatMessage(
+                            role = MessageRole.SYSTEM,
                             content = fullSystemPrompt
                         )
                     )
                 }
 
                 chatState.messages.map {
-                    com.nexusai.domain.ai.ChatMessage(
-                        role = when (it.role) {
-                            MessageRole.USER -> com.nexusai.domain.ai.MessageRole.USER
-                            MessageRole.ASSISTANT -> com.nexusai.domain.ai.MessageRole.ASSISTANT
-                            MessageRole.SYSTEM -> com.nexusai.domain.ai.MessageRole.SYSTEM
-                        },
+                    ChatMessage(
+                        role = it.role,
                         content = it.content
                     )
                 }.forEach { chatMessages.add(it) }
 
                 chatMessages.add(
-                    com.nexusai.domain.ai.ChatMessage(
-                        role = com.nexusai.domain.ai.MessageRole.USER,
+                    ChatMessage(
+                        role = MessageRole.USER,
                         content = text.ifEmpty { "Attached file(s)" }
                     )
                 )

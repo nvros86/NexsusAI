@@ -1,4 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">NexsusAI</string>
+
+    <!-- Common actions (duplicated from core for module independence) -->
+    <string name="action_back">Back</string>
+    <string name="action_ok">OK</string>
+    <string name="label_messages_count">%d messages</string>
+    <string name="label_selected">Selected</string>
+    <string name="label_added">Added</string>
+    <string name="label_add">Add</string>
+    <string name="label_cancel">Cancel</string>
+
+    <!-- Marketplace -->
+    <string name="marketplace_title">AI Marketplace</string>
+    <string name="marketplace_search">Search AI providers…</string>
+    <string name="marketplace_no_results">Nothing found</string>
+    <string name="marketplace_add_provider">Add %s?</string>
+    <string name="marketplace_model_label">Model: %s</string>
+    <string name="marketplace_added_snackbar">%1$s added to Settings</string>
+    <string name="marketplace_tokens_label">Up to %d tokens</string>
+
+    <!-- Export -->
+    <string name="export_title">Export</string>
+    <string name="export_no_chats">No chats to export</string>
+    <string name="export_select_chat">Select a chat</string>
+    <string name="export_format">Export format</string>
+    <string name="export_file_extension">%1$s file</string>
+    <string name="exporting">Exporting…</string>
+    <string name="export_share">Share</string>
+    <string name="export_copy">Copy</string>
+    <string name="export_open_in_browser">Open in browser</string>
+    <string name="export_new">New export</string>
+    <string name="export_button">Export</string>
+    <string name="export_error">Error</string>
+    <string name="export_done">Done</string>
+    <string name="export_done_message">File exported. Use \u00abShare\u00bb to send.</string>
 </resources>

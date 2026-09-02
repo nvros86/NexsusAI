@@ -144,7 +144,7 @@ fun VoiceModeScreen(
                         .padding(horizontal = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(uiState.messages) { message ->
+                    items(uiState.messages, key = { "${it.timestamp}_${it.isUser}_${it.text.hashCode()}" }) { message ->
                         MessageBubble(message = message)
                     }
 

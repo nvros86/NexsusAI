@@ -115,7 +115,7 @@ fun AIRouterScreen(
                 )
             }
 
-            items(RoutingStrategy.entries) { strategy ->
+            items(RoutingStrategy.entries, key = { it.name }) { strategy ->
                 StrategyCard(
                     strategy = strategy,
                     selected = uiState.strategy == strategy,
@@ -133,7 +133,7 @@ fun AIRouterScreen(
                 )
             }
 
-            items(uiState.providers) { provider ->
+            items(uiState.providers, key = { it.id }) { provider ->
                 ProviderStatusCard(provider = provider)
             }
 
@@ -161,7 +161,7 @@ fun AIRouterScreen(
                         )
                     }
 
-                    items(result.failoverChain) { provider ->
+                    items(result.failoverChain, key = { it.id }) { provider ->
                         ProviderStatusCard(provider = provider)
                     }
                 }
