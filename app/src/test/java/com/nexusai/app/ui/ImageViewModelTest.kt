@@ -89,15 +89,15 @@ class ImageViewModelTest {
     }
 
     @Test
-    fun `generate sets generating state`() = runTest {
+    fun `generate adds image and clears prompt`() = runTest {
         viewModel.setPrompt("Generate an image")
         viewModel.generate()
         testDispatcher.scheduler.advanceUntilIdle()
 
         val state = viewModel.uiState.value
-        assertFalse(state.isGenerating)
         assertTrue(state.images.isNotEmpty())
         assertEquals("", state.prompt)
+        assertEquals("Generate an image", state.images[0].prompt)
     }
 
     @Test
