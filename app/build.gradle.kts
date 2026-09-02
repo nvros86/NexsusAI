@@ -14,8 +14,8 @@ android {
         applicationId = "com.nexusai.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 8
-        versionName = "1.0.0-beta.7"
+        versionCode = 9
+        versionName = "1.0.0-beta.8"
     }
 
     signingConfigs {

@@ -1,5 +1,32 @@
 # Changelog
 
+## v1.0.0-beta.8
+
+### Улучшения
+
+#### LazyColumn keys
+- Добавлены `key` параметры во все LazyColumn/LazyRow items() вызовы (31 изменение в 22 файлах)
+- Улучшена производительность и корректность анимаций
+
+#### Room миграции
+- Создан фреймворк миграций (`Migrations.kt`, `ALL_MIGRATIONS` массив)
+- `fallbackToDestructiveMigration()` сохранён для беты с TODO перед v1.0.0
+
+#### Единый MessageRole
+- Убран дублирующий `MessageRole` enum
+- Единый `MessageRole` в `domain.model.MessageRole` (SYSTEM, USER, ASSISTANT)
+- Обновлены импорты в 10 файлах
+
+#### Локализация RU+EN
+- Созданы `strings.xml` файлы для 5 модулей (core, tabs, settings, localai, app)
+- ~40 основных строк вынесены из кода в ресурсы
+- Русский и английский варианты
+
+#### Тесты
+- Создан `TabRepositoryImplTest` с 10 тестами
+
+---
+
 ## v1.0.0-beta.7
 
 ### Исправления критических ошибок
