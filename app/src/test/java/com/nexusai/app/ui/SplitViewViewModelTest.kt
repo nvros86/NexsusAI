@@ -158,26 +158,7 @@ class SplitViewViewModelTest {
     }
 
     @Test
-    fun `toggleProvider adds provider when not selected and under limit`() = runTest {
-        val providers = listOf(
-            createProvider(id = "1", name = "P1", apiKey = "k1"),
-            createProvider(id = "2", name = "P2", apiKey = "k2"),
-            createProvider(id = "3", name = "P3", apiKey = "k3"),
-            createProvider(id = "4", name = "P4", apiKey = "k4")
-        )
-        providersFlow.value = providers
-        testDispatcher.scheduler.advanceUntilIdle()
-
-        viewModel.setComparisonMode(ComparisonMode.TWO)
-        viewModel.toggleProvider(providers[3])
-
-        val state = viewModel.uiState.value
-        assertEquals(2, state.selectedProviders.size)
-        assertTrue(state.selectedProviders.any { it.id == "4" })
-    }
-
-    @Test
-    fun `toggleProvider does not add provider when at mode limit`() = runTest {
+    fun `toggleProvider removes selected provider`() = runTest {
         val providers = listOf(
             createProvider(id = "1", name = "P1", apiKey = "k1"),
             createProvider(id = "2", name = "P2", apiKey = "k2"),
@@ -186,12 +167,36 @@ class SplitViewViewModelTest {
         providersFlow.value = providers
         testDispatcher.scheduler.advanceUntilIdle()
 
-        viewModel.setComparisonMode(ComparisonMode.TWO)
-        viewModel.toggleProvider(providers[2])
+        val state = viewModel.uiState.value
+        assertEquals(2, state.selectedProviders.size)
+
+        val provider1 = state.selectedProviders[0]
+        viewModel.toggleProvider(provider1)
+
+        val newState = viewModel.uiState.value
+        assertEquals(1, newState.selectedProviders.size)
+        assertFalse(newState.selectedProviders.any { it.id == provider1.id })
+    }
+
+    @Test
+    fun `toggleProvider does not add when at mode limit`() = runTest {
+        val providers = listOf(
+            createProvider(id = "1", name = "P1", apiKey = "k1"),
+            createProvider(id = "2", name = "P2", apiKey = "k2"),
+            createProvider(id = "3", name = "P3", apiKey = "k3")
+        )
+        providersFlow.value = providers
+        testDispatcher.scheduler.advanceUntilIdle()
 
         val state = viewModel.uiState.value
         assertEquals(2, state.selectedProviders.size)
-        assertFalse(state.selectedProviders.any { it.id == "3" })
+
+        val provider3 = providers[2]
+        viewModel.toggleProvider(provider3)
+
+        val newState = viewModel.uiState.value
+        assertEquals(2, newState.selectedProviders.size)
+        assertFalse(newState.selectedProviders.any { it.id == "3" })
     }
 
     @Test
@@ -232,18 +237,17 @@ class SplitViewViewModelTest {
         val providers = listOf(
             createProvider(id = "1", name = "P1", apiKey = "k1"),
             createProvider(id = "2", name = "P2", apiKey = "k2"),
-            createProvider(id = "3", name = "P3", apiKey = "k3"),
-            createProvider(id = "4", name = "P4", apiKey = "k4")
+            createProvider(id = "3", name = "P3", apiKey = "k3")
         )
         providersFlow.value = providers
         testDispatcher.scheduler.advanceUntilIdle()
 
-        viewModel.setComparisonMode(ComparisonMode.TWO)
-        viewModel.toggleProvider(providers[2])
-        viewModel.toggleProvider(providers[3])
-
         val state = viewModel.uiState.value
         assertEquals(2, state.selectedProviders.size)
+
+        viewModel.toggleProvider(providers[2])
+        val newState = viewModel.uiState.value
+        assertEquals(2, newState.selectedProviders.size)
     }
 
     @Test
