@@ -1,5 +1,31 @@
 # Changelog
 
+## v1.0.0-beta.7
+
+### Исправления критических ошибок
+
+#### Багfix
+- **Дублирование сообщений** — исправлен баг где userMessage добавлялась 3 раза при отправке
+- Сообщения теперь корректно отображаются и сохраняются в БД
+
+#### Безопасность
+- API ключи в Marketplace теперь скрыты (PasswordVisualTransformation)
+- `allowBackup=false` — предотвращает утечку ключей через ADB backup
+- Добавлено разрешение `USE_BIOMETRIC`
+
+#### ProGuard / R8
+- Полные правила для Kotlinx Serialization, Room, Ktor
+- dontwarn для Android-несовместимых классов Ktor
+- Release сборки теперь работают корректно
+
+#### Error Handling
+- LocalAIViewModel — try-catch для testConnection, pullModel, deleteModel
+- MarketplaceViewModel — try-catch для addProvider
+- MemoryViewModel — try-catch для CRUD операций
+- AgentsViewModel — try-catch для CRUD операций
+
+---
+
 ## v1.0.0-beta.6
 
 ### Улучшения и новые возможности
