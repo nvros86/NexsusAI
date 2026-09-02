@@ -15,8 +15,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.json.JSONArray
-import org.json.JSONObject
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonArray
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -192,32 +197,32 @@ class ExportViewModel @Inject constructor(
     }
 
     private fun toJson(tab: Tab): String {
-        val json = JSONObject()
-        json.put("title", tab.title)
-        json.put("exportedAt", System.currentTimeMillis())
-        json.put("provider", tab.aiProviderId ?: "unknown")
-
-        val messagesArray = JSONArray()
-        tab.messages.forEach { msg ->
-            val msgJson = JSONObject()
-            msgJson.put("role", msg.role.name.lowercase())
-            msgJson.put("content", msg.content)
-            msgJson.put("timestamp", msg.timestamp)
-            if (msg.attachments.isNotEmpty()) {
-                val attachArray = JSONArray()
-                msg.attachments.forEach { att ->
-                    val attJson = JSONObject()
-                    attJson.put("name", att.name)
-                    attJson.put("mimeType", att.mimeType)
-                    attJson.put("size", att.size)
-                    attachArray.put(attJson)
+        val json = buildJsonObject {
+            put("title", tab.title)
+            put("exportedAt", System.currentTimeMillis())
+            put("provider", tab.aiProviderId ?: "unknown")
+            put("messages", buildJsonArray {
+                tab.messages.forEach { msg ->
+                    add(buildJsonObject {
+                        put("role", msg.role.name.lowercase())
+                        put("content", msg.content)
+                        put("timestamp", msg.timestamp)
+                        if (msg.attachments.isNotEmpty()) {
+                            put("attachments", buildJsonArray {
+                                msg.attachments.forEach { att ->
+                                    add(buildJsonObject {
+                                        put("name", att.name)
+                                        put("mimeType", att.mimeType)
+                                        put("size", att.size)
+                                    })
+                                }
+                            })
+                        }
+                    })
                 }
-                msgJson.put("attachments", attachArray)
-            }
-            messagesArray.put(msgJson)
+            })
         }
-        json.put("messages", messagesArray)
-        return json.toString(2)
+        return Json { prettyPrint = true }.encodeToString(JsonObject.serializer(), json)
     }
 
     private fun toHtml(tab: Tab): String = buildString {
