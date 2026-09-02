@@ -1,5 +1,6 @@
 package com.nexusai.feature.localai
 
+import io.ktor.client.HttpClient
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestDispatcher
@@ -20,7 +21,7 @@ class LocalAIServiceTest {
     @Before
     fun setUp() {
         kotlinx.coroutines.Dispatchers.setMain(testDispatcher)
-        service = LocalAIService()
+        service = LocalAIService(httpClient = io.mockk.mockk(relaxed = true))
     }
 
     @After
