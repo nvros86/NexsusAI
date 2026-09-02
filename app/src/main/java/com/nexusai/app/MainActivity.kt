@@ -98,8 +98,9 @@ class MainActivity : FragmentActivity() {
         setContent {
             val fontScale by appPreferences.fontScale.collectAsState(initial = 1)
             val highContrast by appPreferences.isHighContrast.collectAsState(initial = false)
+            val darkMode by appPreferences.isDarkMode.collectAsState(initial = true)
 
-            NexsusAITheme(fontScale = fontScale, highContrast = highContrast) {
+            NexsusAITheme(fontScale = fontScale, highContrast = highContrast, darkTheme = darkMode) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = NexusBackground

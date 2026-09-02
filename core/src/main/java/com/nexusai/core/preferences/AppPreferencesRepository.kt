@@ -9,6 +9,7 @@ interface AppPreferencesRepository {
     val isAppLockEnabled: Flow<Boolean>
     val fontScale: Flow<Int>
     val isHighContrast: Flow<Boolean>
+    val isDarkMode: Flow<Boolean>
 
     suspend fun setOnboardingCompleted()
     suspend fun setIncognitoMode(enabled: Boolean)
@@ -16,4 +17,5 @@ interface AppPreferencesRepository {
     suspend fun setAppLockEnabled(enabled: Boolean)
     suspend fun setFontScale(scale: Int)
     suspend fun setHighContrast(enabled: Boolean)
+    suspend fun setDarkMode(enabled: Boolean)
 }

@@ -59,6 +59,7 @@ class SettingsViewModelTest {
         every { appPreferences.isIncognitoMode } returns flowOf(false)
         every { appPreferences.isHapticEnabled } returns flowOf(true)
         every { appPreferences.isAppLockEnabled } returns flowOf(false)
+        every { appPreferences.isDarkMode } returns flowOf(true)
         coEvery { repository.getAllProviders() } returns flowOf(emptyList())
         viewModel = SettingsViewModel(repository, appPreferences)
     }

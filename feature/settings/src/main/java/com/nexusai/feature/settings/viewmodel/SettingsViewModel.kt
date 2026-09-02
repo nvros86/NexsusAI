@@ -24,7 +24,8 @@ data class SettingsState(
     val hapticFeedback: Boolean = true,
     val appLock: Boolean = false,
     val fontScale: Int = 1,
-    val highContrast: Boolean = false
+    val highContrast: Boolean = false,
+    val darkMode: Boolean = true
 )
 
 @HiltViewModel
@@ -65,6 +66,11 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             appPreferences.isAppLockEnabled.collect { enabled ->
                 _state.value = _state.value.copy(appLock = enabled)
+            }
+        }
+        viewModelScope.launch {
+            appPreferences.isDarkMode.collect { dark ->
+                _state.value = _state.value.copy(darkMode = dark)
             }
         }
     }
@@ -171,6 +177,12 @@ class SettingsViewModel @Inject constructor(
     fun toggleHighContrast() {
         viewModelScope.launch {
             appPreferences.setHighContrast(!_state.value.highContrast)
+        }
+    }
+
+    fun toggleDarkMode() {
+        viewModelScope.launch {
+            appPreferences.setDarkMode(!_state.value.darkMode)
         }
     }
 }

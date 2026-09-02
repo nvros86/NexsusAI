@@ -186,6 +186,16 @@ fun SettingsScreen(
 
             item {
                 PrivacyToggle(
+                    title = "Тёмная тема",
+                    subtitle = "Тёмный интерфейс по умолчанию",
+                    icon = "🌙",
+                    checked = state.darkMode,
+                    onCheckedChange = { viewModel.toggleDarkMode() }
+                )
+            }
+
+            item {
+                PrivacyToggle(
                     title = "Высокий контраст",
                     subtitle = "Увеличенная контрастность текста и элементов",
                     icon = "🔲",

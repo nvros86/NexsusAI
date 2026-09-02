@@ -1,9 +1,11 @@
 package com.nexusai.core.ui.theme
 
 import android.app.Activity
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
@@ -19,32 +21,53 @@ private val NexusDarkColorScheme = darkColorScheme(
     onPrimary = NexusTextOnPurple,
     primaryContainer = NexusPurpleDark,
     onPrimaryContainer = NexusPurpleLight,
-
     secondary = NexusBlue,
     onSecondary = Color.White,
     secondaryContainer = NexusSurfaceVariant,
     onSecondaryContainer = NexusTextPrimary,
-
     tertiary = NexusCyan,
     onTertiary = Color.White,
     tertiaryContainer = NexusSurfaceVariant,
     onTertiaryContainer = NexusTextPrimary,
-
     background = NexusBackground,
     onBackground = NexusTextPrimary,
-
     surface = NexusSurface,
     onSurface = NexusTextPrimary,
     surfaceVariant = NexusSurfaceLight,
     onSurfaceVariant = NexusTextSecondary,
-
     error = ErrorColor,
     onError = Color.White,
     errorContainer = Color(0xFF3D1114),
     onErrorContainer = Color(0xFFFFB4AB),
-
     outline = NexusDivider,
     outlineVariant = NexusSurfaceVariant,
+)
+
+private val NexusLightColorScheme = lightColorScheme(
+    primary = NexusPurple,
+    onPrimary = Color.White,
+    primaryContainer = Color(0xFFEDE7F6),
+    onPrimaryContainer = NexusPurpleDark,
+    secondary = NexusBlue,
+    onSecondary = Color.White,
+    secondaryContainer = Color(0xFFE3F2FD),
+    onSecondaryContainer = Color(0xFF0D47A1),
+    tertiary = NexusCyan,
+    onTertiary = Color.White,
+    tertiaryContainer = Color(0xFFE0F7FA),
+    onTertiaryContainer = Color(0xFF006064),
+    background = Color(0xFFF8F8FF),
+    onBackground = Color(0xFF1A1A2E),
+    surface = Color.White,
+    onSurface = Color(0xFF1A1A2E),
+    surfaceVariant = Color(0xFFF0F0F5),
+    onSurfaceVariant = Color(0xFF555566),
+    error = ErrorColor,
+    onError = Color.White,
+    errorContainer = Color(0xFFFFEBEE),
+    onErrorContainer = Color(0xFFB71C1C),
+    outline = Color(0xFFCCCCCC),
+    outlineVariant = Color(0xFFE0E0E0),
 )
 
 private val NexusHighContrastScheme = darkColorScheme(
@@ -52,30 +75,24 @@ private val NexusHighContrastScheme = darkColorScheme(
     onPrimary = Color.Black,
     primaryContainer = Color(0xFF7C3AED),
     onPrimaryContainer = Color.White,
-
     secondary = Color(0xFF64B5F6),
     onSecondary = Color.Black,
     secondaryContainer = Color(0xFF1E3A5F),
     onSecondaryContainer = Color.White,
-
     tertiary = Color(0xFF4DD0E1),
     onTertiary = Color.Black,
     tertiaryContainer = Color(0xFF006064),
     onTertiaryContainer = Color.White,
-
     background = Color.Black,
     onBackground = Color.White,
-
     surface = Color(0xFF0D0D0D),
     onSurface = Color.White,
     surfaceVariant = Color(0xFF1A1A1A),
     onSurfaceVariant = Color(0xFFE0E0E0),
-
     error = Color(0xFFFF6B6B),
     onError = Color.Black,
     errorContainer = Color(0xFF4A0000),
     onErrorContainer = Color(0xFFFFB4AB),
-
     outline = Color(0xFF444444),
     outlineVariant = Color(0xFF2A2A2A),
 )
@@ -100,13 +117,17 @@ fun scaledTypography(scale: Int) = Typography(
 
 @Composable
 fun NexsusAITheme(
-    darkTheme: Boolean = true,
+    darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
     fontScale: Int = 1,
     highContrast: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = if (highContrast) NexusHighContrastScheme else NexusDarkColorScheme
+    val colorScheme = when {
+        highContrast -> NexusHighContrastScheme
+        darkTheme -> NexusDarkColorScheme
+        else -> NexusLightColorScheme
+    }
 
     val view = LocalView.current
     if (!view.isInEditMode) {
@@ -117,8 +138,8 @@ fun NexsusAITheme(
             @Suppress("DEPRECATION")
             window.navigationBarColor = colorScheme.background.toArgb()
             WindowCompat.getInsetsController(window, view).apply {
-                isAppearanceLightStatusBars = false
-                isAppearanceLightNavigationBars = false
+                isAppearanceLightStatusBars = !darkTheme
+                isAppearanceLightNavigationBars = !darkTheme
             }
         }
     }

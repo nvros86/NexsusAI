@@ -26,6 +26,7 @@ class AppPreferences @Inject constructor(
         private val APP_LOCK_ENABLED = booleanPreferencesKey("app_lock_enabled")
         private val FONT_SCALE = intPreferencesKey("font_scale")
         private val HIGH_CONTRAST = booleanPreferencesKey("high_contrast")
+        private val DARK_MODE = booleanPreferencesKey("dark_mode")
     }
 
     override val isOnboardingCompleted: Flow<Boolean> = context.dataStore.data.map { preferences ->
@@ -50,6 +51,10 @@ class AppPreferences @Inject constructor(
 
     override val isHighContrast: Flow<Boolean> = context.dataStore.data.map { preferences ->
         preferences[HIGH_CONTRAST] ?: false
+    }
+
+    override val isDarkMode: Flow<Boolean> = context.dataStore.data.map { preferences ->
+        preferences[DARK_MODE] ?: true
     }
 
     override suspend fun setOnboardingCompleted() {
@@ -85,6 +90,12 @@ class AppPreferences @Inject constructor(
     override suspend fun setHighContrast(enabled: Boolean) {
         context.dataStore.edit { preferences ->
             preferences[HIGH_CONTRAST] = enabled
+        }
+    }
+
+    override suspend fun setDarkMode(enabled: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[DARK_MODE] = enabled
         }
     }
 }
