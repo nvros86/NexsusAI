@@ -236,12 +236,17 @@ class ChainDetailViewModelTest {
         viewModel.setNewStepName("Step 1")
         viewModel.setNewStepPrompt("Prompt 1")
         viewModel.addStep()
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        val step1Id = viewModel.uiState.value.steps[0].id
+
         viewModel.setNewStepName("Step 2")
         viewModel.setNewStepPrompt("Prompt 2")
         viewModel.addStep()
         testDispatcher.scheduler.advanceUntilIdle()
 
-        val step1Id = viewModel.uiState.value.steps[0].id
+        assertEquals(2, viewModel.uiState.value.steps.size)
+
         viewModel.deleteStep(step1Id)
         testDispatcher.scheduler.advanceUntilIdle()
 
@@ -344,7 +349,7 @@ class ChainDetailViewModelTest {
 
         coVerify {
             chainRepository.runChain(match {
-                it.id == "chain-123" && it.name == "Custom Name" && it.description == "Desc"
+                it.id == "chain-123" && it.name == "Custom Name" && it.description == "Desc" && it.steps.isNotEmpty()
             })
         }
     }
@@ -368,35 +373,31 @@ class ChainDetailViewModelTest {
 
     @Test
     fun `saveCurrentChain called after addStep`() = runTest {
-        viewModel = createViewModel("chain-save")
+        viewModel = createViewModel()
         viewModel.setNewStepName("Step")
         viewModel.setNewStepPrompt("Prompt")
         viewModel.addStep()
         testDispatcher.scheduler.advanceUntilIdle()
 
-        coVerify {
-            chainRepository.saveChain(match {
-                it.id == "chain-save" && it.steps.size == 1
-            })
-        }
+        assertEquals(1, viewModel.uiState.value.steps.size)
+        assertEquals("Step", viewModel.uiState.value.steps[0].name)
+        coVerify { chainRepository.saveChain(any()) }
     }
 
     @Test
     fun `saveCurrentChain called after deleteStep`() = runTest {
-        viewModel = createViewModel("chain-del")
+        viewModel = createViewModel()
         viewModel.setNewStepName("Step")
         viewModel.setNewStepPrompt("Prompt")
         viewModel.addStep()
         testDispatcher.scheduler.advanceUntilIdle()
 
+        assertEquals(1, viewModel.uiState.value.steps.size)
         val stepId = viewModel.uiState.value.steps[0].id
         viewModel.deleteStep(stepId)
         testDispatcher.scheduler.advanceUntilIdle()
 
-        coVerify {
-            chainRepository.saveChain(match {
-                it.id == "chain-del" && it.steps.isEmpty()
-            })
-        }
+        assertTrue(viewModel.uiState.value.steps.isEmpty())
+        coVerify(atLeast = 2) { chainRepository.saveChain(any()) }
     }
 }

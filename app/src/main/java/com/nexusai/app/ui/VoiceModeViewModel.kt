@@ -96,7 +96,7 @@ class VoiceModeViewModel @Inject constructor(
     }
 
     fun toggleListening() {
-        val state = _uiState.value.voiceState
+        val state = voiceHelper.state.value
         when (state) {
             VoiceState.IDLE -> voiceHelper.startListening()
             VoiceState.LISTENING -> voiceHelper.stopListening()

@@ -144,7 +144,6 @@ class VoiceModeViewModelTest {
         providersFlow.value = listOf(provider)
         testDispatcher.scheduler.advanceUntilIdle()
 
-        val responseFlow = MutableStateFlow("Hello from AI")
         coEvery {
             aiProviderManager.getProvider(any())
         } returns mockk {
@@ -157,9 +156,11 @@ class VoiceModeViewModelTest {
         testDispatcher.scheduler.advanceUntilIdle()
 
         val state = viewModel.uiState.value
-        assertEquals(1, state.messages.size)
+        assertEquals(2, state.messages.size)
         assertEquals("Hi there", state.messages[0].text)
         assertTrue(state.messages[0].isUser)
+        assertEquals("Hello from AI", state.messages[1].text)
+        assertFalse(state.messages[1].isUser)
         assertEquals("", state.transcript)
     }
 
