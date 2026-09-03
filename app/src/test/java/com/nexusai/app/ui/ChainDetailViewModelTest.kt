@@ -9,6 +9,7 @@ import com.nexusai.domain.repository.ChainRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import io.mockk.slot
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -342,16 +343,16 @@ class ChainDetailViewModelTest {
         testDispatcher.scheduler.advanceUntilIdle()
 
         val result = ChainRunResult(chainId = "chain-123", stepResults = emptyList())
-        coEvery { chainRepository.runChain(any()) } returns result
+        val chainSlot = slot<AutomationChain>()
+        coEvery { chainRepository.runChain(capture(chainSlot)) } returns result
 
         viewModel.runChain()
         testDispatcher.scheduler.advanceUntilIdle()
 
-        coVerify {
-            chainRepository.runChain(match {
-                it.id == "chain-123" && it.name == "Custom Name" && it.description == "Desc" && it.steps.isNotEmpty()
-            })
-        }
+        assertEquals("chain-123", chainSlot.captured.id)
+        assertEquals("Custom Name", chainSlot.captured.name)
+        assertEquals("Desc", chainSlot.captured.description)
+        assertTrue(chainSlot.captured.steps.isNotEmpty())
     }
 
     @Test
