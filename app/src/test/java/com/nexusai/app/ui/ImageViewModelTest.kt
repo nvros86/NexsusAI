@@ -4,6 +4,7 @@ import android.app.Application
 import com.nexusai.data.ai.AIProviderManager
 import com.nexusai.domain.model.AIProviderConfig
 import com.nexusai.domain.repository.AIProviderRepository
+import io.mockk.VarargOf
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -39,6 +40,9 @@ class ImageViewModelTest {
         providerRepository = mockk(relaxed = true)
         aiProviderManager = mockk(relaxed = true)
         every { providerRepository.getAllProviders() } returns providersFlow
+        every { mockApplication.getString(any()) } answers { "Test string" }
+        every { mockApplication.getString(any(), any<VarargOf<*>>()) } answers { "Test string" }
+        every { mockApplication.getString(any(), any()) } answers { "Test string" }
         viewModel = ImageViewModel(mockApplication, providerRepository, aiProviderManager)
     }
 

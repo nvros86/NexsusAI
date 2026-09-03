@@ -9,6 +9,7 @@ import com.nexusai.domain.model.ChainStepType
 import com.nexusai.domain.repository.ChainRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.VarargOf
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -66,6 +67,9 @@ class ChainDetailViewModelTest {
     fun setup() {
         Dispatchers.setMain(testDispatcher)
         chainRepository = mockk(relaxed = true)
+        every { mockApplication.getString(any()) } answers { "Test string" }
+        every { mockApplication.getString(any(), any<VarargOf<*>>()) } answers { "Test string" }
+        every { mockApplication.getString(any(), any()) } answers { "Test string" }
     }
 
     @After
