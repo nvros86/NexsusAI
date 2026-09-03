@@ -5,7 +5,6 @@ import com.nexusai.data.common.AppDataManager
 import com.nexusai.domain.model.MemoryEntry
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.VarargOf
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -51,9 +50,8 @@ class MemoryViewModelTest {
         mockApplication = mockk(relaxed = true)
         appDataManager = mockk(relaxed = true)
         every { appDataManager.memoryEntries } returns entriesFlow
-        every { mockApplication.getString(any()) } answers { "Test string" }
-        every { mockApplication.getString(any(), any<VarargOf<*>>()) } answers { "Test string" }
-        every { mockApplication.getString(any(), any()) } answers { "Test string" }
+        every { mockApplication.getString(any<Int>()) } answers { "Test string" }
+        every { mockApplication.getString(any<Int>(), any()) } answers { "Test string" }
         viewModel = MemoryViewModel(mockApplication, appDataManager)
     }
 

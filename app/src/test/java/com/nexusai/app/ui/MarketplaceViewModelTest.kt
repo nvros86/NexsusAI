@@ -9,7 +9,6 @@ import com.nexusai.domain.repository.AIProviderRepository
 import com.nexusai.domain.repository.MarketplaceRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.VarargOf
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -70,9 +69,8 @@ class MarketplaceViewModelTest {
         every { marketplaceRepository.getAllPresets() } returns presetsFlow
         every { marketplaceRepository.searchPresets(any()) } returns flowOf(emptyList())
         every { marketplaceRepository.getPresetsByCategory(any()) } returns flowOf(emptyList())
-        every { mockApplication.getString(any()) } answers { "Test string" }
-        every { mockApplication.getString(any(), any<VarargOf<*>>()) } answers { "Test string" }
-        every { mockApplication.getString(any(), any()) } answers { "Test string" }
+        every { mockApplication.getString(any<Int>()) } answers { "Test string" }
+        every { mockApplication.getString(any<Int>(), any()) } answers { "Test string" }
 
         viewModel = MarketplaceViewModel(mockApplication, marketplaceRepository, aiProviderRepository)
         testDispatcher.scheduler.advanceUntilIdle()

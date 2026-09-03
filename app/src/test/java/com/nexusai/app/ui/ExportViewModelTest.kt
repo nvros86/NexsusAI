@@ -12,7 +12,6 @@ import com.nexusai.domain.model.MessageRole
 import com.nexusai.domain.model.Tab
 import com.nexusai.domain.repository.TabRepository
 import io.mockk.Runs
-import io.mockk.VarargOf
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -78,9 +77,8 @@ class ExportViewModelTest {
         Dispatchers.setMain(testDispatcher)
         tabRepository = mockk(relaxed = true)
         every { tabRepository.getAllTabs() } returns flowOf(emptyList())
-        every { mockApplication.getString(any()) } answers { "Test string" }
-        every { mockApplication.getString(any(), any<VarargOf<*>>()) } answers { "Test string" }
-        every { mockApplication.getString(any(), any()) } answers { "Test string" }
+        every { mockApplication.getString(any<Int>()) } answers { "Test string" }
+        every { mockApplication.getString(any<Int>(), any()) } answers { "Test string" }
         viewModel = ExportViewModel(mockApplication, tabRepository)
     }
 
