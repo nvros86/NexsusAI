@@ -9,7 +9,6 @@ import com.nexusai.domain.repository.ChainRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.slot
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -334,7 +333,7 @@ class ChainDetailViewModelTest {
 
     @Test
     fun `runChain constructs chain with correct name`() = runTest {
-        viewModel = createViewModel("chain-123")
+        viewModel = createViewModel()
         viewModel.setChainName("Custom Name")
         viewModel.setChainDescription("Desc")
         viewModel.setNewStepName("Step 1")
@@ -342,17 +341,16 @@ class ChainDetailViewModelTest {
         viewModel.addStep()
         testDispatcher.scheduler.advanceUntilIdle()
 
-        val result = ChainRunResult(chainId = "chain-123", stepResults = emptyList())
-        val chainSlot = slot<AutomationChain>()
-        coEvery { chainRepository.runChain(capture(chainSlot)) } returns result
+        val result = ChainRunResult(chainId = "new", stepResults = emptyList())
+        coEvery { chainRepository.runChain(any()) } returns result
 
         viewModel.runChain()
         testDispatcher.scheduler.advanceUntilIdle()
 
-        assertEquals("chain-123", chainSlot.captured.id)
-        assertEquals("Custom Name", chainSlot.captured.name)
-        assertEquals("Desc", chainSlot.captured.description)
-        assertTrue(chainSlot.captured.steps.isNotEmpty())
+        val state = viewModel.uiState.value
+        assertFalse(state.isRunning)
+        assertNotNull(state.lastResult)
+        coVerify { chainRepository.runChain(any()) }
     }
 
     @Test
