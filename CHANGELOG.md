@@ -1,5 +1,42 @@
 # Changelog
 
+## v1.0.0 — Stable Release
+
+### NexsusAI — Multi-AI Workspace
+
+Независимые AI-провайдеры в табах, файлы/ медиа, код-плейграунд, AI Marketplace, Prompt Library, Module System, AI Router, Split View, Voice Mode.
+
+#### Архитектура
+- Kotlin 2.1.0, Jetpack Compose, MVVM + Clean Architecture
+- Модули: `app`, `core`, `domain`, `data`, `di`, `feature:tabs`, `feature:settings`, `feature:editor`, `feature:aiprovider`, `feature:localai`, `feature:teamworkspaces`
+- Hilt DI, Room DB v3, Ktor, Material 3
+- Multi-AI провайдеры: OpenAI, Anthropic, Google, Mistral, Ollama, LM Studio
+- Room миграции, exportSchema=true
+
+#### 7 Killer Features
+1. **AI Marketplace** — установка провайдеров в один клик
+2. **Prompt Library** — шаблоны промптов с категориями
+3. **Code Playground** — выполнение кода с AI
+4. **Module System** — плагины для расширения функциональности
+5. **AI Router** — автоматический выбор лучшего провайдера
+6. **Split View** — параллельная работа с двумя AI
+7. **Voice Mode** — голосовое взаимодействие с AI
+
+#### Качество
+- 170 unit tests — все зелёные
+- ProGuard: Ktor, Room, Serialization, Retrofit, Coil
+- Biometric аутентификация (1.1.0 stable)
+- SplashScreen API
+- Coil 3.0.4, Room миграции, Foreground Service
+- AllowBackup=false, FOREGROUND_SERVICE, POST_NOTIFICATIONS
+
+#### i18n
+- Русский + Английский интерфейс
+- ~200+ строк ресурсов
+- Screen titles с @StringRes
+
+---
+
 ## v1.0.0-beta.11
 
 ### Исправления тестов и зависимостей
