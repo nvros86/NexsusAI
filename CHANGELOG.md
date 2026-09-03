@@ -1,5 +1,37 @@
 # Changelog
 
+## v1.0.0-beta.11
+
+### Исправления тестов и зависимостей
+
+#### Исправления
+- ViewModels возвращены к `ViewModel` (кроме VoiceModeViewModel) — `AndroidViewModel.getApplication()` возвращает `null` в unit-тестах
+- `VoiceModeViewModel.toggleListening()` читает `voiceHelper.state.value` напрямую
+- Исправлены collisions ID шагов в `ChainDetailViewModelTest` (`System.currentTimeMillis()`)
+- `ExportFormat.displayName` → `displayNameRes` (@StringRes)
+- Исправлен `VoiceModeViewModelTest` — TTS mock, messages assertions
+
+#### Зависимости
+- Coil 2.7.0 → 3.0.4 (`io.coil-kt.coil3`)
+- Biometric 1.2.0-alpha05 → 1.1.0 stable
+- SplashScreen API 1.0.1 добавлен
+- Удалён Retrofit/OkHttp (Ktor only)
+
+#### Архитектура
+- Room миграции: `Migrations.kt` + `ALL_MIGRATIONS` массив
+- Room `exportSchema = true` с schema export directory
+- `javax.inject` версия в version catalog
+- Schema JSON v3 добавлен
+
+#### Тесты
+- 170 unit tests — все зелёные
+- AgentsViewModelTest (17), ChainDetailViewModelTest (18), ChainsViewModelTest (18)
+- ExportViewModelTest (21), MarketplaceViewModelTest (16), MemoryViewModelTest (19)
+- VoiceModeViewModelTest (15), SplitViewViewModelTest (22), ImageViewModelTest (18)
+- HiltAndroidTest + MainActivityTest
+
+---
+
 ## v1.0.0-beta.10
 
 ### Полный аудит проекта
