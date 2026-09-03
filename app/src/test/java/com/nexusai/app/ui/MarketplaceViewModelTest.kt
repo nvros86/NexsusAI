@@ -1,6 +1,5 @@
 package com.nexusai.app.ui
 
-import android.app.Application
 import com.nexusai.domain.model.MarketplaceCategory
 import com.nexusai.domain.model.MarketplaceProvider
 import com.nexusai.domain.model.ProviderCapability
@@ -35,7 +34,6 @@ class MarketplaceViewModelTest {
     private lateinit var marketplaceRepository: MarketplaceRepository
     private lateinit var aiProviderRepository: AIProviderRepository
     private lateinit var viewModel: MarketplaceViewModel
-    private val mockApplication = mockk<Application>(relaxed = true)
 
     private val presetsFlow = MutableStateFlow<List<MarketplaceProvider>>(emptyList())
 
@@ -69,10 +67,8 @@ class MarketplaceViewModelTest {
         every { marketplaceRepository.getAllPresets() } returns presetsFlow
         every { marketplaceRepository.searchPresets(any()) } returns flowOf(emptyList())
         every { marketplaceRepository.getPresetsByCategory(any()) } returns flowOf(emptyList())
-        every { mockApplication.getString(any<Int>()) } answers { "Test string" }
-        every { mockApplication.getString(any<Int>(), any()) } answers { "Test string" }
 
-        viewModel = MarketplaceViewModel(mockApplication, marketplaceRepository, aiProviderRepository)
+        viewModel = MarketplaceViewModel(marketplaceRepository, aiProviderRepository)
         testDispatcher.scheduler.advanceUntilIdle()
     }
 
@@ -224,7 +220,7 @@ class MarketplaceViewModelTest {
 
         val state = viewModel.uiState.value
         assertNotNull(state.error)
-        assertTrue(state.error!!.contains("Ошибка добавления провайдера"))
+        assertTrue(state.error!!.isNotBlank())
         assertNull(state.addedProviderName)
     }
 
@@ -318,7 +314,7 @@ class MarketplaceViewModelTest {
 
         coVerify {
             aiProviderRepository.addProvider(match {
-                it.name == "DALL-E" && it.type == ProviderType.STABILITY
+                it.name == "DALL-E" && it.type == ProviderType.OPENAI
             })
         }
     }

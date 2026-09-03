@@ -1,6 +1,5 @@
 package com.nexusai.app.ui
 
-import android.app.Application
 import androidx.lifecycle.SavedStateHandle
 import com.nexusai.domain.model.AutomationChain
 import com.nexusai.domain.model.ChainRunResult
@@ -9,7 +8,6 @@ import com.nexusai.domain.model.ChainStepType
 import com.nexusai.domain.repository.ChainRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -30,7 +28,6 @@ import org.junit.Test
 class ChainDetailViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
-    private val mockApplication = mockk<Application>(relaxed = true)
     private lateinit var chainRepository: ChainRepository
     private lateinit var viewModel: ChainDetailViewModel
 
@@ -66,8 +63,6 @@ class ChainDetailViewModelTest {
     fun setup() {
         Dispatchers.setMain(testDispatcher)
         chainRepository = mockk(relaxed = true)
-        every { mockApplication.getString(any<Int>()) } answers { "Test string" }
-        every { mockApplication.getString(any<Int>(), any()) } answers { "Test string" }
     }
 
     @After
@@ -77,7 +72,7 @@ class ChainDetailViewModelTest {
 
     private fun createViewModel(chainId: String = "new"): ChainDetailViewModel {
         val savedStateHandle = SavedStateHandle(mapOf("chainId" to chainId))
-        return ChainDetailViewModel(mockApplication, savedStateHandle, chainRepository)
+        return ChainDetailViewModel(savedStateHandle, chainRepository)
     }
 
     @Test

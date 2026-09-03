@@ -1,9 +1,7 @@
 package com.nexusai.app.ui
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nexusai.app.R
 import com.nexusai.data.common.AppDataManager
 import com.nexusai.domain.model.MemoryEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,9 +21,8 @@ data class MemoryUiState(
 
 @HiltViewModel
 class MemoryViewModel @Inject constructor(
-    application: Application,
     private val appDataManager: AppDataManager
-) : AndroidViewModel(application) {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MemoryUiState())
     val uiState: StateFlow<MemoryUiState> = _uiState.asStateFlow()
@@ -65,7 +62,7 @@ class MemoryViewModel @Inject constructor(
                 _uiState.value = _uiState.value.copy(newKey = "", newValue = "")
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
-                    error = getApplication<Application>().getString(R.string.error_memory_add, e.message ?: "")
+                    error = "Ошибка добавления памяти: ${e.message ?: ""}"
                 )
             }
         }
@@ -78,7 +75,7 @@ class MemoryViewModel @Inject constructor(
                 appDataManager.updateMemoryEntry(entry.copy(isImportant = !entry.isImportant))
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
-                    error = getApplication<Application>().getString(R.string.error_memory_update, e.message ?: "")
+                    error = "Ошибка обновления памяти: ${e.message ?: ""}"
                 )
             }
         }
@@ -90,7 +87,7 @@ class MemoryViewModel @Inject constructor(
                 appDataManager.removeMemoryEntry(id)
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
-                    error = getApplication<Application>().getString(R.string.error_memory_delete, e.message ?: "")
+                    error = "Ошибка удаления из памяти: ${e.message ?: ""}"
                 )
             }
         }
@@ -102,7 +99,7 @@ class MemoryViewModel @Inject constructor(
                 appDataManager.clearMemory()
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
-                    error = getApplication<Application>().getString(R.string.error_memory_clear, e.message ?: "")
+                    error = "Ошибка очистки памяти: ${e.message ?: ""}"
                 )
             }
         }

@@ -1,6 +1,5 @@
 package com.nexusai.app.ui
 
-import android.app.Application
 import com.nexusai.data.ai.AIProviderManager
 import com.nexusai.domain.model.AIProviderConfig
 import com.nexusai.domain.repository.AIProviderRepository
@@ -26,7 +25,6 @@ import org.junit.Test
 class ImageViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
-    private val mockApplication = mockk<Application>(relaxed = true)
     private lateinit var providerRepository: AIProviderRepository
     private lateinit var aiProviderManager: AIProviderManager
     private lateinit var viewModel: ImageViewModel
@@ -39,9 +37,7 @@ class ImageViewModelTest {
         providerRepository = mockk(relaxed = true)
         aiProviderManager = mockk(relaxed = true)
         every { providerRepository.getAllProviders() } returns providersFlow
-        every { mockApplication.getString(any<Int>()) } answers { "Test string" }
-        every { mockApplication.getString(any<Int>(), any()) } answers { "Test string" }
-        viewModel = ImageViewModel(mockApplication, providerRepository, aiProviderManager)
+        viewModel = ImageViewModel(providerRepository, aiProviderManager)
     }
 
     @After

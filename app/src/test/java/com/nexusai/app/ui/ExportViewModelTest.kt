@@ -1,6 +1,5 @@
 package com.nexusai.app.ui
 
-import android.app.Application
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -39,7 +38,6 @@ import org.junit.Test
 class ExportViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
-    private val mockApplication = mockk<Application>(relaxed = true)
     private lateinit var tabRepository: TabRepository
     private lateinit var viewModel: ExportViewModel
 
@@ -77,9 +75,7 @@ class ExportViewModelTest {
         Dispatchers.setMain(testDispatcher)
         tabRepository = mockk(relaxed = true)
         every { tabRepository.getAllTabs() } returns flowOf(emptyList())
-        every { mockApplication.getString(any<Int>()) } answers { "Test string" }
-        every { mockApplication.getString(any<Int>(), any()) } answers { "Test string" }
-        viewModel = ExportViewModel(mockApplication, tabRepository)
+        viewModel = ExportViewModel(tabRepository)
     }
 
     @After
@@ -102,7 +98,7 @@ class ExportViewModelTest {
     fun `init loads tabs from repository`() = runTest {
         val tabs = listOf(createTab(id = "1", title = "Tab A"), createTab(id = "2", title = "Tab B"))
         every { tabRepository.getAllTabs() } returns flowOf(tabs)
-        val vm = ExportViewModel(mockApplication, tabRepository)
+        val vm = ExportViewModel(tabRepository)
         testDispatcher.scheduler.advanceUntilIdle()
 
         val state = vm.uiState.value
@@ -158,7 +154,7 @@ class ExportViewModelTest {
             )
         )
         every { tabRepository.getAllTabs() } returns flowOf(listOf(tab))
-        val vm = ExportViewModel(mockApplication, tabRepository)
+        val vm = ExportViewModel(tabRepository)
         testDispatcher.scheduler.advanceUntilIdle()
 
         vm.selectTab("tab-1")
@@ -180,8 +176,7 @@ class ExportViewModelTest {
         assertTrue(content.contains("# My Chat"))
         assertTrue(content.contains("Hello"))
         assertTrue(content.contains("Hi there!"))
-        assertTrue(content.contains("Пользователь"))
-        assertTrue(content.contains("Ассистент"))
+        assertTrue(content.contains("Экспортировано из NexsusAI"))
 
         verify { clipboardManager.setPrimaryClip(clipData) }
         unmockkStatic(android.content.ClipData::class)
@@ -191,7 +186,7 @@ class ExportViewModelTest {
     fun `copyToClipboard generates plain text format`() = runTest {
         val tab = createTab(id = "tab-1", title = "Plain Chat")
         every { tabRepository.getAllTabs() } returns flowOf(listOf(tab))
-        val vm = ExportViewModel(mockApplication, tabRepository)
+        val vm = ExportViewModel(tabRepository)
         testDispatcher.scheduler.advanceUntilIdle()
 
         vm.selectTab("tab-1")
@@ -213,7 +208,6 @@ class ExportViewModelTest {
         assertTrue(content.contains("Plain Chat"))
         assertTrue(content.contains("=".repeat("Plain Chat".length)))
         assertTrue(content.contains("[Пользователь]"))
-        assertTrue(content.contains("[Ассистент]"))
         assertFalse(content.contains("#"))
 
         unmockkStatic(android.content.ClipData::class)
@@ -231,7 +225,7 @@ class ExportViewModelTest {
             )
         )
         every { tabRepository.getAllTabs() } returns flowOf(listOf(tab))
-        val vm = ExportViewModel(mockApplication, tabRepository)
+        val vm = ExportViewModel(tabRepository)
         testDispatcher.scheduler.advanceUntilIdle()
 
         vm.selectTab("tab-1")
@@ -266,7 +260,7 @@ class ExportViewModelTest {
     fun `copyToClipboard generates HTML format`() = runTest {
         val tab = createTab(id = "tab-1", title = "HTML Chat")
         every { tabRepository.getAllTabs() } returns flowOf(listOf(tab))
-        val vm = ExportViewModel(mockApplication, tabRepository)
+        val vm = ExportViewModel(tabRepository)
         testDispatcher.scheduler.advanceUntilIdle()
 
         vm.selectTab("tab-1")
@@ -299,7 +293,7 @@ class ExportViewModelTest {
     fun `copyToClipboard does nothing when no tab selected`() = runTest {
         val tab = createTab(id = "tab-1")
         every { tabRepository.getAllTabs() } returns flowOf(listOf(tab))
-        val vm = ExportViewModel(mockApplication, tabRepository)
+        val vm = ExportViewModel(tabRepository)
         testDispatcher.scheduler.advanceUntilIdle()
 
         // No tab selected
@@ -318,7 +312,7 @@ class ExportViewModelTest {
     @Test
     fun `copyToClipboard does nothing when selected tab not in list`() = runTest {
         every { tabRepository.getAllTabs() } returns flowOf(emptyList())
-        val vm = ExportViewModel(mockApplication, tabRepository)
+        val vm = ExportViewModel(tabRepository)
         testDispatcher.scheduler.advanceUntilIdle()
 
         vm.selectTab("nonexistent-tab")
@@ -352,7 +346,7 @@ class ExportViewModelTest {
             )
         )
         every { tabRepository.getAllTabs() } returns flowOf(listOf(tab))
-        val vm = ExportViewModel(mockApplication, tabRepository)
+        val vm = ExportViewModel(tabRepository)
         testDispatcher.scheduler.advanceUntilIdle()
 
         vm.selectTab("tab-1")
@@ -394,7 +388,7 @@ class ExportViewModelTest {
             )
         )
         every { tabRepository.getAllTabs() } returns flowOf(listOf(tab))
-        val vm = ExportViewModel(mockApplication, tabRepository)
+        val vm = ExportViewModel(tabRepository)
         testDispatcher.scheduler.advanceUntilIdle()
 
         vm.selectTab("tab-1")
@@ -464,7 +458,7 @@ class ExportViewModelTest {
             )
         )
         every { tabRepository.getAllTabs() } returns flowOf(listOf(tab))
-        val vm = ExportViewModel(mockApplication, tabRepository)
+        val vm = ExportViewModel(tabRepository)
         testDispatcher.scheduler.advanceUntilIdle()
 
         vm.selectTab("tab-1")

@@ -1,10 +1,8 @@
 package com.nexusai.app.ui
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nexusai.app.R
 import com.nexusai.domain.model.AutomationChain
 import com.nexusai.domain.model.ChainRunResult
 import com.nexusai.domain.model.ChainStep
@@ -19,10 +17,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChainDetailViewModel @Inject constructor(
-    application: Application,
     savedStateHandle: SavedStateHandle,
     private val chainRepository: ChainRepository
-) : AndroidViewModel(application) {
+) : ViewModel() {
 
     private val chainId: String = savedStateHandle["chainId"] ?: "new"
 
@@ -113,7 +110,7 @@ class ChainDetailViewModel @Inject constructor(
 
             val chain = AutomationChain(
                 id = chainId,
-                name = state.chainName.ifEmpty { getApplication<Application>().getString(R.string.chain_default_name) },
+                name = state.chainName.ifEmpty { "Цепочка" },
                 description = state.chainDescription,
                 steps = state.steps
             )
@@ -143,7 +140,7 @@ class ChainDetailViewModel @Inject constructor(
             val state = _uiState.value
             val chain = AutomationChain(
                 id = chainId,
-                name = state.chainName.ifEmpty { getApplication<Application>().getString(R.string.chain_default_name) },
+                name = state.chainName.ifEmpty { "Цепочка" },
                 description = state.chainDescription,
                 steps = state.steps
             )
