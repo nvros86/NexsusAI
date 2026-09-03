@@ -240,12 +240,16 @@ class ChainDetailViewModelTest {
 
         val step1Id = viewModel.uiState.value.steps[0].id
 
+        Thread.sleep(2)
+
         viewModel.setNewStepName("Step 2")
         viewModel.setNewStepPrompt("Prompt 2")
         viewModel.addStep()
         testDispatcher.scheduler.advanceUntilIdle()
 
         assertEquals(2, viewModel.uiState.value.steps.size)
+        val step2Id = viewModel.uiState.value.steps[1].id
+        assertTrue(step1Id != step2Id)
 
         viewModel.deleteStep(step1Id)
         testDispatcher.scheduler.advanceUntilIdle()
