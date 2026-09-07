@@ -149,6 +149,7 @@ class TeamWorkspacesViewModelTest {
 
     @Test
     fun `sendMessage calls workspaceService`() = runTest {
+        viewModel.selectWorkspace(createWorkspace())
         viewModel.sendMessage("Hello, team!")
         testDispatcher.scheduler.advanceUntilIdle()
 
