@@ -16,4 +16,9 @@
     <string name="ai_provider_files">Файлы</string>
     <string name="ai_provider_streaming">Streaming</string>
     <string name="ai_provider_loading">Загрузка\u2026</string>
+
+    <!-- Accessibility -->
+    <string name="cd_back_arrow">Назад</string>
+    <string name="cd_check_enabled">Поддерживается</string>
+    <string name="cd_check_disabled">Не поддерживается</string>
 </resources>

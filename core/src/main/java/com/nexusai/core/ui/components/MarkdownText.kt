@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,6 +33,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import com.nexusai.core.ui.theme.NexusCard
 import com.nexusai.core.ui.theme.NexusPurple
@@ -128,11 +130,11 @@ private fun CodeBlockView(block: MarkdownBlock.CodeBlock) {
                     clipboardManager.setText(AnnotatedString(block.code))
                     copied = true
                 },
-                modifier = Modifier.padding(0.dp)
+                modifier = Modifier.minimumInteractiveComponentSize()
             ) {
                 Icon(
                     imageVector = Icons.Default.ContentCopy,
-                    contentDescription = "Copy",
+                    contentDescription = stringResource(com.nexusai.core.R.string.cd_copy_code),
                     tint = if (copied) NexusPurple else NexusTextTertiary,
                     modifier = Modifier.padding(0.dp)
                 )

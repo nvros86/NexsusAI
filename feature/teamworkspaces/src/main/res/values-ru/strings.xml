@@ -16,4 +16,35 @@
     <string name="workspaces_new_title">Новый workspace</string>
     <string name="workspaces_message_hint">Сообщение\u2026</string>
     <string name="workspaces_send">Отправить</string>
+    <string name="workspaces_member_count_online">%1$d участников \u2022 %2$d онлайн</string>
+    <string name="workspaces_all_members">Все участники</string>
+    <string name="workspaces_add_member">Добавить участника</string>
+    <string name="workspaces_remove_member">Удалить участника</string>
+    <string name="workspaces_add_member_title">Добавить участника</string>
+    <string name="workspaces_add_member_confirm">Добавить</string>
+    <string name="workspaces_member_name_hint">Имя</string>
+    <string name="workspaces_member_email_hint">Email (необязательно)</string>
+    <string name="workspaces_role_label">Роль</string>
+    <string name="workspaces_role_owner_desc">Полный доступ, управление workspace</string>
+    <string name="workspaces_role_admin_desc">Управление участниками и настройками</string>
+    <string name="workspaces_role_editor_desc">Редактирование вкладок и отправка сообщений</string>
+    <string name="workspaces_role_viewer_desc">Только просмотр</string>
+    <string name="workspaces_activity_feed">Активность</string>
+    <string name="workspaces_activity_created_workspace">создал workspace</string>
+    <string name="workspaces_activity_added_member">добавил участника</string>
+    <string name="workspaces_activity_removed_member">удалил участника</string>
+    <string name="workspaces_activity_changed_role">изменил роль</string>
+    <string name="workspaces_activity_created_tab">создал вкладку</string>
+    <string name="workspaces_activity_sent_message">отправил сообщение</string>
+    <string name="workspaces_activity_uploaded_file">загрузил файл</string>
+    <string name="workspaces_activity_ran_chain">запустил цепочку</string>
+
+    <!-- Accessibility -->
+    <string name="cd_back_arrow">Назад</string>
+    <string name="cd_refresh">Обновить</string>
+    <string name="cd_empty_state_icon">Нет workspace</string>
+    <string name="cd_create_workspace">Создать workspace</string>
+    <string name="cd_member_avatar">Аватар участника</string>
+    <string name="cd_online_indicator">Статус онлайн</string>
+    <string name="cd_send_message">Отправить сообщение</string>
 </resources>

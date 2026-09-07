@@ -28,4 +28,15 @@
     <string name="localai_close">Закрыть</string>
     <string name="localai_models_format">%1$d моделей | %2$s</string>
     <string name="localai_server_name">%1$s | %2$s</string>
+
+    <!-- Accessibility -->
+    <string name="cd_back_arrow">Назад</string>
+    <string name="cd_refresh">Обновить</string>
+    <string name="cd_empty_state_icon">Нет подключений</string>
+    <string name="cd_add_server">Добавить сервер</string>
+    <string name="cd_test_connection">Тест подключения</string>
+    <string name="cd_chat_with_server">Чат с сервером</string>
+    <string name="cd_delete_server">Удалить сервер</string>
+    <string name="cd_delete_model">Удалить модель</string>
+    <string name="cd_generating">Генерация ответа</string>
 </resources>

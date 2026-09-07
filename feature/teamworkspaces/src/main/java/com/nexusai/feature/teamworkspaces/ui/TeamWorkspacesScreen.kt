@@ -20,23 +20,30 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -46,6 +53,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -63,6 +72,11 @@ import com.nexusai.feature.teamworkspaces.Workspace
 import com.nexusai.feature.teamworkspaces.WorkspaceMember
 import com.nexusai.feature.teamworkspaces.WorkspaceMessage
 import com.nexusai.feature.teamworkspaces.viewmodel.TeamWorkspacesViewModel
+import com.nexusai.domain.model.ActivityAction
+import com.nexusai.domain.model.WorkspaceActivity
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -74,45 +88,76 @@ fun TeamWorkspacesScreen(
     var showCreateDialog by remember { mutableStateOf(false) }
     var showChat by remember { mutableStateOf(false) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(NexusBackground)
-    ) {
-        TopAppBar(
-            title = {
-                Text(stringResource(R.string.workspaces_title), color = NexusTextPrimary)
-            },
-            navigationIcon = {
-                IconButton(onClick = onBack) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = stringResource(R.string.action_back),
-                        tint = NexusTextPrimary
-                    )
-                }
-            },
-            actions = {
-                IconButton(onClick = { viewModel.refresh() }) {
-                    Icon(
-                        imageVector = Icons.Default.Refresh,
-                        contentDescription = stringResource(R.string.ai_router_refresh),
-                        tint = NexusTextPrimary
-                    )
-                }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = NexusBackground)
-        )
-
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Column {
+                        Text(stringResource(R.string.workspaces_title), color = NexusTextPrimary)
+                        Text(
+                            text = stringResource(
+                                R.string.workspaces_member_count_online,
+                                state.totalMemberCount,
+                                state.onlineMemberCount
+                            ),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = NexusTextTertiary
+                        )
+                    }
+                },
+                navigationIcon = {
+                    IconButton(
+                        onClick = onBack,
+                        modifier = Modifier.minimumInteractiveComponentSize()
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = stringResource(R.string.cd_back_arrow),
+                            tint = NexusTextPrimary
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(
+                        onClick = { viewModel.refresh() },
+                        modifier = Modifier.minimumInteractiveComponentSize()
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Refresh,
+                            contentDescription = stringResource(R.string.cd_refresh),
+                            tint = NexusTextPrimary
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = NexusBackground)
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { showCreateDialog = true },
+                modifier = Modifier.minimumInteractiveComponentSize(),
+                containerColor = NexusPurple,
+                contentColor = NexusTextPrimary
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.cd_create_workspace)
+                )
+            }
+        },
+        containerColor = NexusBackground
+    ) { padding ->
         if (state.workspaces.isEmpty()) {
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding),
                 contentAlignment = Alignment.Center
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Icon(
                         imageVector = Icons.Default.SmartToy,
-                        contentDescription = null,
+                        contentDescription = stringResource(R.string.cd_empty_state_icon),
                         modifier = Modifier.size(72.dp),
                         tint = NexusTextTertiary.copy(alpha = 0.5f)
                     )
@@ -134,6 +179,7 @@ fun TeamWorkspacesScreen(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
+                    .padding(padding)
                     .padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 contentPadding = androidx.compose.foundation.layout.PaddingValues(vertical = 16.dp)
@@ -150,35 +196,58 @@ fun TeamWorkspacesScreen(
 
                 if (state.members.isNotEmpty()) {
                     item {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = stringResource(R.string.workspaces_all_members),
+                                style = MaterialTheme.typography.titleMedium,
+                                color = NexusTextPrimary
+                            )
+                            IconButton(
+                                onClick = { viewModel.showAddMemberDialog() },
+                                modifier = Modifier.minimumInteractiveComponentSize()
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Add,
+                                    contentDescription = stringResource(R.string.workspaces_add_member),
+                                    tint = NexusPurple
+                                )
+                            }
+                        }
+                    }
+
+                    items(state.members, key = { it.id }) { member ->
+                        MemberCard(
+                            member = member,
+                            onRemove = { viewModel.removeMember(member.id) },
+                            onChangeRole = { newRole ->
+                                viewModel.changeMemberRole(member.id, newRole)
+                            },
+                            onToggleOnline = { viewModel.toggleMemberOnlineStatus(member.id) }
+                        )
+                    }
+                }
+
+                if (state.activities.isNotEmpty()) {
+                    item {
+                        Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = stringResource(R.string.workspaces_online_members),
+                            text = stringResource(R.string.workspaces_activity_feed),
                             style = MaterialTheme.typography.titleMedium,
                             color = NexusTextPrimary,
                             modifier = Modifier.padding(vertical = 8.dp)
                         )
                     }
 
-                    items(state.members.filter { it.isOnline }, key = { it.id }) { member ->
-                        MemberCard(member = member)
+                    items(state.activities.sortedByDescending { it.timestamp }, key = { it.id }) { activity ->
+                        ActivityItem(activity = activity)
                     }
                 }
-            }
-        }
-
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.BottomEnd
-        ) {
-            FloatingActionButton(
-                onClick = { showCreateDialog = true },
-                modifier = Modifier.padding(16.dp),
-                containerColor = NexusPurple,
-                contentColor = NexusTextPrimary
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.workspaces_create)
-                )
             }
         }
     }
@@ -207,6 +276,16 @@ fun TeamWorkspacesScreen(
                 }
             )
         }
+    }
+
+    if (state.showAddMemberDialog) {
+        AddMemberDialog(
+            onAdd = { name, role ->
+                viewModel.addMember(name, role)
+                viewModel.hideAddMemberDialog()
+            },
+            onDismiss = { viewModel.hideAddMemberDialog() }
+        )
     }
 }
 
@@ -277,7 +356,15 @@ private fun WorkspaceCard(
 }
 
 @Composable
-private fun MemberCard(member: WorkspaceMember) {
+private fun MemberCard(
+    member: WorkspaceMember,
+    onRemove: () -> Unit,
+    onChangeRole: (MemberRole) -> Unit,
+    onToggleOnline: () -> Unit
+) {
+    val onlineDesc = stringResource(R.string.cd_online_indicator)
+    var showRoleMenu by remember { mutableStateOf(false) }
+
     Card(
         colors = CardDefaults.cardColors(containerColor = NexusCard),
         shape = RoundedCornerShape(12.dp)
@@ -311,21 +398,257 @@ private fun MemberCard(member: WorkspaceMember) {
                     fontWeight = FontWeight.Medium,
                     color = NexusTextPrimary
                 )
-                Text(
-                    text = member.role.displayName,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = NexusTextTertiary
-                )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    RoleBadge(role = member.role)
+                }
             }
 
             Box(
                 modifier = Modifier
                     .size(8.dp)
                     .clip(CircleShape)
-                    .background(if (member.isOnline) NexusPurple else NexusTextTertiary)
+                    .background(
+                        if (member.isOnline) {
+                            NexusPurple
+                        } else {
+                            NexusTextTertiary
+                        }
+                    )
+                    .semantics {
+                        contentDescription = if (member.isOnline) onlineDesc else ""
+                    }
+            )
+
+            if (member.id != "user_1") {
+                IconButton(
+                    onClick = { onRemove() },
+                    modifier = Modifier
+                        .size(32.dp)
+                        .minimumInteractiveComponentSize()
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = stringResource(R.string.workspaces_remove_member),
+                        tint = NexusTextTertiary,
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun RoleBadge(role: MemberRole) {
+    val backgroundColor = when (role) {
+        MemberRole.OWNER -> NexusPurple.copy(alpha = 0.2f)
+        MemberRole.ADMIN -> NexusPurple.copy(alpha = 0.15f)
+        MemberRole.EDITOR -> NexusPurple.copy(alpha = 0.1f)
+        MemberRole.VIEWER -> NexusTextTertiary.copy(alpha = 0.1f)
+    }
+    val textColor = when (role) {
+        MemberRole.OWNER -> NexusPurple
+        MemberRole.ADMIN -> NexusPurple
+        MemberRole.EDITOR -> NexusTextSecondary
+        MemberRole.VIEWER -> NexusTextTertiary
+    }
+
+    Box(
+        modifier = Modifier
+            .background(backgroundColor, RoundedCornerShape(4.dp))
+            .padding(horizontal = 6.dp, vertical = 2.dp)
+    ) {
+        Text(
+            text = role.displayName,
+            style = MaterialTheme.typography.labelSmall,
+            color = textColor
+        )
+    }
+}
+
+@Composable
+private fun ActivityItem(activity: WorkspaceActivity) {
+    val actionText = when (activity.action) {
+        ActivityAction.CREATED_WORKSPACE -> stringResource(R.string.workspaces_activity_created_workspace)
+        ActivityAction.ADDED_MEMBER -> stringResource(R.string.workspaces_activity_added_member)
+        ActivityAction.REMOVED_MEMBER -> stringResource(R.string.workspaces_activity_removed_member)
+        ActivityAction.CHANGED_ROLE -> stringResource(R.string.workspaces_activity_changed_role)
+        ActivityAction.CREATED_TAB -> stringResource(R.string.workspaces_activity_created_tab)
+        ActivityAction.SENT_MESSAGE -> stringResource(R.string.workspaces_activity_sent_message)
+        ActivityAction.UPLOADED_FILE -> stringResource(R.string.workspaces_activity_uploaded_file)
+        ActivityAction.RAN_CHAIN -> stringResource(R.string.workspaces_activity_ran_chain)
+    }
+
+    val dateFormat = remember { SimpleDateFormat("HH:mm", Locale.getDefault()) }
+    val timeText = dateFormat.format(Date(activity.timestamp))
+
+    Card(
+        colors = CardDefaults.cardColors(containerColor = NexusCard.copy(alpha = 0.5f)),
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(24.dp)
+                    .clip(CircleShape)
+                    .background(NexusPurple.copy(alpha = 0.15f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = activity.memberName.first().toString(),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = NexusPurple
+                )
+            }
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = "${activity.memberName} $actionText",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = NexusTextPrimary
+                )
+                if (activity.targetName.isNotEmpty()) {
+                    Text(
+                        text = activity.targetName,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = NexusTextTertiary
+                    )
+                }
+            }
+
+            Text(
+                text = timeText,
+                style = MaterialTheme.typography.labelSmall,
+                color = NexusTextTertiary
             )
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun AddMemberDialog(
+    onAdd: (String, MemberRole) -> Unit,
+    onDismiss: () -> Unit
+) {
+    var name by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var selectedRole by remember { mutableStateOf(MemberRole.VIEWER) }
+    var roleExpanded by remember { mutableStateOf(false) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(stringResource(R.string.workspaces_add_member_title), color = NexusTextPrimary)
+        },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text(stringResource(R.string.workspaces_member_name_hint)) },
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = NexusPurple,
+                        unfocusedBorderColor = NexusSurface,
+                        focusedContainerColor = NexusCard,
+                        unfocusedContainerColor = NexusCard
+                    ),
+                    shape = RoundedCornerShape(12.dp),
+                    singleLine = true
+                )
+                OutlinedTextField(
+                    value = email,
+                    onValueChange = { email = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text(stringResource(R.string.workspaces_member_email_hint)) },
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = NexusPurple,
+                        unfocusedBorderColor = NexusSurface,
+                        focusedContainerColor = NexusCard,
+                        unfocusedContainerColor = NexusCard
+                    ),
+                    shape = RoundedCornerShape(12.dp),
+                    singleLine = true
+                )
+
+                ExposedDropdownMenuBox(
+                    expanded = roleExpanded,
+                    onExpandedChange = { roleExpanded = it }
+                ) {
+                    OutlinedTextField(
+                        value = selectedRole.displayName,
+                        onValueChange = {},
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .menuAnchor(MenuAnchorType.PrimaryNotEditable),
+                        label = { Text(stringResource(R.string.workspaces_role_label)) },
+                        readOnly = true,
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = roleExpanded) },
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = NexusPurple,
+                            unfocusedBorderColor = NexusSurface,
+                            focusedContainerColor = NexusCard,
+                            unfocusedContainerColor = NexusCard
+                        ),
+                        shape = RoundedCornerShape(12.dp)
+                    )
+                    ExposedDropdownMenu(
+                        expanded = roleExpanded,
+                        onDismissRequest = { roleExpanded = false }
+                    ) {
+                        MemberRole.entries.forEach { role ->
+                            DropdownMenuItem(
+                                text = {
+                                    Column {
+                                        Text(role.displayName, color = NexusTextPrimary)
+                                        Text(
+                                            when (role) {
+                                                MemberRole.OWNER -> stringResource(R.string.workspaces_role_owner_desc)
+                                                MemberRole.ADMIN -> stringResource(R.string.workspaces_role_admin_desc)
+                                                MemberRole.EDITOR -> stringResource(R.string.workspaces_role_editor_desc)
+                                                MemberRole.VIEWER -> stringResource(R.string.workspaces_role_viewer_desc)
+                                            },
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = NexusTextTertiary
+                                        )
+                                    }
+                                },
+                                onClick = {
+                                    selectedRole = role
+                                    roleExpanded = false
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(
+                onClick = { onAdd(name, selectedRole) },
+                enabled = name.isNotBlank()
+            ) {
+                Text(stringResource(R.string.workspaces_add_member_confirm), color = NexusPurple)
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.label_cancel), color = NexusTextSecondary)
+            }
+        },
+        containerColor = NexusCard
+    )
 }
 
 @Composable
@@ -438,15 +761,18 @@ private fun WorkspaceChatDialog(
                         singleLine = true
                     )
 
-                    IconButton(onClick = {
-                        if (input.isNotBlank()) {
-                            onSend(input)
-                            input = ""
-                        }
-                    }) {
+                    IconButton(
+                        onClick = {
+                            if (input.isNotBlank()) {
+                                onSend(input)
+                                input = ""
+                            }
+                        },
+                        modifier = Modifier.minimumInteractiveComponentSize()
+                    ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.Send,
-                            contentDescription = stringResource(R.string.workspaces_send),
+                            contentDescription = stringResource(R.string.cd_send_message),
                             tint = NexusPurple
                         )
                     }

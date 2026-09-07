@@ -323,6 +323,50 @@
     <!-- Chain default name -->
     <string name="chain_default_name">Chain</string>
 
+    <!-- Accessibility - Content Descriptions -->
+    <string name="cd_copy_code">Copy code</string>
+    <string name="cd_ai_icon">AI icon</string>
+    <string name="cd_empty_state_icon">Empty state</string>
+    <string name="cd_file_icon">File</string>
+    <string name="cd_share">Share</string>
+    <string name="cd_delete">Delete</string>
+    <string name="cd_add_file">Add file</string>
+    <string name="cd_search">Search</string>
+    <string name="cd_filter_chip">Filter</string>
+    <string name="cd_export_share">Share export</string>
+    <string name="cd_export_copy">Copy export</string>
+    <string name="cd_export_open_browser">Open in browser</string>
+    <string name="cd_export_download">Export file</string>
+    <string name="cd_export_new">New export</string>
+    <string name="cd_check_icon">Selected</string>
+    <string name="cd_format_icon">Format</string>
+    <string name="cd_add_provider">Add provider</string>
+    <string name="cd_provider_check">Added</string>
+    <string name="cd_category_chip">Category filter</string>
+    <string name="cd_back">Go back</string>
+    <string name="cd_refresh">Refresh</string>
+    <string name="cd_copy_message">Copy message</string>
+    <string name="cd_regenerate">Regenerate</string>
+    <string name="cd_like">Like</string>
+    <string name="cd_dislike">Dislike</string>
+    <string name="cd_user_avatar">User avatar</string>
+    <string name="cd_generating">Generating response</string>
+    <string name="cd_favorite">Toggle favorite</string>
+    <string name="cd_edit_provider">Edit provider</string>
+    <string name="cd_delete_provider">Delete provider</string>
+    <string name="cd_add_provider_fab">Add AI provider</string>
+    <string name="cd_back_arrow">Back</string>
+    <string name="cd_test_connection">Test connection</string>
+    <string name="cd_chat_with_server">Chat with server</string>
+    <string name="cd_delete_server">Delete server</string>
+    <string name="cd_delete_model">Delete model</string>
+    <string name="cd_status_dot">Status</string>
+    <string name="cd_online_indicator">Online status</string>
+    <string name="cd_send_message">Send message</string>
+    <string name="cd_member_avatar">Member avatar</string>
+    <string name="cd_check_enabled">Enabled</string>
+    <string name="cd_check_disabled">Disabled</string>
+
     <!-- Team Workspaces -->
     <string name="workspaces_title">Team Workspaces</string>
     <string name="workspaces_empty">No workspaces</string>
@@ -334,4 +378,26 @@
     <string name="workspaces_close">Close</string>
     <string name="workspaces_message_hint">Message\u2026</string>
     <string name="workspaces_send">Send</string>
+    <string name="workspaces_member_count_online">%1$d members \u2022 %2$d online</string>
+    <string name="workspaces_all_members">All Members</string>
+    <string name="workspaces_add_member">Add member</string>
+    <string name="workspaces_remove_member">Remove member</string>
+    <string name="workspaces_add_member_title">Add Team Member</string>
+    <string name="workspaces_add_member_confirm">Add</string>
+    <string name="workspaces_member_name_hint">Name</string>
+    <string name="workspaces_member_email_hint">Email (optional)</string>
+    <string name="workspaces_role_label">Role</string>
+    <string name="workspaces_role_owner_desc">Full access, can manage workspace</string>
+    <string name="workspaces_role_admin_desc">Manage members and settings</string>
+    <string name="workspaces_role_editor_desc">Edit tabs and send messages</string>
+    <string name="workspaces_role_viewer_desc">View only access</string>
+    <string name="workspaces_activity_feed">Activity</string>
+    <string name="workspaces_activity_created_workspace">created workspace</string>
+    <string name="workspaces_activity_added_member">added member</string>
+    <string name="workspaces_activity_removed_member">removed member</string>
+    <string name="workspaces_activity_changed_role">changed role</string>
+    <string name="workspaces_activity_created_tab">created tab</string>
+    <string name="workspaces_activity_sent_message">sent message</string>
+    <string name="workspaces_activity_uploaded_file">uploaded file</string>
+    <string name="workspaces_activity_ran_chain">ran chain</string>
 </resources>

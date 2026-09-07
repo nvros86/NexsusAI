@@ -23,6 +23,7 @@ mockk = "1.13.10"
 biometric = "1.1.0"
 splashscreen = "1.0.1"
 javax-inject = "1"
+firebase-bom = "33.3.0"
 
 [libraries]
 # Core
@@ -91,6 +92,12 @@ biometric = { group = "androidx.biometric", name = "biometric", version.ref = "b
 
 # javax.inject
 javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "javax-inject" }
+
+# Firebase
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
+firebase-crashlytics-ktx = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

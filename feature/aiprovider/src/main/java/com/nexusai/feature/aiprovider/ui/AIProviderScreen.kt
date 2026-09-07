@@ -30,6 +30,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -37,6 +38,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -307,7 +310,7 @@ private fun CapabilityRow(
     ) {
         Icon(
             imageVector = if (enabled) Icons.Default.Check else Icons.Default.Close,
-            contentDescription = null,
+            contentDescription = if (enabled) stringResource(R.string.cd_check_enabled) else stringResource(R.string.cd_check_disabled),
             tint = if (enabled) NexusPurple else NexusTextTertiary,
             modifier = Modifier.size(16.dp)
         )

@@ -1,0 +1,19 @@
+Version 1.0.0 — Initial Release
+
+Features:
+- Independent AI provider tabs: OpenAI, Anthropic, Google, Mistral, Ollama, LM Studio
+- AI Marketplace for modules, prompts, and workflow templates
+- Prompt Library with categories, favorites, and team sharing
+- Code Playground with syntax highlighting and AI code review
+- Module System for custom workflows and integrations
+- AI Router for intelligent prompt routing by cost, quality, and latency
+- Split View to compare two AI providers side by side
+- Voice Mode for hands-free AI interaction
+- File and media handling (images, PDFs, documents)
+- Built-in code editor with diff views and auto-completion
+- Team Workspaces for shared collaboration
+- Material 3 Dynamic Color theming with AMOLED dark mode
+- Biometric authentication (fingerprint and face unlock)
+- Encrypted API key storage
+- Russian and English localization
+- RTL language support

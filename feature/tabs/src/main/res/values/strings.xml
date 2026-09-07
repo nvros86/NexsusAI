@@ -55,4 +55,13 @@
     <!-- TabBar -->
     <string name="tab_title_format">Tab: %1$s%2$s</string>
     <string name="tab_active_suffix">, active</string>
+
+    <!-- Accessibility -->
+    <string name="cd_copy_message">Copy message</string>
+    <string name="cd_regenerate">Regenerate</string>
+    <string name="cd_like">Like</string>
+    <string name="cd_dislike">Dislike</string>
+    <string name="cd_ai_icon">AI icon</string>
+    <string name="cd_user_avatar">User avatar</string>
+    <string name="cd_generating">Generating response</string>
 </resources>

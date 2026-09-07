@@ -45,6 +45,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -55,6 +56,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.res.stringResource
@@ -97,7 +103,7 @@ fun SettingsScreen(
                     IconButton(onClick = { }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.cd_back_arrow)
                         )
                     }
                 },
@@ -114,9 +120,10 @@ fun SettingsScreen(
                 shape = CircleShape,
                 elevation = FloatingActionButtonDefaults.elevation(
                     defaultElevation = 8.dp
-                )
+                ),
+                modifier = Modifier.minimumInteractiveComponentSize()
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Provider")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.cd_add_provider_fab))
             }
         },
         containerColor = NexusBackground
@@ -244,7 +251,7 @@ fun SettingsScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Add,
-                                contentDescription = null,
+                                contentDescription = stringResource(R.string.cd_no_providers_icon),
                                 modifier = Modifier.size(48.dp),
                                 tint = NexusTextTertiary
                             )
@@ -324,24 +331,33 @@ private fun ProviderCard(
                 }
 
                 Row {
-                    IconButton(onClick = onToggleFavorite) {
+                    IconButton(
+                        onClick = onToggleFavorite,
+                        modifier = Modifier.minimumInteractiveComponentSize()
+                    ) {
                         Icon(
                             imageVector = Icons.Default.Star,
-                            contentDescription = "Favorite",
+                            contentDescription = stringResource(R.string.cd_favorite),
                             tint = if (provider.isFavorite) NexusPurple else NexusTextTertiary
                         )
                     }
-                    IconButton(onClick = onEdit) {
+                    IconButton(
+                        onClick = onEdit,
+                        modifier = Modifier.minimumInteractiveComponentSize()
+                    ) {
                         Icon(
                             imageVector = Icons.Default.Edit,
-                            contentDescription = "Edit",
+                            contentDescription = stringResource(R.string.cd_edit_provider),
                             tint = NexusTextSecondary
                         )
                     }
-                    IconButton(onClick = onDelete) {
+                    IconButton(
+                        onClick = onDelete,
+                        modifier = Modifier.minimumInteractiveComponentSize()
+                    ) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = "Delete",
+                            contentDescription = stringResource(R.string.cd_delete_provider),
                             tint = NexusTextTertiary
                         )
                     }
@@ -630,6 +646,11 @@ private fun FontScaleSelector(
                     Surface(
                         modifier = Modifier
                             .weight(1f)
+                            .minimumInteractiveComponentSize()
+                            .semantics {
+                                contentDescription = label
+                                role = Role.Tab
+                            }
                             .clip(RoundedCornerShape(8.dp))
                             .clickable { onScaleSelected(scale) },
                         color = if (isSelected) NexusPurple else NexusSurfaceVariant,
@@ -658,6 +679,9 @@ private fun PrivacyToggle(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit
 ) {
+    val onLabel = stringResource(R.string.action_ok)
+    val offLabel = stringResource(R.string.action_cancel)
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = NexusCard),
@@ -690,6 +714,9 @@ private fun PrivacyToggle(
             Switch(
                 checked = checked,
                 onCheckedChange = onCheckedChange,
+                modifier = Modifier.semantics {
+                    stateDescription = if (checked) onLabel else offLabel
+                },
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = NexusTextPrimary,
                     checkedTrackColor = NexusPurple,

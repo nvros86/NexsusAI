@@ -16,4 +16,35 @@
     <string name="workspaces_new_title">New workspace</string>
     <string name="workspaces_message_hint">Message\u2026</string>
     <string name="workspaces_send">Send</string>
+    <string name="workspaces_member_count_online">%1$d members \u2022 %2$d online</string>
+    <string name="workspaces_all_members">All Members</string>
+    <string name="workspaces_add_member">Add member</string>
+    <string name="workspaces_remove_member">Remove member</string>
+    <string name="workspaces_add_member_title">Add Team Member</string>
+    <string name="workspaces_add_member_confirm">Add</string>
+    <string name="workspaces_member_name_hint">Name</string>
+    <string name="workspaces_member_email_hint">Email (optional)</string>
+    <string name="workspaces_role_label">Role</string>
+    <string name="workspaces_role_owner_desc">Full access, can manage workspace</string>
+    <string name="workspaces_role_admin_desc">Manage members and settings</string>
+    <string name="workspaces_role_editor_desc">Edit tabs and send messages</string>
+    <string name="workspaces_role_viewer_desc">View only access</string>
+    <string name="workspaces_activity_feed">Activity</string>
+    <string name="workspaces_activity_created_workspace">created workspace</string>
+    <string name="workspaces_activity_added_member">added member</string>
+    <string name="workspaces_activity_removed_member">removed member</string>
+    <string name="workspaces_activity_changed_role">changed role</string>
+    <string name="workspaces_activity_created_tab">created tab</string>
+    <string name="workspaces_activity_sent_message">sent message</string>
+    <string name="workspaces_activity_uploaded_file">uploaded file</string>
+    <string name="workspaces_activity_ran_chain">ran chain</string>
+
+    <!-- Accessibility -->
+    <string name="cd_back_arrow">Back</string>
+    <string name="cd_refresh">Refresh</string>
+    <string name="cd_empty_state_icon">No workspaces</string>
+    <string name="cd_create_workspace">Create workspace</string>
+    <string name="cd_member_avatar">Member avatar</string>
+    <string name="cd_online_indicator">Online status</string>
+    <string name="cd_send_message">Send message</string>
 </resources>

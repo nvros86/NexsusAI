@@ -1,0 +1,60 @@
+NexsusAI is the ultimate Multi-AI Workspace for Android. Manage multiple AI providers from a single, powerful app with independent tabs — no switching between apps ever again.
+
+SUPPORTED AI PROVIDERS
+- OpenAI (GPT-4o, GPT-4, GPT-3.5)
+- Anthropic (Claude 4, Claude 3.5)
+- Google (Gemini 2.5, Gemini Pro)
+- Mistral (Mistral Large, Codestral)
+- Ollama (local models)
+- LM Studio (local models)
+
+KILLER FEATURES
+
+AI Marketplace
+Browse and install AI modules, community prompts, and workflow templates from a centralized marketplace. Extend NexsusAI with new capabilities with a single tap.
+
+Prompt Library
+Save, organize, and reuse your best prompts across all AI providers. Create categorized collections, share with your team, and never lose a great prompt again.
+
+Code Playground
+Write, test, and refine code directly inside the app. Full syntax highlighting, language auto-detection, and instant AI-powered code review make NexsusAI a portable development environment.
+
+Module System
+Extend NexsusAI with pluggable modules for custom workflows, integrations, and automation. Build your own modules or install from the marketplace.
+
+AI Router
+Intelligently route prompts to the best-suited AI provider based on task type, cost, latency, and quality. Save money and get better results automatically.
+
+Split View
+Run two AI providers side by side in split screen. Compare responses in real time, combine outputs, and find the best answer faster than ever.
+
+Voice Mode
+Speak to your AI and listen to responses hands-free. Perfect for brainstorming on the go, accessibility, and multitasking.
+
+ADDITIONAL CAPABILITIES
+
+File & Media Handling
+Send images, documents, PDFs, and text files directly into your AI conversations. AI-powered analysis of photos, screenshots, and documents is just a tap away.
+
+Built-in Code Editor
+A full-featured code editor with syntax highlighting, auto-completion, and diff views. Edit AI-generated code in place before saving or sharing.
+
+Team Workspaces
+Collaborate with your team in shared AI workspaces. Share prompts, modules, and conversation history across devices and users.
+
+Security & Privacy
+- Biometric authentication (fingerprint / face unlock)
+- End-to-end encrypted API key storage
+- No telemetry, no tracking, no ads
+- Local-first architecture with optional cloud sync
+
+Design
+- Material 3 Dynamic Color theming
+- AMOLED dark theme
+- Fully responsive layout for phones and tablets
+- RTL language support
+- Available in English and Russian
+
+NexsusAI puts the power of every major AI provider at your fingertips. Whether you are a developer, writer, researcher, or creative professional — NexsusAI adapts to your workflow and amplifies your productivity.
+
+Download NexsusAI today and experience the future of AI-powered work on Android.

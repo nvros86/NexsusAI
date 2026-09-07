@@ -1,5 +1,6 @@
 package com.nexusai.feature.tabs.viewmodel
 
+import com.nexusai.core.analytics.AnalyticsTracker
 import com.nexusai.domain.ai.AIProviderFactory
 import com.nexusai.domain.repository.AgentContextRepository
 import com.nexusai.domain.model.AIProviderConfig
@@ -34,6 +35,7 @@ class TabsViewModelTest {
     private lateinit var aiProviderRepository: AIProviderRepository
     private lateinit var aiProviderFactory: AIProviderFactory
     private lateinit var agentContextRepository: AgentContextRepository
+    private val analyticsTracker: AnalyticsTracker = mockk(relaxed = true)
     private lateinit var viewModel: TabsViewModel
 
     private val tabsFlow = MutableStateFlow<List<Tab>>(emptyList())
@@ -63,7 +65,7 @@ class TabsViewModelTest {
         coEvery { tabRepository.createTab(any()) } returns createTab()
         coEvery { tabRepository.getTabById(any()) } returns createTab()
 
-        viewModel = TabsViewModel(tabRepository, aiProviderRepository, aiProviderFactory, agentContextRepository)
+        viewModel = TabsViewModel(tabRepository, aiProviderRepository, aiProviderFactory, agentContextRepository, analyticsTracker)
     }
 
     @After

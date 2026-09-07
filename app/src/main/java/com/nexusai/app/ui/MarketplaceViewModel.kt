@@ -6,6 +6,7 @@ import com.nexusai.domain.model.AIProviderConfig
 import com.nexusai.domain.model.MarketplaceProvider
 import com.nexusai.domain.repository.AIProviderRepository
 import com.nexusai.domain.repository.MarketplaceRepository
+import com.nexusai.core.analytics.AnalyticsTracker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,7 +27,8 @@ data class MarketplaceUiState(
 @HiltViewModel
 class MarketplaceViewModel @Inject constructor(
     private val marketplaceRepository: MarketplaceRepository,
-    private val aiProviderRepository: AIProviderRepository
+    private val aiProviderRepository: AIProviderRepository,
+    private val analyticsTracker: AnalyticsTracker
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MarketplaceUiState())
@@ -94,6 +96,7 @@ class MarketplaceViewModel @Inject constructor(
                 )
                 aiProviderRepository.addProvider(provider)
                 marketplaceRepository.markAsAdded(preset.id)
+                analyticsTracker.logProviderAdded(preset.type.name, preset.name)
                 _uiState.value = _uiState.value.copy(addedProviderName = preset.name)
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(

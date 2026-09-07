@@ -5,6 +5,7 @@ import com.nexusai.domain.model.ChainRunResult
 import com.nexusai.domain.model.ChainStep
 import com.nexusai.domain.model.ChainStepResult
 import com.nexusai.domain.model.ChainStepType
+import com.nexusai.core.analytics.AnalyticsTracker
 import com.nexusai.domain.repository.ChainRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -31,6 +32,7 @@ class ChainsViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
     private lateinit var chainRepository: ChainRepository
+    private val analyticsTracker: AnalyticsTracker = mockk(relaxed = true)
     private lateinit var viewModel: ChainsViewModel
 
     private val chainsFlow = MutableStateFlow<List<AutomationChain>>(emptyList())
@@ -68,7 +70,7 @@ class ChainsViewModelTest {
         Dispatchers.setMain(testDispatcher)
         chainRepository = mockk(relaxed = true)
         every { chainRepository.getAllChains() } returns chainsFlow
-        viewModel = ChainsViewModel(chainRepository)
+        viewModel = ChainsViewModel(chainRepository, analyticsTracker)
     }
 
     @After

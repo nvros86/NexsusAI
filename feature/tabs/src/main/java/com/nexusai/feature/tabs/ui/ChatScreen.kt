@@ -31,6 +31,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -38,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.stringResource
@@ -126,7 +128,7 @@ private fun EmptyState() {
             ) {
                 Icon(
                     imageVector = Icons.Default.SmartToy,
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.cd_ai_icon),
                     modifier = Modifier.size(40.dp),
                     tint = NexusPurple
                 )
@@ -173,12 +175,12 @@ private fun MessageBubble(
                         .background(NexusPurple.copy(alpha = 0.2f)),
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.SmartToy,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                        tint = NexusPurple
-                    )
+                Icon(
+                    imageVector = Icons.Default.SmartToy,
+                    contentDescription = stringResource(R.string.cd_ai_icon),
+                    modifier = Modifier.size(18.dp),
+                    tint = NexusPurple
+                )
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
@@ -228,44 +230,44 @@ private fun MessageBubble(
                     ) {
                         IconButton(
                             onClick = onCopy,
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.minimumInteractiveComponentSize()
                         ) {
                             Icon(
                                 imageVector = Icons.Default.ContentCopy,
-                                contentDescription = "Copy",
+                                contentDescription = stringResource(R.string.cd_copy_message),
                                 modifier = Modifier.size(14.dp),
                                 tint = NexusTextTertiary
                             )
                         }
                         IconButton(
                             onClick = { },
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.minimumInteractiveComponentSize()
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Refresh,
-                                contentDescription = "Regenerate",
+                                contentDescription = stringResource(R.string.cd_regenerate),
                                 modifier = Modifier.size(14.dp),
                                 tint = NexusTextTertiary
                             )
                         }
                         IconButton(
                             onClick = { },
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.minimumInteractiveComponentSize()
                         ) {
                             Icon(
                                 imageVector = Icons.Default.ThumbUp,
-                                contentDescription = "Like",
+                                contentDescription = stringResource(R.string.cd_like),
                                 modifier = Modifier.size(14.dp),
                                 tint = NexusTextTertiary
                             )
                         }
                         IconButton(
                             onClick = { },
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.minimumInteractiveComponentSize()
                         ) {
                             Icon(
                                 imageVector = Icons.Default.ThumbDown,
-                                contentDescription = "Dislike",
+                                contentDescription = stringResource(R.string.cd_dislike),
                                 modifier = Modifier.size(14.dp),
                                 tint = NexusTextTertiary
                             )
@@ -289,7 +291,7 @@ private fun MessageBubble(
                 Spacer(modifier = Modifier.width(4.dp))
                 Icon(
                     imageVector = Icons.Default.Person,
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.cd_user_avatar),
                     modifier = Modifier
                         .size(24.dp)
                         .clip(CircleShape)
@@ -304,6 +306,7 @@ private fun MessageBubble(
 
 @Composable
 private fun GeneratingIndicator() {
+    val generatingDesc = stringResource(R.string.cd_generating)
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -319,7 +322,11 @@ private fun GeneratingIndicator() {
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator(
-                modifier = Modifier.size(16.dp),
+                modifier = Modifier
+                    .size(16.dp)
+                    .semantics {
+                        stateDescription = generatingDesc
+                    },
                 strokeWidth = 2.dp,
                 color = NexusPurple
             )

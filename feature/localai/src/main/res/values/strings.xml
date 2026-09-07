@@ -28,4 +28,15 @@
     <string name="localai_close">Close</string>
     <string name="localai_models_format">%1$d models | %2$s</string>
     <string name="localai_server_name">%1$s | %2$s</string>
+
+    <!-- Accessibility -->
+    <string name="cd_back_arrow">Back</string>
+    <string name="cd_refresh">Refresh</string>
+    <string name="cd_empty_state_icon">No connections</string>
+    <string name="cd_add_server">Add server</string>
+    <string name="cd_test_connection">Test connection</string>
+    <string name="cd_chat_with_server">Chat with server</string>
+    <string name="cd_delete_server">Delete server</string>
+    <string name="cd_delete_model">Delete model</string>
+    <string name="cd_generating">Generating response</string>
 </resources>

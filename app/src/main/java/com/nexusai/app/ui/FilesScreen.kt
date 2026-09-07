@@ -47,6 +47,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -59,6 +60,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -259,13 +265,15 @@ fun FilesScreen(
                         )
                     )
                 },
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier
+                    .padding(16.dp)
+                    .minimumInteractiveComponentSize(),
                 containerColor = NexusPurple,
                 contentColor = NexusTextPrimary
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.files_add)
+                    contentDescription = stringResource(R.string.cd_add_file)
                 )
             }
         }
@@ -328,7 +336,10 @@ private fun StorageBar(usedBytes: Long, maxBytes: Long, fileCount: Int) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(6.dp)
-                .clip(RoundedCornerShape(3.dp)),
+                .clip(RoundedCornerShape(3.dp))
+                .semantics {
+                    stateDescription = "${(progress * 100).toInt()} percent used"
+                },
             color = NexusPurple,
             trackColor = NexusSurface,
         )
@@ -345,6 +356,11 @@ private fun StorageBar(usedBytes: Long, maxBytes: Long, fileCount: Int) {
 private fun FilterChip(label: String, selected: Boolean, onClick: () -> Unit) {
     Box(
         modifier = Modifier
+            .minimumInteractiveComponentSize()
+            .semantics {
+                contentDescription = label
+                role = Role.Tab
+            }
             .clip(RoundedCornerShape(20.dp))
             .background(if (selected) NexusPurple else NexusSurface)
             .clickable(onClick = onClick)
@@ -369,6 +385,11 @@ private fun FileGridItem(
 
     Column(
         modifier = Modifier
+            .minimumInteractiveComponentSize()
+            .semantics {
+                contentDescription = file.name
+                role = Role.Button
+            }
             .clip(RoundedCornerShape(12.dp))
             .background(NexusCard)
             .clickable(onClick = onClick)
@@ -397,7 +418,7 @@ private fun FileGridItem(
             ) {
                 Icon(
                     imageVector = fileIcon(file.mimeType),
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.cd_file_icon),
                     modifier = Modifier.size(32.dp),
                     tint = NexusPurple
                 )
@@ -423,18 +444,24 @@ private fun FileGridItem(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
-            IconButton(onClick = onShare, modifier = Modifier.size(24.dp)) {
+            IconButton(
+                onClick = onShare,
+                modifier = Modifier.minimumInteractiveComponentSize()
+            ) {
                 Icon(
                     imageVector = Icons.Default.Share,
-                    contentDescription = stringResource(R.string.label_share),
+                    contentDescription = stringResource(R.string.cd_share),
                     modifier = Modifier.size(14.dp),
                     tint = NexusTextTertiary
                 )
             }
-            IconButton(onClick = onDelete, modifier = Modifier.size(24.dp)) {
+            IconButton(
+                onClick = onDelete,
+                modifier = Modifier.minimumInteractiveComponentSize()
+            ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = stringResource(R.string.label_delete),
+                    contentDescription = stringResource(R.string.cd_delete),
                     modifier = Modifier.size(14.dp),
                     tint = NexusTextTertiary
                 )

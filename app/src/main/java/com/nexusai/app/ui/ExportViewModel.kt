@@ -11,6 +11,7 @@ import com.nexusai.domain.model.Message
 import com.nexusai.domain.model.MessageRole
 import com.nexusai.domain.model.Tab
 import com.nexusai.domain.repository.TabRepository
+import com.nexusai.core.analytics.AnalyticsTracker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -47,7 +48,8 @@ data class ExportUiState(
 
 @HiltViewModel
 class ExportViewModel @Inject constructor(
-    private val tabRepository: TabRepository
+    private val tabRepository: TabRepository,
+    private val analyticsTracker: AnalyticsTracker
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ExportUiState())
@@ -97,6 +99,7 @@ class ExportViewModel @Inject constructor(
                     file
                 )
 
+                analyticsTracker.logExport(state.selectedFormat.name, tab.messages.size)
                 _uiState.value = _uiState.value.copy(
                     isExporting = false,
                     exportedFileUri = uri

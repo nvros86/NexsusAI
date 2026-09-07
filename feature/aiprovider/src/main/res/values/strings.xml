@@ -16,4 +16,9 @@
     <string name="ai_provider_files">Files</string>
     <string name="ai_provider_streaming">Streaming</string>
     <string name="ai_provider_loading">Loading\u2026</string>
+
+    <!-- Accessibility -->
+    <string name="cd_back_arrow">Back</string>
+    <string name="cd_check_enabled">Supported</string>
+    <string name="cd_check_disabled">Not supported</string>
 </resources>

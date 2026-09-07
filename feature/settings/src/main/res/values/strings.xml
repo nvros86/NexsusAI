@@ -46,4 +46,12 @@
     <string name="settings_add_provider">Add model</string>
     <string name="settings_provider_label">Provider: %s</string>
     <string name="settings_system_prompt">System prompt: You are a helpful AI assistant NexusAI.</string>
+
+    <!-- Accessibility -->
+    <string name="cd_back_arrow">Back</string>
+    <string name="cd_add_provider_fab">Add AI provider</string>
+    <string name="cd_favorite">Toggle favorite</string>
+    <string name="cd_edit_provider">Edit provider</string>
+    <string name="cd_delete_provider">Delete provider</string>
+    <string name="cd_no_providers_icon">No providers</string>
 </resources>

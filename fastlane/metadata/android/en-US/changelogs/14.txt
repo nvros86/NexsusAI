@@ -1,0 +1,7 @@
+v1.1.0 — Quality & Platform Release
+
+• Accessibility: TalkBack support, 48dp min touch targets, semantic labels
+• 181 new unit tests (total ~351)
+• Play Store metadata (EN/RU)
+• Team collaboration: member roles, activity feed, online status
+• Firebase Analytics + Crashlytics integration

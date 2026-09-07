@@ -323,6 +323,50 @@
     <!-- Chain default name -->
     <string name="chain_default_name">Цепочка</string>
 
+    <!-- Accessibility - Content Descriptions -->
+    <string name="cd_copy_code">Копировать код</string>
+    <string name="cd_ai_icon">Иконка AI</string>
+    <string name="cd_empty_state_icon">Пустое состояние</string>
+    <string name="cd_file_icon">Файл</string>
+    <string name="cd_share">Поделиться</string>
+    <string name="cd_delete">Удалить</string>
+    <string name="cd_add_file">Добавить файл</string>
+    <string name="cd_search">Поиск</string>
+    <string name="cd_filter_chip">Фильтр</string>
+    <string name="cd_export_share">Поделиться экспортом</string>
+    <string name="cd_export_copy">Копировать экспорт</string>
+    <string name="cd_export_open_browser">Открыть в браузере</string>
+    <string name="cd_export_download">Экспортировать файл</string>
+    <string name="cd_export_new">Новый экспорт</string>
+    <string name="cd_check_icon">Выбрано</string>
+    <string name="cd_format_icon">Формат</string>
+    <string name="cd_add_provider">Добавить провайдер</string>
+    <string name="cd_provider_check">Добавлен</string>
+    <string name="cd_category_chip">Фильтр категории</string>
+    <string name="cd_back">Назад</string>
+    <string name="cd_refresh">Обновить</string>
+    <string name="cd_copy_message">Копировать сообщение</string>
+    <string name="cd_regenerate">Перегенерировать</string>
+    <string name="cd_like">Нравится</string>
+    <string name="cd_dislike">Не нравится</string>
+    <string name="cd_user_avatar">Аватар пользователя</string>
+    <string name="cd_generating">Генерация ответа</string>
+    <string name="cd_favorite">В избранное</string>
+    <string name="cd_edit_provider">Редактировать провайдер</string>
+    <string name="cd_delete_provider">Удалить провайдер</string>
+    <string name="cd_add_provider_fab">Добавить AI провайдер</string>
+    <string name="cd_back_arrow">Назад</string>
+    <string name="cd_test_connection">Тест подключения</string>
+    <string name="cd_chat_with_server">Чат с сервером</string>
+    <string name="cd_delete_server">Удалить сервер</string>
+    <string name="cd_delete_model">Удалить модель</string>
+    <string name="cd_status_dot">Статус</string>
+    <string name="cd_online_indicator">Статус онлайн</string>
+    <string name="cd_send_message">Отправить сообщение</string>
+    <string name="cd_member_avatar">Аватар участника</string>
+    <string name="cd_check_enabled">Включено</string>
+    <string name="cd_check_disabled">Выключено</string>
+
     <!-- Team Workspaces -->
     <string name="workspaces_title">Team Workspaces</string>
     <string name="workspaces_empty">Нет workspace</string>
@@ -334,4 +378,26 @@
     <string name="workspaces_close">Закрыть</string>
     <string name="workspaces_message_hint">Сообщение\u2026</string>
     <string name="workspaces_send">Отправить</string>
+    <string name="workspaces_member_count_online">%1$d участников \u2022 %2$d онлайн</string>
+    <string name="workspaces_all_members">Все участники</string>
+    <string name="workspaces_add_member">Добавить участника</string>
+    <string name="workspaces_remove_member">Удалить участника</string>
+    <string name="workspaces_add_member_title">Добавить участника</string>
+    <string name="workspaces_add_member_confirm">Добавить</string>
+    <string name="workspaces_member_name_hint">Имя</string>
+    <string name="workspaces_member_email_hint">Email (необязательно)</string>
+    <string name="workspaces_role_label">Роль</string>
+    <string name="workspaces_role_owner_desc">Полный доступ, управление workspace</string>
+    <string name="workspaces_role_admin_desc">Управление участниками и настройками</string>
+    <string name="workspaces_role_editor_desc">Редактирование вкладок и отправка сообщений</string>
+    <string name="workspaces_role_viewer_desc">Только просмотр</string>
+    <string name="workspaces_activity_feed">Активность</string>
+    <string name="workspaces_activity_created_workspace">создал workspace</string>
+    <string name="workspaces_activity_added_member">добавил участника</string>
+    <string name="workspaces_activity_removed_member">удалил участника</string>
+    <string name="workspaces_activity_changed_role">изменил роль</string>
+    <string name="workspaces_activity_created_tab">создал вкладку</string>
+    <string name="workspaces_activity_sent_message">отправил сообщение</string>
+    <string name="workspaces_activity_uploaded_file">загрузил файл</string>
+    <string name="workspaces_activity_ran_chain">запустил цепочку</string>
 </resources>

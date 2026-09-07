@@ -9,6 +9,7 @@ import com.nexusai.domain.model.AttachedFile
 import com.nexusai.domain.model.Message
 import com.nexusai.domain.model.MessageRole
 import com.nexusai.domain.model.Tab
+import com.nexusai.core.analytics.AnalyticsTracker
 import com.nexusai.domain.repository.TabRepository
 import io.mockk.Runs
 import io.mockk.every
@@ -39,6 +40,7 @@ class ExportViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
     private lateinit var tabRepository: TabRepository
+    private val analyticsTracker: AnalyticsTracker = mockk(relaxed = true)
     private lateinit var viewModel: ExportViewModel
 
     private fun createMessage(
@@ -75,7 +77,7 @@ class ExportViewModelTest {
         Dispatchers.setMain(testDispatcher)
         tabRepository = mockk(relaxed = true)
         every { tabRepository.getAllTabs() } returns flowOf(emptyList())
-        viewModel = ExportViewModel(tabRepository)
+        viewModel = ExportViewModel(tabRepository, analyticsTracker)
     }
 
     @After
@@ -98,7 +100,7 @@ class ExportViewModelTest {
     fun `init loads tabs from repository`() = runTest {
         val tabs = listOf(createTab(id = "1", title = "Tab A"), createTab(id = "2", title = "Tab B"))
         every { tabRepository.getAllTabs() } returns flowOf(tabs)
-        val vm = ExportViewModel(tabRepository)
+        val vm = ExportViewModel(tabRepository, analyticsTracker)
         testDispatcher.scheduler.advanceUntilIdle()
 
         val state = vm.uiState.value
@@ -154,7 +156,7 @@ class ExportViewModelTest {
             )
         )
         every { tabRepository.getAllTabs() } returns flowOf(listOf(tab))
-        val vm = ExportViewModel(tabRepository)
+        val vm = ExportViewModel(tabRepository, analyticsTracker)
         testDispatcher.scheduler.advanceUntilIdle()
 
         vm.selectTab("tab-1")
@@ -186,7 +188,7 @@ class ExportViewModelTest {
     fun `copyToClipboard generates plain text format`() = runTest {
         val tab = createTab(id = "tab-1", title = "Plain Chat")
         every { tabRepository.getAllTabs() } returns flowOf(listOf(tab))
-        val vm = ExportViewModel(tabRepository)
+        val vm = ExportViewModel(tabRepository, analyticsTracker)
         testDispatcher.scheduler.advanceUntilIdle()
 
         vm.selectTab("tab-1")
@@ -225,7 +227,7 @@ class ExportViewModelTest {
             )
         )
         every { tabRepository.getAllTabs() } returns flowOf(listOf(tab))
-        val vm = ExportViewModel(tabRepository)
+        val vm = ExportViewModel(tabRepository, analyticsTracker)
         testDispatcher.scheduler.advanceUntilIdle()
 
         vm.selectTab("tab-1")
@@ -260,7 +262,7 @@ class ExportViewModelTest {
     fun `copyToClipboard generates HTML format`() = runTest {
         val tab = createTab(id = "tab-1", title = "HTML Chat")
         every { tabRepository.getAllTabs() } returns flowOf(listOf(tab))
-        val vm = ExportViewModel(tabRepository)
+        val vm = ExportViewModel(tabRepository, analyticsTracker)
         testDispatcher.scheduler.advanceUntilIdle()
 
         vm.selectTab("tab-1")
@@ -293,7 +295,7 @@ class ExportViewModelTest {
     fun `copyToClipboard does nothing when no tab selected`() = runTest {
         val tab = createTab(id = "tab-1")
         every { tabRepository.getAllTabs() } returns flowOf(listOf(tab))
-        val vm = ExportViewModel(tabRepository)
+        val vm = ExportViewModel(tabRepository, analyticsTracker)
         testDispatcher.scheduler.advanceUntilIdle()
 
         // No tab selected
@@ -312,7 +314,7 @@ class ExportViewModelTest {
     @Test
     fun `copyToClipboard does nothing when selected tab not in list`() = runTest {
         every { tabRepository.getAllTabs() } returns flowOf(emptyList())
-        val vm = ExportViewModel(tabRepository)
+        val vm = ExportViewModel(tabRepository, analyticsTracker)
         testDispatcher.scheduler.advanceUntilIdle()
 
         vm.selectTab("nonexistent-tab")
@@ -346,7 +348,7 @@ class ExportViewModelTest {
             )
         )
         every { tabRepository.getAllTabs() } returns flowOf(listOf(tab))
-        val vm = ExportViewModel(tabRepository)
+        val vm = ExportViewModel(tabRepository, analyticsTracker)
         testDispatcher.scheduler.advanceUntilIdle()
 
         vm.selectTab("tab-1")
@@ -388,7 +390,7 @@ class ExportViewModelTest {
             )
         )
         every { tabRepository.getAllTabs() } returns flowOf(listOf(tab))
-        val vm = ExportViewModel(tabRepository)
+        val vm = ExportViewModel(tabRepository, analyticsTracker)
         testDispatcher.scheduler.advanceUntilIdle()
 
         vm.selectTab("tab-1")
@@ -458,7 +460,7 @@ class ExportViewModelTest {
             )
         )
         every { tabRepository.getAllTabs() } returns flowOf(listOf(tab))
-        val vm = ExportViewModel(tabRepository)
+        val vm = ExportViewModel(tabRepository, analyticsTracker)
         testDispatcher.scheduler.advanceUntilIdle()
 
         vm.selectTab("tab-1")

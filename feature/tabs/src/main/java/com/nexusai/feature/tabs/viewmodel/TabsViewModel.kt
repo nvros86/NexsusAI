@@ -12,6 +12,7 @@ import com.nexusai.domain.model.Tab
 import com.nexusai.domain.repository.AIProviderRepository
 import com.nexusai.domain.repository.TabRepository
 import com.nexusai.domain.repository.AgentContextRepository
+import com.nexusai.core.analytics.AnalyticsTracker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -45,7 +46,8 @@ class TabsViewModel @Inject constructor(
     private val tabRepository: TabRepository,
     private val aiProviderRepository: AIProviderRepository,
     private val aiProviderFactory: AIProviderFactory,
-    private val agentContextRepository: AgentContextRepository
+    private val agentContextRepository: AgentContextRepository,
+    private val analyticsTracker: AnalyticsTracker
 ) : ViewModel() {
 
     private val _tabsState = MutableStateFlow(TabsUiState())
@@ -58,6 +60,7 @@ class TabsViewModel @Inject constructor(
     val providers: StateFlow<List<AIProviderConfig>> = _providers.asStateFlow()
 
     init {
+        analyticsTracker.logScreenView("chat")
         viewModelScope.launch {
             tabRepository.getAllTabs().collect { tabs ->
                 _tabsState.value = _tabsState.value.copy(

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexusai.domain.model.AutomationChain
 import com.nexusai.domain.repository.ChainRepository
+import com.nexusai.core.analytics.AnalyticsTracker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChainsViewModel @Inject constructor(
-    private val chainRepository: ChainRepository
+    private val chainRepository: ChainRepository,
+    private val analyticsTracker: AnalyticsTracker
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ChainsUiState())
@@ -40,6 +42,7 @@ class ChainsViewModel @Inject constructor(
             )
             try {
                 chainRepository.runChain(chain)
+                analyticsTracker.logChainExecuted(chain.id, chain.steps.size, 0L)
             } catch (e: Exception) {
                 val errorMsg = e.message
                 _uiState.value = _uiState.value.copy(

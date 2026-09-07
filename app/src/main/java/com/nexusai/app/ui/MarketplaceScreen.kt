@@ -37,6 +37,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -47,6 +48,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
@@ -110,7 +115,7 @@ fun MarketplaceScreen(
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Search,
-                        contentDescription = null,
+                        contentDescription = stringResource(R.string.cd_search),
                         tint = NexusTextTertiary
                     )
                 },
@@ -264,6 +269,11 @@ fun MarketplaceScreen(
 private fun CategoryChip(label: String, selected: Boolean, onClick: () -> Unit) {
     Box(
         modifier = Modifier
+            .minimumInteractiveComponentSize()
+            .semantics {
+                contentDescription = label
+                role = Role.Tab
+            }
             .clip(RoundedCornerShape(20.dp))
             .background(if (selected) NexusPurple else NexusSurface)
             .clickable(onClick = onClick)
@@ -334,7 +344,7 @@ private fun MarketplaceCard(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
                                 imageVector = Icons.Default.Check,
-                                contentDescription = null,
+                                contentDescription = stringResource(R.string.cd_provider_check),
                                 modifier = Modifier.size(14.dp),
                                 tint = NexusPurple
                             )
@@ -347,8 +357,14 @@ private fun MarketplaceCard(
                         }
                     }
                 } else {
+                    val addProviderDesc = stringResource(R.string.cd_add_provider)
                     Box(
                         modifier = Modifier
+                            .minimumInteractiveComponentSize()
+                            .semantics {
+                                contentDescription = addProviderDesc
+                                role = Role.Button
+                            }
                             .clip(RoundedCornerShape(8.dp))
                             .background(NexusPurple)
                             .clickable(onClick = onAdd)

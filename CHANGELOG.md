@@ -1,5 +1,40 @@
 # Changelog
 
+## v1.1.0 — Quality & Platform Release
+
+### Доступность (Accessibility)
+- TalkBack: contentDescription на всех иконках и изображениях (42 новых строки EN/RU)
+- Минимальный touch target 48dp на всех интерактивных элементах
+- Semantics: role для кнопок, вкладок, прогресс-баров
+- stateDescription для переключателей и индикаторов загрузки
+
+### Тесты
+- 181 новых unit test (итого ~351): MarketplaceRepositoryImplTest, TaskTemplateRepositoryImplTest, PromptsViewModelTest, ModulesViewModelTest, PluginsViewModelTest, VideoViewModelTest, AIRouterViewModelTest, EditorViewModelTest, AIProviderViewModelTest, TeamWorkspacesViewModelTest, LocalAIViewModelTest
+- Dependency injection для feature модулей (editor, aiprovider)
+
+### Play Store Metadata
+- Fastlane: title, short_description, full_description (EN + RU)
+- Changelogs для v1.0.0 (EN + RU)
+- Backup rules и data extraction rules (Android 12+)
+
+### Коллаборация (Team Workspaces)
+- TeamMember модель с ролями (Owner/Admin/Editor/Viewer)
+- WorkspaceActivity модель для лога действий
+- Add/Remove members с выбором роли
+- Activity feed в workspace
+- Онлайн-статусы участников
+
+### Аналитика (Firebase)
+- Firebase Analytics + Crashlytics интеграция
+- AnalyticsTracker: screen views, chat messages, provider adds, chain execution, exports, feature usage
+- ProGuard rules для Firebase/GMS
+- Google Services plugin
+
+### Зависимости
+- Firebase BOM 33.3.0, Google Services 4.4.2, Crashlytics 3.0.2
+
+---
+
 ## v1.0.0 — Stable Release
 
 ### NexsusAI — Multi-AI Workspace

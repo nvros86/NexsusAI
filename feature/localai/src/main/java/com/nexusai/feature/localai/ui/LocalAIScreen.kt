@@ -44,6 +44,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -54,6 +55,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -91,21 +95,27 @@ fun LocalAIScreen(
                 Text("Local AI", color = NexusTextPrimary)
             },
             navigationIcon = {
-                IconButton(onClick = onBack) {
+                IconButton(
+                    onClick = onBack,
+                    modifier = Modifier.minimumInteractiveComponentSize()
+                ) {
                 Icon(
                     imageVector = Icons.Default.Close,
-                    contentDescription = stringResource(R.string.action_back),
+                    contentDescription = stringResource(R.string.cd_back_arrow),
                     tint = NexusTextPrimary
                 )
                 }
             },
             actions = {
-                IconButton(onClick = { viewModel.refresh() }) {
-                Icon(
-                    imageVector = Icons.Default.Refresh,
-                    contentDescription = stringResource(R.string.localai_refresh),
-                    tint = NexusTextPrimary
-                )
+                IconButton(
+                    onClick = { viewModel.refresh() },
+                    modifier = Modifier.minimumInteractiveComponentSize()
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Refresh,
+                        contentDescription = stringResource(R.string.cd_refresh),
+                        tint = NexusTextPrimary
+                    )
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(containerColor = NexusBackground)
@@ -123,7 +133,7 @@ fun LocalAIScreen(
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Icon(
                         imageVector = Icons.Default.SmartToy,
-                        contentDescription = null,
+                        contentDescription = stringResource(R.string.cd_empty_state_icon),
                         modifier = Modifier.size(72.dp),
                         tint = NexusTextTertiary.copy(alpha = 0.5f)
                     )
@@ -188,13 +198,15 @@ fun LocalAIScreen(
         ) {
             FloatingActionButton(
                 onClick = { showAddDialog = true },
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier
+                    .padding(16.dp)
+                    .minimumInteractiveComponentSize(),
                 containerColor = NexusPurple,
                 contentColor = NexusTextPrimary
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.localai_add_server)
+                    contentDescription = stringResource(R.string.cd_add_server)
                 )
             }
         }
@@ -314,28 +326,37 @@ private fun ServerCard(
                 )
             }
 
-            IconButton(onClick = onTest, modifier = Modifier.size(32.dp)) {
+            IconButton(
+                onClick = onTest,
+                modifier = Modifier.minimumInteractiveComponentSize()
+            ) {
                 Icon(
                     imageVector = Icons.Default.Refresh,
-                    contentDescription = stringResource(R.string.localai_test),
+                    contentDescription = stringResource(R.string.cd_test_connection),
                     tint = NexusPurple,
                     modifier = Modifier.size(18.dp)
                 )
             }
 
-            IconButton(onClick = onChat, modifier = Modifier.size(32.dp)) {
+            IconButton(
+                onClick = onChat,
+                modifier = Modifier.minimumInteractiveComponentSize()
+            ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.Send,
-                    contentDescription = stringResource(R.string.localai_chat_action),
+                    contentDescription = stringResource(R.string.cd_chat_with_server),
                     tint = if (config.isConnected) NexusPurple else NexusTextTertiary,
                     modifier = Modifier.size(18.dp)
                 )
             }
 
-            IconButton(onClick = onDelete, modifier = Modifier.size(32.dp)) {
+            IconButton(
+                onClick = onDelete,
+                modifier = Modifier.minimumInteractiveComponentSize()
+            ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = stringResource(R.string.label_delete),
+                    contentDescription = stringResource(R.string.cd_delete_server),
                     tint = NexusTextTertiary,
                     modifier = Modifier.size(18.dp)
                 )
@@ -392,10 +413,13 @@ private fun ModelCard(
                 }
             }
 
-            IconButton(onClick = onDelete, modifier = Modifier.size(32.dp)) {
+            IconButton(
+                onClick = onDelete,
+                modifier = Modifier.minimumInteractiveComponentSize()
+            ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = stringResource(R.string.label_delete),
+                    contentDescription = stringResource(R.string.cd_delete_model),
                     tint = NexusTextTertiary,
                     modifier = Modifier.size(18.dp)
                 )
@@ -589,12 +613,17 @@ private fun LocalAIChatDialog(
                 )
 
                 if (isGenerating) {
+                    val generatingDesc = stringResource(R.string.cd_generating)
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center
                     ) {
                         CircularProgressIndicator(
-                            modifier = Modifier.size(24.dp),
+                            modifier = Modifier
+                                .size(24.dp)
+                                .semantics {
+                                    stateDescription = generatingDesc
+                                },
                             color = NexusPurple,
                             strokeWidth = 2.dp
                         )

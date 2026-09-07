@@ -34,6 +34,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -45,6 +46,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -124,6 +130,11 @@ fun ExportScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .minimumInteractiveComponentSize()
+                            .semantics {
+                                contentDescription = tab.title
+                                role = Role.Button
+                            }
                             .clip(RoundedCornerShape(12.dp))
                             .background(if (isSelected) NexusPurple.copy(alpha = 0.15f) else NexusCard)
                             .clickable { viewModel.selectTab(tab.id) }
@@ -167,6 +178,7 @@ fun ExportScreen(
 
                     items(ExportFormat.entries, key = { it.name }) { format ->
                         val isSelected = format == uiState.selectedFormat
+                        val formatName = stringResource(format.displayNameRes)
                         val icon = when (format) {
                             ExportFormat.MARKDOWN -> Icons.Default.Description
                             ExportFormat.TXT -> Icons.Default.Description
@@ -177,6 +189,11 @@ fun ExportScreen(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
+                                .minimumInteractiveComponentSize()
+                                .semantics {
+                                    contentDescription = formatName
+                                    role = Role.Button
+                                }
                                 .clip(RoundedCornerShape(12.dp))
                                 .background(if (isSelected) NexusPurple.copy(alpha = 0.15f) else NexusCard)
                                 .clickable { viewModel.selectFormat(format) }
@@ -185,7 +202,7 @@ fun ExportScreen(
                         ) {
                             Icon(
                                 imageVector = icon,
-                                contentDescription = null,
+                                contentDescription = stringResource(R.string.cd_format_icon),
                                 tint = if (isSelected) NexusPurple else NexusTextSecondary,
                                 modifier = Modifier.size(24.dp)
                             )
@@ -215,13 +232,23 @@ fun ExportScreen(
 
                     item {
                         Spacer(modifier = Modifier.height(16.dp))
+                        val exportShareDesc = stringResource(R.string.cd_export_share)
+                        val exportCopyDesc = stringResource(R.string.cd_export_copy)
+                        val exportOpenBrowserDesc = stringResource(R.string.cd_export_open_browser)
+                        val exportNewDesc = stringResource(R.string.cd_export_new)
+                        val exportDownloadDesc = stringResource(R.string.cd_export_download)
 
                         if (uiState.isExporting) {
                             Column(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                CircularProgressIndicator(color = NexusPurple)
+                                CircularProgressIndicator(
+                                    color = NexusPurple,
+                                    modifier = Modifier.semantics {
+                                        stateDescription = "Exporting"
+                                    }
+                                )
                                 Spacer(modifier = Modifier.height(8.dp))
                                 Text(
                                     text = stringResource(R.string.exporting),
@@ -239,6 +266,11 @@ fun ExportScreen(
                                     Box(
                                         modifier = Modifier
                                             .weight(1f)
+                                            .minimumInteractiveComponentSize()
+                                            .semantics {
+                                                contentDescription = exportShareDesc
+                                                role = Role.Button
+                                            }
                                             .clip(RoundedCornerShape(12.dp))
                                             .background(NexusPurple)
                                             .clickable {
@@ -266,6 +298,11 @@ fun ExportScreen(
                                     Box(
                                         modifier = Modifier
                                             .weight(1f)
+                                            .minimumInteractiveComponentSize()
+                                            .semantics {
+                                                contentDescription = exportCopyDesc
+                                                role = Role.Button
+                                            }
                                             .clip(RoundedCornerShape(12.dp))
                                             .background(NexusSurface)
                                             .clickable {
@@ -295,6 +332,11 @@ fun ExportScreen(
                                     Box(
                                         modifier = Modifier
                                             .fillMaxWidth()
+                                            .minimumInteractiveComponentSize()
+                                            .semantics {
+                                                contentDescription = exportOpenBrowserDesc
+                                                role = Role.Button
+                                            }
                                             .clip(RoundedCornerShape(12.dp))
                                             .background(NexusSurface)
                                             .clickable {
@@ -323,6 +365,11 @@ fun ExportScreen(
                                 Box(
                                     modifier = Modifier
                                         .fillMaxWidth()
+                                        .minimumInteractiveComponentSize()
+                                        .semantics {
+                                            contentDescription = exportNewDesc
+                                            role = Role.Button
+                                        }
                                         .clip(RoundedCornerShape(12.dp))
                                         .background(NexusSurface)
                                         .clickable { viewModel.clearExport() }
@@ -340,6 +387,11 @@ fun ExportScreen(
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
+                                    .minimumInteractiveComponentSize()
+                                    .semantics {
+                                        contentDescription = exportDownloadDesc
+                                        role = Role.Button
+                                    }
                                     .clip(RoundedCornerShape(12.dp))
                                     .background(NexusPurple)
                                     .clickable { viewModel.export(context) }

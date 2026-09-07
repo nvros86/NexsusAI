@@ -25,4 +25,7 @@
     <string name="label_selected">Выбрано</string>
     <string name="label_file">Файл</string>
     <string name="label_messages_count">%d сообщений</string>
+
+    <!-- Accessibility -->
+    <string name="cd_copy_code">Копировать код</string>
 </resources>

@@ -46,4 +46,12 @@
     <string name="settings_add_provider">Добавить модель</string>
     <string name="settings_provider_label">Провайдер: %s</string>
     <string name="settings_system_prompt">Системный промпт: Вы — полезный AI-ассистент NexusAI.</string>
+
+    <!-- Accessibility -->
+    <string name="cd_back_arrow">Назад</string>
+    <string name="cd_add_provider_fab">Добавить AI провайдер</string>
+    <string name="cd_favorite">В избранное</string>
+    <string name="cd_edit_provider">Редактировать провайдер</string>
+    <string name="cd_delete_provider">Удалить провайдер</string>
+    <string name="cd_no_providers_icon">Нет провайдеров</string>
 </resources>

@@ -3,6 +3,7 @@ package com.nexusai.app.ui
 import android.app.Application
 import android.speech.SpeechRecognizer
 import android.speech.tts.TextToSpeech
+import com.nexusai.core.analytics.AnalyticsTracker
 import com.nexusai.core.ui.components.VoiceHelper
 import com.nexusai.core.ui.components.VoiceState
 import com.nexusai.data.ai.AIProviderManager
@@ -42,6 +43,7 @@ class VoiceModeViewModelTest {
     private lateinit var application: Application
     private lateinit var providerRepository: AIProviderRepository
     private lateinit var aiProviderManager: AIProviderManager
+    private val analyticsTracker: AnalyticsTracker = mockk(relaxed = true)
     private lateinit var viewModel: VoiceModeViewModel
 
     private val providersFlow = MutableStateFlow<List<AIProviderConfig>>(emptyList())
@@ -92,7 +94,7 @@ class VoiceModeViewModelTest {
         mockkConstructor(TextToSpeech::class)
         every { anyConstructed<TextToSpeech>().setOnUtteranceProgressListener(any()) } returns 0
 
-        viewModel = VoiceModeViewModel(application, providerRepository, aiProviderManager)
+        viewModel = VoiceModeViewModel(application, providerRepository, aiProviderManager, analyticsTracker)
         testDispatcher.scheduler.advanceUntilIdle()
     }
 

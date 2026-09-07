@@ -10,6 +10,7 @@ import com.nexusai.domain.ai.ChatMessage
 import com.nexusai.domain.model.AIProviderConfig
 import com.nexusai.domain.model.MessageRole
 import com.nexusai.domain.repository.AIProviderRepository
+import com.nexusai.core.analytics.AnalyticsTracker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,7 +39,8 @@ data class VoiceModeUiState(
 class VoiceModeViewModel @Inject constructor(
     application: Application,
     private val providerRepository: AIProviderRepository,
-    private val aiProviderManager: AIProviderManager
+    private val aiProviderManager: AIProviderManager,
+    private val analyticsTracker: AnalyticsTracker
 ) : AndroidViewModel(application) {
 
     val voiceHelper = VoiceHelper(application)
@@ -50,6 +52,7 @@ class VoiceModeViewModel @Inject constructor(
         voiceHelper.init()
         observeVoiceState()
         loadProviders()
+        analyticsTracker.logFeatureUsed("voice_mode")
     }
 
     private fun observeVoiceState() {

@@ -25,4 +25,7 @@
     <string name="label_selected">Selected</string>
     <string name="label_file">File</string>
     <string name="label_messages_count">%d messages</string>
+
+    <!-- Accessibility -->
+    <string name="cd_copy_code">Copy code</string>
 </resources>
